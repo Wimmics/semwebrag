@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Évaluation GraphRAG</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
+</head>
+<body class="bg-gray-100 font-sans">
+    <div class="container max-w-6xl mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold mb-6 text-gray-800">Évaluation GraphRAG</h1>
+        
+        <div class="mb-6">
+            <label for="domainSelect" class="block mb-2 text-sm font-medium text-gray-700">Domain:</label>
+            <select id="domainSelect" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                <option value="finance" selected>finance</option>
+                <option value="medicine">mediacal</option>
+
+            </select>
+        </div>
+
+        
+        <div class="mb-6">
+            <button id="loadQuestionsBtn" class="px-5 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2 shadow-sm">
+                Load questions
+            </button>
+            <div id="questionsLoader" class="hidden mt-4">
+                <div class="flex items-center">
+                    <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-700"></div>
+                    <span class="ml-3 text-gray-700">Loading questions ...</span>
+                </div>
+            </div>
+        </div>
+
+        
+        <div id="questionsList" class="mb-8 hidden bg-white rounded-lg shadow-md overflow-hidden">
+            <h2 class="px-6 py-3 bg-gray-50 text-lg font-semibold text-gray-700">Questions</h2>
+            <ul id="questionsContainer" class="divide-y divide-gray-200">
+                <!-- Les questions seront ajoutées ici dynamiquement -->
+            </ul>
+        </div>
+
+        <!-- Panneau de résultats -->
+        <div id="resultsPanel" class="hidden">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800" id="selectedQuestionTitle"></h2>
+            
+            <!-- Tableau des résultats pour différentes valeurs de nChunks -->
+            <div class="bg-white rounded-lg shadow-md mb-8 overflow-hidden">
+                <div class="px-6 py-4 bg-gray-50">
+                    <h3 class="text-lg font-semibold text-gray-700"></h3>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">nChunks</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">METEOR</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">BLEU</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">BERT</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ROUGE</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="metricsTableBody" class="divide-y divide-gray-200">
+                            <!-- Les résultats seront ajoutés ici dynamiquement -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Question et réponse complètes -->
+            <div id="detailsPanel" class="bg-white rounded-lg shadow-md mb-8 overflow-hidden hidden">
+                <div class="px-6 py-4 bg-gray-50">
+                    <h3 class="text-lg font-semibold text-gray-700">details</h3>
+                </div>
+                <div class="p-6">
+                    <div class="mb-4">
+                        <h4 class="text-sm font-semibold text-gray-600 mb-2">Question:</h4>
+                        <p id="detailQuestion" class="text-gray-800 bg-gray-50 p-3 rounded"></p>
+                    </div>
+                    <div class="mb-4">
+                        <h4 class="text-sm font-semibold text-gray-600 mb-2">True answer :</h4>
+                        <p id="detailTrueAnswer" class="text-gray-800 bg-gray-50 p-3 rounded"></p>
+                    </div>
+                    <div class="mb-4">
+                        <h4 class="text-sm font-semibold text-gray-600 mb-2">Generated answer (nChunks: <span id="detailNChunks"></span>):</h4>
+                        <p id="detailPredictedAnswer" class="text-gray-800 bg-gray-50 p-3 rounded"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section pour les moyennes par nChunks -->
+        <div class="mb-8">
+            <button id="calculateAveragesBtn" class="px-5 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition-colors flex items-center gap-2 shadow-sm hidden">
+                Average metrics for all questions
+            </button>
+            <div id="averagesLoader" class="hidden mt-4">
+                <div class="flex items-center">
+                    <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-green-700"></div>
+                    <span class="ml-3 text-gray-700">Loading ...</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tableau des moyennes -->
+        <div id="averagesPanel" class="bg-white rounded-lg shadow-md mb-8 overflow-hidden hidden">
+            <div class="px-6 py-4 bg-gray-50">
+                <h3 class="text-lg font-semibold text-gray-700">Averages by nbChunks</h3>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">nChunks</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">METEOR</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">BLEU</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">BERT</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ROUGE</th>
+                        </tr>
+                    </thead>
+                    <tbody id="averagesTableBody" class="divide-y divide-gray-200">
+                        <!-- Les moyennes seront ajoutées ici dynamiquement -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="mt-8 flex justify-end">
+            <a href="javascript:history.back()" class="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 transition-colors flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Retour 
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Variables globales
+        let allQuestions = [];
+        let allAnswers = [];
+        let metricsData = {};
+
+        // Récupérer le domaine sélectionné
+        function getSelectedDomain() {
+            return document.getElementById('domainSelect').value;
+        }
+
+        // Fonction pour charger toutes les questions
+        async function loadQuestions() {
+            const domain = getSelectedDomain();
+            document.getElementById('questionsLoader').classList.remove('hidden');
+            document.getElementById('questionsList').classList.add('hidden');
+            
+            try {
+                const response = await fetch(`http://localhost:5000/getAllQA?domain=${domain}`);
+                const data = await response.json();
+                console.log('Données reçues:', data);   
+                allQuestions = data.questions;
+                allAnswers = data.answers;
+
+                console.log('Questions:', allQuestions);
+                console.log('Réponses:', allAnswers);
+                
+                // Afficher les questions dans la liste
+                const container = document.getElementById('questionsContainer');
+                container.innerHTML = '';
+                
+                allQuestions.forEach((question, index) => {
+                    const li = document.createElement('li');
+                    li.className = 'px-6 py-4 hover:bg-blue-50 cursor-pointer transition-colors';
+                    li.innerHTML = `<div class="font-medium text-blue-600">${question}</div>`;
+                    li.addEventListener('click', () => selectQuestion(index));
+                    container.appendChild(li);
+                });
+                
+                document.getElementById('questionsLoader').classList.add('hidden');
+                document.getElementById('questionsList').classList.remove('hidden');
+                document.getElementById('calculateAveragesBtn').classList.remove('hidden');
+                
+            } catch (error) {
+                console.error('Erreur lors du chargement des questions:', error);
+                document.getElementById('questionsLoader').classList.add('hidden');
+                showNotification('Une erreur est survenue lors du chargement des questions.', 'error');
+            }
+        }
+
+        // Fonction pour sélectionner une question
+        async function selectQuestion(index) {
+            const domain = getSelectedDomain();
+            const question = allQuestions[index];
+            const trueAnswer = allAnswers[index];
+            
+            // Afficher le titre de la question sélectionnée
+            document.getElementById('selectedQuestionTitle').textContent = question;
+            document.getElementById('resultsPanel').classList.remove('hidden');
+            
+            // Effacer les données précédentes
+            document.getElementById('metricsTableBody').innerHTML = '';
+            metricsData = {};
+            
+            // Évaluer la question pour différentes valeurs de nChunks
+            for (let nChunks = 0; nChunks <= 10; nChunks++) {
+                await evaluateWithNChunks(question, trueAnswer, domain, nChunks);
+            }
+        }
+
+        // Fonction pour évaluer avec un nombre spécifique de chunks
+        async function evaluateWithNChunks(question, trueAnswer, domain, nChunks) {
+            // Ajouter une ligne de chargement temporaire
+            const tbody = document.getElementById('metricsTableBody');
+            const tempRow = document.createElement('tr');
+            tempRow.id = `temp-row-${nChunks}`;
+            tempRow.className = 'bg-gray-50';
+            tempRow.innerHTML = `
+                <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">${nChunks}</td>
+                <td colspan="5" class="px-4 py-3 text-sm text-gray-500">
+                    <div class="flex items-center">
+                        <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-700 mr-2"></div>
+                        Loading ...
+                    </div>
+                </td>
+            `;
+            tbody.appendChild(tempRow);
+            
+            try {
+                // Appeler l'API d'évaluation
+                const params = new URLSearchParams({
+                    domain: domain,
+                    nChunks: nChunks,
+                    question: question,
+                    true_answer: trueAnswer
+                });
+                
+                const response = await fetch(`http://localhost:5000/evaluate?${params.toString()}`);
+                const data = await response.json();
+                
+                // Extraire les valeurs numériques des métriques
+                const meteorValue = parseFloat(data.meteor.split(': ')[1]) || 0;
+                const bleuValue = parseFloat(data.bleu.split(': ')[1]) || 0;
+                const bertValue = parseFloat(data.bert.split(': ')[1]) || 0;
+                const rougeValue = parseFloat(data.rouge.split(': ')[1]) || 0;
+                
+                // Stocker les métriques pour le graphique
+                metricsData[nChunks] = {
+                    meteor: meteorValue,
+                    bleu: bleuValue,
+                    bert: bertValue,
+                    rouge: rougeValue,
+                    question: question,
+                    trueAnswer: trueAnswer,
+                    predictedAnswer: data.predicted_answer
+                };
+                
+                // Remplacer la ligne de chargement par les résultats
+                const newRow = document.createElement('tr');
+                newRow.className = 'bg-white';
+                newRow.innerHTML = `
+                    <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">${nChunks}</td>
+                    <td class="px-4 py-3 text-sm text-blue-700">${meteorValue.toFixed(4)}</td>
+                    <td class="px-4 py-3 text-sm text-blue-700">${bleuValue.toFixed(4)}</td>
+                    <td class="px-4 py-3 text-sm text-blue-700">${bertValue.toFixed(4)}</td>
+                    <td class="px-4 py-3 text-sm text-blue-700">${rougeValue.toFixed(4)}</td>
+                    <td class="px-4 py-3 text-sm">
+                        <button class="text-blue-600 hover:text-blue-800 font-medium" 
+                                onclick="showDetails(${nChunks})">
+                            See more
+                        </button>
+                    </td>
+                `;
+                
+                // Remplacer la ligne temporaire
+                document.getElementById(`temp-row-${nChunks}`).replaceWith(newRow);
+                
+            } catch (error) {
+                console.error(`Erreur lors de l'évaluation avec nChunks=${nChunks}:`, error);
+                document.getElementById(`temp-row-${nChunks}`).innerHTML = `
+                    <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">${nChunks}</td>
+                    <td colspan="5" class="px-4 py-3 text-sm text-red-500">Erreur lors de l'évaluation</td>
+                `;
+            }
+        }
+
+        // Fonction pour afficher les détails d'une évaluation
+        function showDetails(nChunks) {
+            const data = metricsData[nChunks];
+            if (!data) return;
+            
+            document.getElementById('detailQuestion').textContent = data.question;
+            document.getElementById('detailTrueAnswer').textContent = data.trueAnswer;
+            document.getElementById('detailPredictedAnswer').textContent = data.predictedAnswer;
+            document.getElementById('detailNChunks').textContent = nChunks;
+            
+            document.getElementById('detailsPanel').classList.remove('hidden');
+        }
+
+        // Fonction pour calculer les moyennes des métriques pour toutes les questions
+        async function calculateAverages() {
+            const domain = getSelectedDomain();
+            document.getElementById('averagesLoader').classList.remove('hidden');
+            document.getElementById('averagesPanel').classList.add('hidden');
+            
+            try {
+                const response = await fetch(`http://localhost:5000/calculateAverages?domain=${domain}`);
+                const data = await response.json();
+                
+                // Afficher les moyennes dans le tableau
+                const tbody = document.getElementById('averagesTableBody');
+                tbody.innerHTML = '';
+                
+                const nChunksValues = Object.keys(data).map(Number).sort((a, b) => a - b);
+                
+                nChunksValues.forEach(nChunks => {
+                    const row = document.createElement('tr');
+                    row.className = 'bg-white';
+                    
+                    const metrics = data[nChunks];
+                    
+                    row.innerHTML = `
+                        <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">${nChunks}</td>
+                        <td class="px-4 py-3 text-sm text-green-700">${metrics.meteor.toFixed(4)}</td>
+                        <td class="px-4 py-3 text-sm text-green-700">${metrics.bleu.toFixed(4)}</td>
+                        <td class="px-4 py-3 text-sm text-green-700">${metrics.bert.toFixed(4)}</td>
+                        <td class="px-4 py-3 text-sm text-green-700">${metrics.rouge.toFixed(4)}</td>
+                    `;
+                    
+                    tbody.appendChild(row);
+                });
+                
+                document.getElementById('averagesLoader').classList.add('hidden');
+                document.getElementById('averagesPanel').classList.remove('hidden');
+                
+            } catch (error) {
+                console.error('Erreur lors du calcul des moyennes:', error);
+                document.getElementById('averagesLoader').classList.add('hidden');
+                showNotification('Une erreur est survenue lors du calcul des moyennes.', 'error');
+            }
+        }
+
+        // Fonction pour afficher les notifications
+        function showNotification(message, type = 'info') {
+            const notificationDiv = document.createElement('div');
+            notificationDiv.className = type === 'error' 
+                ? 'fixed top-4 right-4 bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded shadow-md z-50'
+                : 'fixed top-4 right-4 bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 rounded shadow-md z-50';
+            
+            notificationDiv.innerHTML = `
+                <div class="flex items-center">
+                    <svg class="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zm-1 9a1 1 0 01-1-1v-4a1 1 0 112 0v4a1 1 0 01-1 1z" clip-rule="evenodd"></path>
+                    </svg>
+                    <p>${message}</p>
+                </div>
+            `;
+            
+            document.body.appendChild(notificationDiv);
+            
+            // Supprimer la notification après 5 secondes
+            setTimeout(() => {
+                notificationDiv.remove();
+            }, 5000);
+        }
+
+        // Événements
+        document.getElementById('loadQuestionsBtn').addEventListener('click', loadQuestions);
+        document.getElementById('calculateAveragesBtn').addEventListener('click', calculateAverages);
+
+        // Fonction globale pour l'accès depuis les gestionnaires d'événements inline
+        window.showDetails = showDetails;
+    </script>
+</body>
+</html>

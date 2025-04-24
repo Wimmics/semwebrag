@@ -1,0 +1,14 @@
+question :
+
+
+
+what are the main domains of NVIDIA ?
+
+
+
+context : 
+
+
+
+These htSNPs were genotyped in the 197 infants by direct PCR sequencing analysis as we have described previously [7] .
+DC-SIGNR is organized in three distinct domains, an N-terminal cytoplasmic tail, a repeat region containing seven repeat of 23 amino acids and a C-terminal domain implicated in pathogen binding.
