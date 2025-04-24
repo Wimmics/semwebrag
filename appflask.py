@@ -178,6 +178,10 @@ def evaluate():
             "bert": bert,
             "rouge": rouge
         }
+        print("meteor : ", meteor)
+        print("bleu : ", bleu)
+        print("bert : ", bert)
+        print ("rouge : ", rouge)
         
         return jsonify(response_data)
     
@@ -208,8 +212,7 @@ def compare():
                 "error": "Les paramètres 'question' et 'true_answer' sont requis"
             }), 400
         
-        # Pour éviter les problèmes d'échappement des caractères spéciaux dans les arguments
-        # Encodage sécuritaire pour passer des arguments à subprocess
+
         domain = "finance"  # À ajuster selon votre structure de projet
         
         result = subprocess.run(
@@ -325,7 +328,7 @@ def getAllQA():
 @app.route('/calculateAverages', methods=['GET'])
 def calculate_averages():
 
-    domain = request.args.get('domain', 'finance')
+    domain = request.args.get('domain')
     
     # Mock data - simulated average metrics for different nChunks values
     averages = {}

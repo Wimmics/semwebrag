@@ -2,7 +2,7 @@ question :
 
 
 
-what are the main domains of NVIDIA ?
+What is DC-GENR and where is  it expressed?
 
 
 
@@ -10,5 +10,23 @@ context :
 
 
 
-These htSNPs were genotyped in the 197 infants by direct PCR sequencing analysis as we have described previously [7] .
+Alternative splicing of DC-SIGNR gene leads to the production of a highly diversify isoforms repertoire which includes membrane-bound and soluble isoforms [3] .
+Full methods for recruitment, baseline characteristics collection, laboratory procedures have been described elsewhere [6] .\n\nThe nucleotide sequence variation of the entire promoter, coding and part of 39-UTR regions of DC-SIGNR gene in the study population was determined previously [7] .
+Thus, infants homozygous for DC-SIGNR variant int2-180A contained in H1 and H3 haplotypes were 4-fold to 6-fold more likely to be infected by HIV-1 during pregnancy or at delivery, respectively.\n\nAlternative splicing of the DC-SIGNR gene in the placenta produces both membrane-bound and soluble isoform repertoires [3] .
+The strong correlation we observed between MTCT of HIV-1 and DC-SIGNR genetic variants producing low levels of DC-SIGNR in the placenta suggested that mechanisms other than DC-SIGNR-mediated trans infection might operate during vertical transmission of HIV-1.
+It has been proposed that interaction between DC-SIGNR and HIV-1 might enhance viral transfer to other susceptible cell types
+However, the multiple mechanisms involved in trans infection and redundancy among C-type lectin functions make it difficult to determine the actual participation of DC-SIGNR in this mode of infection in vivo [13, 14] .
+For example, DC-SIGNR has also been shown to function as a HIV-1 antigen-capturing receptor [15] .
+We applied the algorithm five times, using different randomly generated seeds, and consistent results were obtained across runs ( Figure 1 ).
+In the analysis comparing the 3 different modes of MTCT, 12 HIV-1-infected infants were excluded because the PCR results were not available at 6 weeks of age.
+[2, 10] .
 DC-SIGNR is organized in three distinct domains, an N-terminal cytoplasmic tail, a repeat region containing seven repeat of 23 amino acids and a C-terminal domain implicated in pathogen binding.
+A better understanding of the mechanisms acting at the maternal-fetal interface is crucial for the design of alternative interventions to antiretroviral therapy for transmission prevention.\n\nDendritic cell-specific ICAM-grabbing non-integrin-related (DC-SIGNR, also known as CD209L or liver/lymph node-specific ICAM-grabbing non-integrin (L-SIGN)) can interact with a plethora of pathogens including HIV-1 and is expressed in placental capillary endothelial cells [2] .
+Infants with negative PCR results at birth and 6 weeks of age but who subsequently became DNA PCR positive were considered to be infected during the PP period.
+Haplotype reconstruction was performed using Bayesian statistical method implemented in PHASE [8] , version 2.1.1, using single nucleotide polymorphism (SNP) with a minimum allele frequency (MAF) of 2%.
+1.42-10.4, P = 0.008) and IP (O.R: 5.71, 95%
+CI = 1.40-23.3, P = 0.025) HIV-1 transmission.
+[2] but DC-SIGNR can also internalize and mediate proteasome-dependant degradation of viruses [4] that may differently affect the outcome of infection.\n\nGiven the presence of DC-SIGNR at the maternal-fetal interface and its interaction with HIV-1, we hypothesized that it could influence MTCT of HIV-1.
+We therefore hypothesized that the DC-SIGNR mutations associated with MTCT of HIV-1 would have an impact on both the level of DC-SIGNR expression and in the isoform repertoire produced.
+The relative proportion of membrane bound and soluble DC-SIGNR could plausibly influence the susceptibility to HIV-1 infection [11] .
+Chan and colleagues recently demonstrated that DC-SIGNR transfected CHO cells diminish SARS-CoV titers by enhanced capture and degradation of the virus in a proteasome-dependent manner

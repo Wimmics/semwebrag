@@ -30,12 +30,12 @@ def get_random_question_response() :
             return question, answer
 
 
-def evaluate_metrics(nChunks):
+def evaluate_metrics(nChunks,question, true_answer):
 
     nltk.download('punkt')
     nltk.download('wordnet')
 
-    question, true_answer = get_random_question_response()
+    #question, true_answer = get_random_question_response()
 
     venv_python = os.path.join('venv', 'Scripts', 'python.exe')
     try:
@@ -111,5 +111,5 @@ def evaluate_metrics(nChunks):
     print (resRouge)
     return question, true_answer, predicted_answer, resMeteor, resBleiu, resBert, resRouge
 
-evaluate_metrics(argv[1])
+evaluate_metrics(argv[1], argv[2], argv[3])
 
