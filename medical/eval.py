@@ -30,6 +30,23 @@ def get_random_question_response() :
             return question, answer
 
 
+
+
+
+def calculate_overlap(set1, set2):
+
+    if not set1 or not set2:
+        return 0.0
+    
+    intersection = len(set1.intersection(set2))
+    smaller_set_size = min(len(set1), len(set2))
+    
+    if smaller_set_size == 0:
+        return 0.0
+        
+    return intersection / smaller_set_size
+
+
 def evaluate_metrics(nChunks,question, true_answer):
 
     nltk.download('punkt')
@@ -108,8 +125,17 @@ def evaluate_metrics(nChunks,question, true_answer):
 
     resRouge = f"rougeScores: {rougeScores}"
 
+    ref_tokens = set(nltk.word_tokenize(true_answer.lower()))
+    hyp_tokens = set(nltk.word_tokenize(predicted_answer.lower()))
+    
+    overlap_coef = calculate_overlap(ref_tokens, hyp_tokens)
+    resOverlap = f"Overlap Coefficient: {overlap_coef:.4f}"
+
+    print(resOverlap)
+
+
     print (resRouge)
-    return question, true_answer, predicted_answer, resMeteor, resBleiu, resBert, resRouge
+    return question, true_answer, predicted_answer, resMeteor, resBleiu, resBert, resRouge, resOverlap
 
 evaluate_metrics(argv[1], argv[2], argv[3])
 

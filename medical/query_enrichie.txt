@@ -2,7 +2,7 @@ question :
 
 
 
-What is DC-GENR and where is  it expressed?
+What is the role of C-C Motif Chemokine Ligand 3 Like 1 (CCL3L1) in mother to child transmission of HIV-1?
 
 
 
@@ -10,23 +10,78 @@ context :
 
 
 
-Alternative splicing of DC-SIGNR gene leads to the production of a highly diversify isoforms repertoire which includes membrane-bound and soluble isoforms [3] .
-Full methods for recruitment, baseline characteristics collection, laboratory procedures have been described elsewhere [6] .\n\nThe nucleotide sequence variation of the entire promoter, coding and part of 39-UTR regions of DC-SIGNR gene in the study population was determined previously [7] .
-Thus, infants homozygous for DC-SIGNR variant int2-180A contained in H1 and H3 haplotypes were 4-fold to 6-fold more likely to be infected by HIV-1 during pregnancy or at delivery, respectively.\n\nAlternative splicing of the DC-SIGNR gene in the placenta produces both membrane-bound and soluble isoform repertoires [3] .
-The strong correlation we observed between MTCT of HIV-1 and DC-SIGNR genetic variants producing low levels of DC-SIGNR in the placenta suggested that mechanisms other than DC-SIGNR-mediated trans infection might operate during vertical transmission of HIV-1.
-It has been proposed that interaction between DC-SIGNR and HIV-1 might enhance viral transfer to other susceptible cell types
-However, the multiple mechanisms involved in trans infection and redundancy among C-type lectin functions make it difficult to determine the actual participation of DC-SIGNR in this mode of infection in vivo [13, 14] .
-For example, DC-SIGNR has also been shown to function as a HIV-1 antigen-capturing receptor [15] .
-We applied the algorithm five times, using different randomly generated seeds, and consistent results were obtained across runs ( Figure 1 ).
-In the analysis comparing the 3 different modes of MTCT, 12 HIV-1-infected infants were excluded because the PCR results were not available at 6 weeks of age.
-[2, 10] .
+To date, most studies have focused on the potential role of DC-SIGNR in trans infection of HIV-1 in vitro
+To investigate the potential role of DC-SIGNR in MTCT of HIV-1, we carried out a genetic association study of DC-SIGNR in a well-characterized cohort of 197 HIV-infected mothers and their infants recruited in Harare, Zimbabwe.
+To investigate the potential role of DC-SIGNR in MTCT of HIV-1, we carried out a genetic association study of DC-SIGNR in a well-characterized cohort of HIV-infected mothers and their infants recruited in Zimbabwe, and identified specific DC-SIGNR variants associated with increased risks of HIV transmission.
+Functional Genetic Variants in DC-SIGNR Are Associated with Mother-to-Child Transmission of HIV-1\n\nhttps://www.ncbi.nlm.nih.gov/pmc/articles/PMC2752805/\n\nBoily-Larouche, Geneviève; Iscache, Anne-Laure; Zijenah, Lynn S.; Humphrey, Jean H.; Mouland, Andrew J.; Ward, Brian J.; Roger, Michel\n2009-10-07\nDOI:10.1371/journal.pone.0007211\nLicense:cc-by\n\nAbstract:
+The ZVITAMBO project was a randomized placebocontrolled clinical trial that enrolled 14,110 mother-child pairs, between November 1997 and January 2000, with the main objective of investigating the impact of immediate postpartum vitamin A supplementation on MTCT of HIV-1.
+Mother-to-child transmission (MTCT) is the main cause of HIV-1 infection in children worldwide.
+Nevertheless, it is reasonable to assume that the inter-individual differences in both DC-SIGNR isoform repertoire and transcript levels observed between the H1 and WT homozygous infants would be reflected throughout the pregnancy.
+However, since levels of DC-SIGNR expression have never been compared between the different terms of pregnancy, it is not known whether DC-SIGNR expression varies during the course of pregnancy.
+Antiretroviral prophylaxis for HIV-1-positive antenatal women was not available in the Harare public-sector during ZVITAMBO patient recruitment.
+Full-term placenta samples were not available for the current study and the expression assays were performed on first-term placental tissues.
 DC-SIGNR is organized in three distinct domains, an N-terminal cytoplasmic tail, a repeat region containing seven repeat of 23 amino acids and a C-terminal domain implicated in pathogen binding.
-A better understanding of the mechanisms acting at the maternal-fetal interface is crucial for the design of alternative interventions to antiretroviral therapy for transmission prevention.\n\nDendritic cell-specific ICAM-grabbing non-integrin-related (DC-SIGNR, also known as CD209L or liver/lymph node-specific ICAM-grabbing non-integrin (L-SIGN)) can interact with a plethora of pathogens including HIV-1 and is expressed in placental capillary endothelial cells [2] .
-Infants with negative PCR results at birth and 6 weeks of age but who subsequently became DNA PCR positive were considered to be infected during the PP period.
-Haplotype reconstruction was performed using Bayesian statistical method implemented in PHASE [8] , version 2.1.1, using single nucleotide polymorphism (SNP) with a minimum allele frequency (MAF) of 2%.
-1.42-10.4, P = 0.008) and IP (O.R: 5.71, 95%
-CI = 1.40-23.3, P = 0.025) HIV-1 transmission.
-[2] but DC-SIGNR can also internalize and mediate proteasome-dependant degradation of viruses [4] that may differently affect the outcome of infection.\n\nGiven the presence of DC-SIGNR at the maternal-fetal interface and its interaction with HIV-1, we hypothesized that it could influence MTCT of HIV-1.
-We therefore hypothesized that the DC-SIGNR mutations associated with MTCT of HIV-1 would have an impact on both the level of DC-SIGNR expression and in the isoform repertoire produced.
-The relative proportion of membrane bound and soluble DC-SIGNR could plausibly influence the susceptibility to HIV-1 infection [11] .
+The int2-180A was associated with a 4-fold increased risk of IU and 6fold increased risk of IP after adjustment for the maternal factors.
+Indeed, two mutations shared by haplotypes H1 and H3 were associated with vertical transmission of HIV-1.
 Chan and colleagues recently demonstrated that DC-SIGNR transfected CHO cells diminish SARS-CoV titers by enhanced capture and degradation of the virus in a proteasome-dependent manner
+Nevertheless, we showed that this mutation reduces DC-SIGNR transcriptional activity in vitro and produces lower level of DC-SIGNR transcripts in placental tissues in combination with the int2-180A variant.
+A previous study looking at DC-SIGNR placental isoforms repertoire in full-term placenta samples demonstrated similar diversity of DC-SIGNR transcripts as in the first-term placental tissues studied herein [3] .
+Given that the C-type lectin receptor, dendritic cell-specific ICAM-grabbing non-integrin-related (DC-SIGNR, also known as CD209L or liver/lymph node–specific ICAM-grabbing non-integrin (L-SIGN)), can interact with pathogens including HIV-1 and is expressed at the maternal-fetal interface, we hypothesized that it could influence MTCT of HIV-1.
+The implicated H1 and H3 haplotypes share two single nucleotide polymorphisms (SNPs) in promoter region (p-198A) and intron 2 (int2-180A) that were associated with increased risk of both IU (P = 0.045 and P = 0.003, respectively) and IP (P = 0.025, for int2-180A) HIV-1 infection.
+In homozygous H1 infants bearing both the p-198A and int2-180A mutations, we observed a 4-fold decrease in the level of placental DC-SIGNR transcripts, disproportionately affecting the expression of membrane-bound isoforms compared to infant noncarriers (P = 0.011).
+MTCT of HIV-1 can occur during pregnancy (in utero, IU), delivery (intrapartum, IP) or breastfeeding (postpartum, PP).
+We further characterized the functional impact of these genetic variants on DC-SIGNR expression and show that they affect both the level and type of DC-SIGNR transcripts produced in the placenta.\n\nSamples consisted of stored DNA extracts obtained from 197 mother-child pairs co-enrolled immediately postpartum in the ZVITAMBO Vitamin A supplementation trial (Harare, Zimbabwe) and followed at 6 weeks, and 3-monthly intervals up to 24 months.
+However, the multiple mechanisms involved in trans infection and redundancy among C-type lectin functions make it difficult to determine the actual participation of DC-SIGNR in this mode of infection in vivo [13, 14] .
+The HIV-1 coreceptor CCR5, but not CD4, is co-expressed with DC-SIGNR on placental and blood-brain barrier (BBB) endothelial cells [18, 19] .
+Although antiretrovirals can reduce MTCT to 2%, limited access to timely diagnostics and drugs in many developing world countries limits the potential impact of this strategy.
+Mother's serological status was determined by ELISA and confirmed by Western Blot.
+[4] .
+[2, 10] .
+High maternal viral load, low CD4 cells count, vaginal delivery, low gestational age have all been identified as independent factors associated with MTCT of HIV-1 [1] .
+A better understanding of the mechanisms acting at the maternal-fetal interface is crucial for the design of alternative interventions to antiretroviral therapy for transmission prevention.\n\nDendritic cell-specific ICAM-grabbing non-integrin-related (DC-SIGNR, also known as CD209L or liver/lymph node-specific ICAM-grabbing non-integrin (L-SIGN)) can interact with a plethora of pathogens including HIV-1 and is expressed in placental capillary endothelial cells [2] .
+Infants were considered to be infected if they were HIV-1 seropositive at 18 months or older and had two or more positive HIV-1-DNA polymerase chain reaction (PCR) results at earlier ages.
+100 infants were considered to be uninfected as they were ELISA negative at 18 months or older and had two DNA PCR negative results from samples collected at a younger age.
+Alternative splicing of DC-SIGNR gene leads to the production of a highly diversify isoforms repertoire which includes membrane-bound and soluble isoforms [3] .
+UNAIDS estimates that last year alone, more than 400,000 children were infected worldwide, mostly through MTCT and 90% of them lived in sub-Saharan Africa.
+CONCLUSION: These results suggest that DC-SIGNR plays a crucial role in MTCT of HIV-1 and that impaired placental DC-SIGNR expression increases risk of transmission.\n\nText: Without specific interventions, the rate of HIV-1 mother-tochild transmission (MTCT) is approximately 15-45% [1] .
+In the most heavilyaffected countries, such as Zimbabwe, HIV-1 is responsible for one third of all deaths among children under the age of five.
+Grouping haplotypes H1 and H3 increased the power of the study and permitted the identification of specific DC-SIGNR mutations associated with MTCT of HIV-1.
+For example, DC-SIGNR has also been shown to function as a HIV-1 antigen-capturing receptor [15] .
+[5] .
+It has been proposed that interaction between DC-SIGNR and HIV-1 might enhance viral transfer to other susceptible cell types
+The samples used in the present study were from mother-child pairs randomly assigned to the placebo group of the ZVITAMBO project.
+BACKGROUND:
+Since endothelial cells express MHC-I and II, degraded viral antigens could then be presented to immune cells to elicit an adaptive immune response
+The strong correlation we observed between MTCT of HIV-1 and DC-SIGNR genetic variants producing low levels of DC-SIGNR in the placenta suggested that mechanisms other than DC-SIGNR-mediated trans infection might operate during vertical transmission of HIV-1.
+METHODS AND FINDINGS:
+Of the 97 HIV-1-infected infants, 57 were infected IU, 11 were infected IP, and 17 were infected PP as determined by PCR analyses of blood samples collected at birth, 6 weeks, 3 and 6 months of age and according to the following definitions adapted from Bryson and colleagues
+[16, 17] .
+Infants harbouring two copies of DC-SIGNR H1 and/or H3 haplotypes (H1-H1, H1-H3, H3-H3) had a 3.6-fold increased risk of in utero (IU) (P = 0.013) HIV-1 infection and a 5.7-fold increased risk of intrapartum (IP) (P = 0.025) HIV-1 infection after adjusting for a number of maternal factors.
+[2] but DC-SIGNR can also internalize and mediate proteasome-dependant degradation of viruses [4] that may differently affect the outcome of infection.\n\nGiven the presence of DC-SIGNR at the maternal-fetal interface and its interaction with HIV-1, we hypothesized that it could influence MTCT of HIV-1.
+Since int2-180A is always transmitted with p-198A on the MTCT associated combined haplotypes H1/H3, whereas p-198A is carried on other nonassociated haplotypes (Figure 1) , we can speculate that the p-198A mutation alone may have a minor effect in vivo whereas in combination with the int2-180A variant, they both act to reduce the level of placental DC-SIGNR expression resulting in an increased risk of MTCT of HIV-1.\n\nThe majority of IU transmission occurs during the last trimester of pregnancy (reviewed in [12] ).
+Although the p-198A variant was associated with IU transmission, the association disappeared after adjustment was made for the maternal viral load.
+The samples were consecutively drawn from two groups: 97 HIV-1-positive mother/HIV-1-positive child pairs and 100 HIV-1-positive mother/HIV-negative child pairs.
+HIV-1 gp120 binding to CCR5 receptor on endothelial cells compromises BBB integrity and enhances monocytes adhesion and transmigration across the BBB
+The promoter variant reduced transcriptional activity in vitro.
+High copy numbers of CCL3L1, a potent HIV-1 suppressive ligand for CCR5, are associated with higher chemokine production and lower risk of MTCT of HIV-1 among South African infants [29, 30] .
+Kweik and colleagues found a significant association between levels of maternal DNA in umbilical cord blood and IP transmission of HIV-1 suggesting that passage of maternal infected cells through the placenta is likely to occur during delivery [22] .
+MBL promotes pathogen elimination by opsonization and phagocytosis, and reduced expression of MBL resulting from polymorphism in coding and non-coding regions has been associated with an increased risk of MTCT of HIV-1
+The 32-pb deletion polymorphism in CCR5 has be shown to protect from vertical transmission of HIV-1
+However, in placenta containing low levels of DC-SIGNR, HIV-1 would preferentially binds CCR5 on endothelial cells resulting in a loss of placental barrier integrity and enhanced passage of maternal HIV-1 infected cells in foetal circulation leading to MTCT of HIV-1.
+Little is known about the mechanisms underlying transmission of HIV-1 during delivery.
+Passage through the birth canal could potentially expose infants through a mucosal portal entry (presumably ophthalmic, skin, or gastrointestinal), whereas placental insult during delivery (physical or inflammatory) may enhance transplacental passage of maternal HIV-1-infected cells into foetal circulation [22, 23] .
+Genetic variants in CCR5 have been shown to influence vertical transmission of HIV-1.
+Such process called microtransfusion has been proposed in regards to the results obtain in a Malawian cohort.
+\n\nAssociations between child DC-SIGNR exon 4 repeated region genotypes and mother-to-child HIV-1 transmission.
+This mechanism may also apply to other vertically-transmitted pathogens known to interact with DC-SIGNR such as HIV-2, hepatitis C and dengue viruses and warrant further investigation.
+It is thus possible that reduced expression of DC-SIGNR, particularly the membranebound isoforms, on placental capillary endothelial cells might favour HIV-1 binding to CCR5 receptor, instead of DC-SIGNR receptor, facilitating the migration of maternal HIV-1-infected cells across the placental barrier resulting in IU transmission of HIV-1.\n\nThe int2-180A variant contained in the H1 and H3 haplotypes was associated with IP transmission suggesting that DC-SIGNR also affect transmission of HIV-1 during delivery.
+[31, 32] .\n\nIn
+this study, we demonstrate for the first time, the potential functional impact of DC-SIGNR mutations on its expression in the placenta and in vertical transmission of HIV-1.
+Thus, in a similar fashion as suggested earlier for IU transmission, the relatively lower level of DC-SIGNR in the placenta of homozygous infants harbouring the int2-180A variant could promote HIV-1 binding to CCR5 receptor on endothelial cells affecting the placental barrier integrity and facilitating the passage of maternal infected cells in foetal circulation during delivery.\n\nBeside DC-SIGNR, other HIV-1 receptors are known to influence MTCT of HIV-1 (reviewed in [24] ).
+b
+Mannose-binding lectin (MBL) is an innate immune receptor synthesised in the liver and secreted in the bloodstream in response to inflammation signal.
+CI, Confidence interval; N, number; NA; not applicable; OR, odds ratio a P-value as determined by the Chi-square test.
+[27] , but this variant is virtually absent among African populations [28] .
+CCR5 promoter variants resulting in higher expression of the receptor were associated with increased risk of MTCT of HIV-1 among sub-Saharan Africans [25, 26] .
+We believe that the presence of DC-SIGNR at the placental endothelial cell surface may protect infants from HIV-1 infection by capturing virus and promoting its degradation/presentation.
+[20, 21] .

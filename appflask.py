@@ -14,6 +14,8 @@ from langchain_core.prompts import ChatPromptTemplate
 import spacy
 import importlib
 import random
+import requests
+
 
 
 venv_path = 'venv'
@@ -22,24 +24,43 @@ key = ''
 with open("key.txt", "r", encoding="utf-8") as file:
     key = file.read()
 
-model = ChatMistralAI(model="Meta-Llama-3_1-70B-Instruct", 
-                        api_key=key,
-                        endpoint='https://llama-3-1-70b-instruct.endpoints.kepler.ai.cloud.ovh.net/api/openai_compat/v1', 
-                        max_tokens=1500)
-
 
 def chat_completion(question: str):
-    prompt = ChatPromptTemplate.from_messages([
-        ("system", "You are Nestor, a virtual assistant. Answer to the question by using the context given bellow."),
-        ("human", "{question}"),
-    ])
+    with open("key.txt", "r", encoding="utf-8") as file:
+        key = file.read().strip()
 
-    chain = prompt | model
+    headers = {
+        "Authorization": f"Bearer {key}",
+        "Content-Type": "application/json"
+    }
+ 
+    url = "https://api.groq.com/openai/v1/chat/completions"
+    
+    payload = {
+        "model": "llama3-70b-8192",  
+        "messages": [
+            {"role": "system", "content": "You are Nestor, a virtual assistant. Answer to the question by using the context given bellow."},
+            {"role": "user", "content": question}
+        ],
+        "max_tokens": 1500
+    }
+    
 
-    response = chain.invoke(question)
 
-    print(f" {response.content}")
-    return response.content
+
+    response = requests.post(url, headers=headers, json=payload)
+
+    if response.status_code == 200:
+        result = response.json()
+        content = result["choices"][0]["message"]["content"]
+        print(f" {content}")
+        return content
+    else:
+        error_message = f"Erreur: {response.status_code} - {response.text}"
+        print(error_message)
+        return error_message
+
+
 
 
 def readLog(text_path) : 
@@ -58,8 +79,6 @@ def run_in_venv_query(query, domain, nChunks=0) :
                                  capture_output=True, 
                                  text=True, 
                                  check=True)  
-        # print("Sortie standard:")
-        # print(result.stdout)
     except subprocess.CalledProcessError as e:
         print("Erreur lors de l'exécution:")
         print(e.stderr)
@@ -92,10 +111,9 @@ def ask():
     # Appeler le script Python avec le prompt
     
     try:
-        # result = subprocess.run(['python', '-m', 'finance.prompt2'], capture_output=True, text=True, check=True)
-        # response = result.stdout.strip()
+
         t = time.time()
-        # response = run_in_venv_windows(domain)
+        
         prompt = ""
         with open (f'{domain}/query_enrichie.txt', "r", encoding="utf-8") as file:
             prompt = file.read()
@@ -110,12 +128,10 @@ def ask():
 
 @app.route('/log', methods=['POST'])  
 def log():
-    # Récupérer la question envoyée par l'utilisateur
     data = request.get_json()
     user_prompt = data.get('prompt')
     domain = data.get('domain')
-    # finance_directory = os.path.join(os.path.dirname(os.path.abspath(__file__)), domain)
-    # récuperer la date rpécise : 
+
     date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     return jsonify({'response': f'{date} <br><br> Question : {user_prompt} <br><br> log : {readLog(f'{domain}/log.txt')} '})
@@ -131,9 +147,7 @@ def currentTime():
 def evaluate():
     venv_python = os.path.join(venv_path, 'Scripts', 'python.exe')
     try:
-        # Exécuter le module avec subprocess
-        # Remplacez {domain} par le nom de votre domaine réel
-        #domain = "finance"  # À ajuster selon votre structure de projet
+
         domain = request.args.get('domain')
         nChunks = request.args.get('nChunks')
         question = request.args.get('question')
@@ -147,10 +161,9 @@ def evaluate():
             check=True
         )
         
-        # Récupérer la sortie
+
         output = result.stdout
         
-        # Analyser la sortie pour extraire les informations
         question_match = re.search(r"Question : (.*)", output)
         true_answer_match = re.search(r"True Answer : (.*)", output)
         predicted_answer_match = re.search(r"Predicted Answer : (.*)", output)
@@ -158,6 +171,7 @@ def evaluate():
         bleu_match = re.search(r"(BLEU Score:.*)", output)
         bert_match = re.search(r"(BERT Score Precision:.*)", output)
         rouge_match = re.search(r"(rougeScores:.*)", output)
+        overlap_match = re.search(r"(Overlap Coefficient:.*)", output)
         
         # Extraire les valeurs (ou utiliser des chaînes vides si non trouvées)
         question = question_match.group(1).strip() if question_match else ""
@@ -167,6 +181,7 @@ def evaluate():
         bleu = bleu_match.group(1).strip() if bleu_match else ""
         bert = bert_match.group(1).strip() if bert_match else ""
         rouge = rouge_match.group(1).strip() if rouge_match else ""
+        overlap = overlap_match.group(1).strip() if overlap_match else ""
         
        
         response_data = {
@@ -176,12 +191,14 @@ def evaluate():
             "meteor": meteor,
             "bleu": bleu,
             "bert": bert,
-            "rouge": rouge
+            "rouge": rouge,
+            "overlap": overlap
         }
         print("meteor : ", meteor)
         print("bleu : ", bleu)
         print("bert : ", bert)
         print ("rouge : ", rouge)
+        print ("overlap : ", overlap)
         
         return jsonify(response_data)
     
@@ -306,57 +323,12 @@ def responseEntityDetection():
 
 @app.route('/getAllQA', methods=['GET'])
 def getAllQA():
-    # venv_python = os.path.join(venv_path, 'Scripts', 'python.exe')
-    # domain = request.args.get('domain')
-    # result = subprocess.run(
-    #     [venv_python, '-m', f'{domain}.getAllQA'],
-    #     capture_output=True,
-    #     text=True,
-    #     check=True
-    #     )
 
-    # response= jsonify({'response': result.stdout})
-    # response.headers.add('Access-Control-Allow-Origin', '*')
-    # return response
     domain = request.args.get('domain')
     module = importlib.import_module(f'{domain}.getAllQA')
     data = module.getAllQA()
    
     return jsonify(data)
-
-
-@app.route('/calculateAverages', methods=['GET'])
-def calculate_averages():
-
-    domain = request.args.get('domain')
-    
-    # Mock data - simulated average metrics for different nChunks values
-    averages = {}
-    
-    # Generate mock data for nChunks from 0 to 10
-    for n_chunks in range(11):
-        # Create some realistic looking mock data
-        # Using a seed based on nChunks to create a pattern in the results
-        base_value = 0.5 + (n_chunks / 20)  # Values increase slightly with more chunks
-        
-        # Add some randomness but keep within reasonable bounds
-        meteor = min(0.95, max(0.3, base_value + random.uniform(-0.05, 0.05)))
-        bleu = min(0.85, max(0.2, base_value - 0.1 + random.uniform(-0.05, 0.05)))
-        bert = min(0.9, max(0.4, base_value + 0.05 + random.uniform(-0.05, 0.05)))
-        rouge = min(0.9, max(0.25, base_value - 0.05 + random.uniform(-0.05, 0.05)))
-        
-
-        averages[n_chunks] = {
-            "meteor": meteor,
-            "bleu": bleu,
-            "bert": bert,
-            "rouge": rouge
-        }
-    
-    return jsonify(averages)
-
-
-   
 
 
 if __name__ == '__main__':
