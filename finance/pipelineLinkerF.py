@@ -2,6 +2,7 @@ from rdflib import Graph, RDF, RDFS, Literal, URIRef, Namespace
 import time
 from langchain.embeddings import HuggingFaceEmbeddings
 from rdflib.namespace import SKOS
+from rdflib.namespace import OWL 
 import spacy
 import numpy as np
 import re
@@ -216,11 +217,87 @@ def build_knowledge_graph_aligned_with_ontology(text,ontology_path, nlp, rdf_pat
    
     g.serialize(destination=rdf_path, format="turtle")
     entityLinker.add_entity_linked_to_graph(rdf_path, "finance/outputLinker.ttl", text)
-    entityLinker.link_wikiData_entities_to_chunks("finance/outputLinker.ttl", "finance/outputLinkerLinked.ttl")
+    entityLinker.link_wikiData_entities_to_chunks("finance/outputLinker.ttl", "finance/outputLinkerLinked_tmp.ttl")
+
+    #ajouter les voisins direct sur wikidata des entités et les lier à l'entité de base
+    wikidatautils.add_wikidata_neighbors_to_graph("finance/outputLinkerLinked_tmp.ttl", output_path="finance/outputLinkerLinked.ttl")  
+    owlThingList = remove_useless_owl_things("finance/outputLinkerLinked.ttl", "finance/outputLinkerLinked.ttl")
+
+    #ajouter les labels de owl:Thing restants dans via le dao
+    for thing, label in owlThingList:
+        DAO.insert(label, embeddings.embed_query(label))
+
+
     #g.serialize(destination=rdf_path, format="turtle")
     print(f"Graphe sauvegardé, {len(g)} triplets.")
     DAO.save_index("finance/embeddings.index")
+    convert_wikidata_with_regex("finance/outputLinkerLinked.ttl", "finance/outputLinkerLinked.ttl")
     return g
+
+
+
+
+
+import re
+
+def convert_wikidata_with_regex(input_file, output_file):
+    """
+    Convertit tous les wd:Q123456 en <https://www.wikidata.org/wiki/Q123456> 
+    dans un fichier TTL avec un simple regex
+    """
+    # Lire le contenu du fichier
+    with open(input_file, 'r', encoding='utf-8') as f:
+        content = f.read()
+    
+
+    pattern = r'wd:Q(\d+)(?![a-zA-Z])'
+    
+
+    transformed = re.sub(pattern, r'<https://www.wikidata.org/wiki/Q\1>', content)
+
+    with open(output_file, 'w', encoding='utf-8') as f:
+        f.write(transformed)
+    
+    print(f"Conversion terminée : {output_file} créé avec succès.")
+
+
+
+def remove_useless_owl_things(input_file, output_file):
+
+    g = Graph()
+    g.parse(input_file, format="ttl")
+   
+    owl_things = list(g.subjects(RDF.type, OWL.Thing))
+   
+    to_remove = []
+    for thing in owl_things:
+        prefLabels = list(g.objects(thing, SKOS.prefLabel))
+        if len(prefLabels) == 0:
+            to_remove.append(thing)
+            
+    print(f"Total owl:Thing: {len(owl_things)}")
+    print(f"owl:Thing à supprimer (sans prefLabel): {len(to_remove)}")
+   
+    for thing in to_remove:
+        g.remove((thing, None, None))
+        g.remove((None, None, thing))
+   
+    remaining = list(g.subjects(RDF.type, OWL.Thing))
+    print(f"owl:Thing restants: {len(remaining)}")
+   
+    g.serialize(destination=output_file, format="ttl")
+    
+    remaining_preflabels = []
+    for thing in remaining:
+        for label in g.objects(thing, SKOS.prefLabel):
+            remaining_preflabels.append((str(thing), str(label)))
+    
+    for i, (thing, label) in enumerate(remaining_preflabels):
+        print(f"Remaining owl:Thing {i+1}: {thing} with label: {label}")
+    
+    return remaining_preflabels
+
+
 
 def extract_labels_from_graph(graph):
     labelList = []
@@ -236,7 +313,7 @@ def get_embeddings_from_labels(labelList):
     for name in labelList:
         embedding = embeddings.embed_query(name)
         embeddingsList.append(embedding)
-
+    
     return embeddingsList
 
 def retrieve_corresponding_label(entity, embeddingsList, labelList):
@@ -322,14 +399,23 @@ def process_query(query_text, rdf_graph_path, embeddings_model=embeddings, outpu
     return "\n".join(enriched_results)
 
 # à commenter pour pas reconstruire le graphe
-# build_knowledge_graph_aligned_with_ontology(text, "finance/dev.fibo-quickstart.ttl", nlp, "finance/knowledge_graphNoWiki.ttl", embeddings)
+build_knowledge_graph_aligned_with_ontology(text, "finance/dev.fibo-quickstart.ttl", nlp, "finance/knowledge_graphNoWiki.ttl", embeddings)
+# remove_useless_owl_things("finance/outputLinkerLinked.ttl", "finance/outputLinkerLinked.ttl")
 
-print ("enrichissement de la requête ...")
+# convert_wikidata_with_regex("finance/outputLinkerLinked.ttl", "finance/outputLinkerLinked.ttl")
+# DAO = FaissDAO(384)
+# DAO.load_index("finance/embeddings.index")
+# correspondingEnt, distance = DAO.search(embeddings.embed_query("single"), k=1)
+# print("correspondingEnt : ", correspondingEnt)
+# l1,l2 = wikidatautils.retrieve_mentioned_chunks("finance/outputLinkerLinked.ttl", correspondingEnt[0], [], 0)
+# print("l1 : ", l1)
+# print("l2 : ", l2)
+# print ("enrichissement de la requête ...")
 
-# process_query("Under what caption is the ownership of NVIDIA securities detailed in the 2023 Proxy Statement?","finance/outputLinkerLinked.ttl", embeddings) 
-
-# process_query("What is the name of the company that has a 10% stake in NVIDIA?","finance/outputLinkerLinked.ttl", embeddings)
+ 
+# process_query("What are the main domains of NVIDIA","finance/outputLinkerLinked.ttl", embeddings)
 
 
 print("temps d'importation : ", temps, "s")
+
 print("temps total : ", time.time()-t0, "s")

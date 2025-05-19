@@ -28,21 +28,22 @@ venv_python = os.path.join('venv', 'Scripts', 'python.exe')
 if not os.path.exists('finance/evaluation2.csv'):
     with open('finance/evaluation2.csv', mode='w', newline='') as file:
         writer = csv.writer(file)
-        writer.writerow(['nChunks', 'METEOR', 'BLEU', 'BERT', 'ROUGE'])
+        writer.writerow(['nChunks', 'METEOR', 'BLEU', 'BERT', 'ROUGE','OVERLAP'])
 
 # ajouter les lignes nchunk allant de 0 à 10, et les valeurs de chaque métrique à 0
 for i in range(11):
     with open('evaluation2.csv', mode='a', newline='') as file:
         writer = csv.writer(file)
-        writer.writerow([i, 0, 0, 0, 0])
+        writer.writerow([i, 0, 0, 0, 0,0])
 
 #fonction pour ajouter les valeurs de chaque métrique à la ligne correspondante de nChunks dans le fichier csv
-def addToCSV(nChunks, meteor, bleu, bert, rouge):
+def addToCSV(nChunks, meteor, bleu, bert, rouge,overlap):
     df = pd.read_csv('finance/evaluation2.csv')
     df.loc[df['nChunks'] == nChunks, 'METEOR'] = meteor
     df.loc[df['nChunks'] == nChunks, 'BLEU'] = bleu
     df.loc[df['nChunks'] == nChunks, 'BERT'] = bert
     df.loc[df['nChunks'] == nChunks, 'ROUGE'] = rouge
+    df.loc[df['nChunks'] == nChunks, 'OVERLAP'] = overlap
     df.to_csv('finance/evaluation2.csv', index=False)
 
 nChunk = 10
@@ -51,11 +52,12 @@ while(nChunk>=0):
     resBleu=0
     resBert=0
     resRouge=0
+    resOverlap=0
     for question in questions:
         print("index : ", questions.index(question))
         answer = answers[questions.index(question)]
-        # if(questions.index(question) > 11):
-        #     break
+        if(questions.index(question) > 10):
+            break
         result = subprocess.run([venv_python, '-m', 'finance.eval', str(nChunk), question, answer], 
                                   capture_output=True, 
                                   text=True, 
@@ -86,14 +88,29 @@ while(nChunk>=0):
         print (resr)
         resRouge+=resr  
         resBert+=resB
-        sleep(60)
+        overlap_match = re.search(r"Overlap Coefficient: ([\d.]+)", output)
+        resO = float(overlap_match.group(1)) if overlap_match else None
+        resOverlap+=resO
+        sleep(80)
         
-    print("resMeteor : ", resMeteor/len(questions))
-    print("resBleu : ", resBleu/len(questions))
-    print("resBert : ", resBert/len(questions))
-    print("resrouge : ", resRouge/len(questions))
+    # print("resMeteor : ", resMeteor/len(questions))
+    # print("resBleu : ", resBleu/len(questions))
+    # print("resBert : ", resBert/len(questions))
+    # print("resrouge : ", resRouge/len(questions))
+    # print("resOverlap : ", resOverlap/len(questions))
+
+    print("resMeteor : ", resMeteor/10)
+    print("resBleu : ", resBleu/10)
+    print("resBert : ", resBert/10)
+    print("resrouge : ", resRouge/10)
+    print("resOverlap : ", resOverlap/10)
     
-    addToCSV(nChunk, resMeteor/len(questions), resBleu/len(questions), resBert/len(questions), resRouge/len(questions))
+    if (resbleu/10 >1):
+        resBleu = 0
+    else : 
+        resBleu = resBleu/10
+
+    addToCSV(nChunk, resMeteor/10, resBleu, resBert/10, resRouge/10, resOverlap/10)
 
 
     nChunk -= 1

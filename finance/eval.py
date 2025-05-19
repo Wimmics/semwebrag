@@ -53,8 +53,12 @@ def calculate_overlap(set1, set2):
     
     if smaller_set_size == 0:
         return 0.0
+
+    if len(set1) == 0 or len(set2) == 0:
+        return 0.0
         
-    return intersection / smaller_set_size
+    # return intersection / smaller_set_size
+    return intersection / len(set1)
 
 
 def evaluate_metrics(nChunks, question, true_answer):

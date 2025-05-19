@@ -4,6 +4,8 @@ from difflib import SequenceMatcher
 import rdflib
 import os
 import json
+import time
+from rdflib import Namespace, RDF, OWL, RDFS, URIRef, Literal
 
 def get_uri_wikidata(entite, langue="en"): # doit forcement retourner une URI wikidata
 
@@ -116,41 +118,8 @@ def get_description_from_entity(entity_url):
 
 
 
-
-# def retrieve_mentioned_chunks(graph_path, entity, chunk_already_Mentionned, neighborChunks):
-#     l=[]
-#     graph = rdflib.Graph()
-#     graph.parse(graph_path, format='turtle')  
-    
-#     # liste pour avoir une seule fois les mêmes chunks
-#     mentioned_chunks = set() 
-    
-#     # sparql pour la ressource ayant un skos:prefLabel qui correspond à l'entité
-#     query = """
-#     SELECT ?entity ?chunk ?label WHERE {
-#         ?entity rel:mentionedIn ?chunk .
-#         ?chunk skos:prefLabel ?label .
-#         FILTER (CONTAINS(LCASE(str(?label)), LCASE(str(?entity_label))))
-#     }
-#     """
-
-   
-#     results = graph.query(query, initBindings={'entity_label': entity})
-
-#     for row in results:
-#         #afficher les entités liées :
-#         print(f"Entity: {row.entity}, Chunk: {row.chunk}") 
-#         if(str(row.label) not in l):
-#             l.append((str(row.label)))
-
-#         if str(row.label) not in chunk_already_Mentionned:
-#             chunk_already_Mentionned.append(str(row.label))
-            
-
-        
-#     return l, chunk_already_Mentionned
-
 def retrieve_mentioned_chunks(graph_path, entity, chunk_already_Mentionned, neighborChunks):
+    #take a graph and an entity and return the chunks that are mentioned in the graph (directly or via neigboors)
     l = []
     graph = rdflib.Graph()
     graph.parse(graph_path, format='turtle')  
@@ -159,11 +128,25 @@ def retrieve_mentioned_chunks(graph_path, entity, chunk_already_Mentionned, neig
 
     query = """
     SELECT ?entity ?chunk ?label WHERE {
+    {
+    
         ?entity rel:mentionedIn ?chunk .
         ?chunk skos:prefLabel ?label .
         FILTER (CONTAINS(LCASE(str(?label)), LCASE(str(?entity_label))))
     }
+    UNION
+    {
+        ?entity ex:isWikidataNeighborOf ?wikidata_uri .
+        ?entity skos:prefLabel ?label2 .
+        ?mentioned_entity a ?wikidata_uri .
+        
+        ?mentioned_entity rel:mentionedIn ?chunk .
+        ?chunk skos:prefLabel ?label .
+        FILTER (CONTAINS(LCASE(str(?label2)), LCASE(str(?entity_label))))
+    }
+    }
     """
+
 
     results = graph.query(query, initBindings={'entity_label': entity})
 
@@ -242,3 +225,146 @@ def add_to_json_file(file_path, data):
         json.dump(content, json_file)
 
 
+EX = Namespace("http://example.org/entity/")
+SKOS = Namespace("http://www.w3.org/2004/02/skos/core#")
+WD = Namespace("http://www.wikidata.org/entity/")
+WDT = Namespace("http://www.wikidata.org/prop/direct/")
+SCHEMA = Namespace("http://schema.org/")
+
+def get_wikidata_neighbors(entity_id, limit=100):
+    query = f"""
+    SELECT ?p ?o WHERE {{
+      wd:{entity_id} ?p ?o .
+    }}
+    LIMIT {limit}
+    """
+    url = "https://query.wikidata.org/sparql"
+    headers = {"Accept": "application/sparql-results+json",
+             "User-Agent": "WikidataAgent/0.1 (krysto.dagues-de-la-hellerie@etu.univ-cotedazur.fr)"}
+    response = requests.get(url, params={"query": query}, headers=headers)
+    if response.status_code != 200:
+        print(f"Erreur HTTP {response.status_code}: {response.text}")
+        return []
+    results = response.json()["results"]["bindings"]
+    return [(r["p"]["value"], r["o"]["value"]) for r in results]
+
+def get_entity_label(entity_id, lang="fr,en"):
+    query = f"""
+    SELECT ?label WHERE {{
+      wd:{entity_id} rdfs:label ?label .
+      FILTER (lang(?label) IN ({', '.join(f'"{l}"' for l in lang.split(','))}))
+    }}
+    LIMIT 1
+    """
+    url = "https://query.wikidata.org/sparql"
+    headers = {"Accept": "application/sparql-results+json",
+               "User-Agent": "WikidataAgent/0.1 (krysto.dagues-de-la-hellerie@etu.univ-cotedazur.fr)"}
+    response = requests.get(url, params={"query": query}, headers=headers)
+    
+    if response.status_code != 200:
+        print(f"Erreur HTTP {response.status_code} lors de la récupération du label")
+        return None
+    
+    results = response.json()["results"]["bindings"]
+    if results:
+        return results[0]["label"]["value"]
+    return None
+
+def get_entity_labels_for_uris(uris):
+    labels = {}
+    for uri in uris:
+        
+        if uri.startswith("http://www.wikidata.org/entity/"):
+            print(f"Récupération du label pour l'URI : {uri}")
+            entity_id = uri.split("/")[-1]
+            time.sleep(1)  #pause pour éviter erreru 429
+            label = get_entity_label(entity_id)
+            if label:
+                labels[uri] = label
+    
+    return labels
+
+def enrich_graph_with_neighbors(graph, entity_id, neighbors):
+    subject = URIRef(f"http://www.wikidata.org/entity/{entity_id}")
+    entities_to_label = set()  
+
+    for p_str, o_str in neighbors:
+        predicate = URIRef(p_str)
+        
+        if o_str.startswith("http://") or o_str.startswith("https://"):
+            obj = URIRef(o_str)
+            graph.add((obj, EX.isWikidataNeighborOf, subject))
+            graph.add((obj, RDF.type, OWL.Thing))
+            
+            if o_str.startswith("http://www.wikidata.org/entity/"):
+                entities_to_label.add(o_str)
+        else:
+            obj = Literal(o_str)
+        
+        graph.add((subject, predicate, obj))
+    
+    return entities_to_label
+
+def add_labels_to_entities(graph, entity_uris):
+    #ajoute skos preflabel
+    labels = get_entity_labels_for_uris(entity_uris)
+    for uri, label in labels.items():
+        print(f"Ajout du label '{label}' pour l'entité {uri}")
+        graph.add((URIRef(uri), SKOS.prefLabel, Literal(label)))
+        print(f"Ajouté le label '{label}' pour l'entité {uri}")
+    
+    print(f"Ajouté {len(labels)} labels aux entités")
+
+def add_wikidata_neighbors_to_graph(graph_path, output_path="enriched_graph.ttl", limit_per_entity=100):
+   
+    graph = rdflib.Graph()
+    graph.parse(graph_path, format='turtle')
+    
+    graph.bind("ex", EX)
+    graph.bind("skos", SKOS)
+    graph.bind("wd", WD)
+    graph.bind("wdt", WDT)
+    graph.bind("schema", SCHEMA)
+    graph.bind("owl", OWL)
+    graph.bind("rdfs", RDFS)
+    
+    query = """
+    PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+    SELECT ?entity ?type WHERE {
+        ?entity a ?type .
+        FILTER(STRSTARTS(STR(?type), "https://www.wikidata.org/wiki/"))
+    }
+    """
+    results = graph.query(query)
+    
+    print("Entités Wikidata trouvées :")
+    all_entities_to_label = set()  
+    
+    for row in results:
+        entity_uri = row.entity
+        wikidata_uri = row.type
+        wikidata_code = str(wikidata_uri).split("/")[-1]
+        print(f"- {entity_uri} (wikidata: {wikidata_code})")
+        
+        time.sleep(1)  #pause pour eviter une erreur 429
+        neighbors = get_wikidata_neighbors(wikidata_code, limit=limit_per_entity)
+    
+        entities_to_label = enrich_graph_with_neighbors(graph, wikidata_code, neighbors)
+        all_entities_to_label.update(entities_to_label)
+    
+    print(f"Ajout de labels pour {len(all_entities_to_label)} entités...")
+    add_labels_to_entities(graph, all_entities_to_label)
+    
+    
+    graph.serialize(output_path, format="turtle")
+    print(f"Graphe enrichi enregistré dans {output_path}")
+
+def enrich_entity(graph, entity_id, limit=100):
+    neighbors = get_wikidata_neighbors(entity_id, limit)
+    entities_to_label = enrich_graph_with_neighbors(graph, entity_id, neighbors)
+    add_labels_to_entities(graph, entities_to_label)
+    return graph
+
+# add_wikidata_neighbors_to_graph("finance/outputLinkerLinked.ttl")
+# testlist = get_wikidata_neighbors("Q296782")
+# print(testlist)
