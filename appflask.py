@@ -172,6 +172,7 @@ def evaluate():
         bert_match = re.search(r"(BERT Score Precision:.*)", output)
         rouge_match = re.search(r"(rougeScores:.*)", output)
         overlap_match = re.search(r"(Overlap Coefficient:.*)", output)
+        overlapE_match = re.search(r"(OverlapE Coefficient:.*)", output)
         
         # Extraire les valeurs (ou utiliser des chaînes vides si non trouvées)
         question = question_match.group(1).strip() if question_match else ""
@@ -182,6 +183,7 @@ def evaluate():
         bert = bert_match.group(1).strip() if bert_match else ""
         rouge = rouge_match.group(1).strip() if rouge_match else ""
         overlap = overlap_match.group(1).strip() if overlap_match else ""
+        overlapE = overlapE_match.group(1).strip() if overlapE_match else ""
         
        
         response_data = {
@@ -192,13 +194,15 @@ def evaluate():
             "bleu": bleu,
             "bert": bert,
             "rouge": rouge,
-            "overlap": overlap
+            "overlap": overlap,
+            "overlapE": overlapE
         }
         print("meteor : ", meteor)
         print("bleu : ", bleu)
         print("bert : ", bert)
         print ("rouge : ", rouge)
         print ("overlap : ", overlap)
+        print ("overlapE : ", overlapE)
         
         return jsonify(response_data)
     

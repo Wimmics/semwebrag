@@ -220,11 +220,11 @@ def build_knowledge_graph_aligned_with_ontology(text,ontology_path, nlp, rdf_pat
     entityLinker.link_wikiData_entities_to_chunks("finance/outputLinker.ttl", "finance/outputLinkerLinked_tmp.ttl")
 
     #ajouter les voisins direct sur wikidata des entités et les lier à l'entité de base
-    wikidatautils.add_wikidata_neighbors_to_graph("finance/outputLinkerLinked_tmp.ttl", output_path="finance/outputLinkerLinked.ttl")  
-    owlThingList = remove_useless_owl_things("finance/outputLinkerLinked.ttl", "finance/outputLinkerLinked.ttl")
+    _, neighborList = wikidatautils.add_wikidata_neighbors_to_graph("finance/outputLinkerLinked_tmp.ttl", output_path="finance/outputLinkerLinked.ttl" )  
+    # owlThingList = remove_useless_owl_things("finance/outputLinkerLinked.ttl", "finance/outputLinkerLinked.ttl")
 
     #ajouter les labels de owl:Thing restants dans via le dao
-    for thing, label in owlThingList:
+    for label in neighborList:
         DAO.insert(label, embeddings.embed_query(label))
 
 
@@ -235,17 +235,11 @@ def build_knowledge_graph_aligned_with_ontology(text,ontology_path, nlp, rdf_pat
     return g
 
 
-
-
-
 import re
 
 def convert_wikidata_with_regex(input_file, output_file):
-    """
-    Convertit tous les wd:Q123456 en <https://www.wikidata.org/wiki/Q123456> 
-    dans un fichier TTL avec un simple regex
-    """
-    # Lire le contenu du fichier
+
+  
     with open(input_file, 'r', encoding='utf-8') as f:
         content = f.read()
     
