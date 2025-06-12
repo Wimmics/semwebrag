@@ -158,21 +158,21 @@ def retrieve_mentioned_chunks(graph_path, entity, chunk_already_Mentionned, neig
     PREFIX skos: <http://www.w3.org/2004/02/skos/core#> 
 
     SELECT ?entity ?chunk ?label WHERE {
-    {
+    # {
     ?entity rel:mentionedIn ?chunk .
     ?chunk skos:prefLabel ?label .
     FILTER (CONTAINS(LCASE(str(?label)), LCASE(str(?entity_label)))) }
 
-    UNION
-    {
-    ?entity skos:prefLabel ?label2 .
-    ?entity ex:isWikidataNeighborOf ?neighbor_entity .
-    ?neighbor a ?neighbor_entity .
-    ?neighbor rel:mentionedIn ?chunk .
-    OPTIONAL{?chunk skos:prefLabel ?label} . 
-    FILTER (CONTAINS(LCASE(str(?label2)), LCASE(str(?entity_label))) && bound(?label)) .
-    }
-    }
+    # UNION
+    # {
+    # ?entity skos:prefLabel ?label2 .
+    # ?entity ex:isWikidataNeighborOf ?neighbor_entity .
+    # ?neighbor a ?neighbor_entity .
+    # ?neighbor rel:mentionedIn ?chunk .
+    # OPTIONAL{?chunk skos:prefLabel ?label} . 
+    # FILTER (CONTAINS(LCASE(str(?label2)), LCASE(str(?entity_label))) && bound(?label)) .
+    # }
+    # }
     """
 
     results = graph.query(query, initBindings={'entity_label': entity})

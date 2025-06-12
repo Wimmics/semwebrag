@@ -9,7 +9,7 @@ from sys import argv
 import datetime
 import re
 import time
-from langchain_mistralai import ChatMistralAI
+# from langchain_mistralai import ChatMistralAI
 from langchain_core.prompts import ChatPromptTemplate
 import spacy
 import importlib
@@ -73,6 +73,7 @@ def readLog(text_path) :
 def run_in_venv_query(query, domain, nChunks=0) :
          # Chemin vers le Python de l'environnement virtuel sous Windows
     venv_python = os.path.join(venv_path, 'Scripts', 'python.exe')
+    print ("run_in_venv_query domain : ", domain)
     
     try:
         result = subprocess.run([venv_python, '-m', f'{domain}.userPrompt', query, str(nChunks)], 
@@ -101,6 +102,9 @@ def ask():
     user_prompt = data.get('prompt')
     domain = data.get('domain')
     nChunks = data.get('nChunks')
+
+    print("domain : ",domain)
+    print ("prompt : ", user_prompt)
 
     finance_directory = os.path.join(os.path.dirname(os.path.abspath(__file__)), domain)
     
@@ -287,6 +291,8 @@ def compare():
 
 
 nlp = spacy.load("en_core_web_md")
+
+nlpfr = spacy.load("fr_core_news_md")
 
 
 def extract_key_phrases(doc, nlp):

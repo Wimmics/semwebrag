@@ -1,11 +1,11 @@
 import argparse
 
-from langchain_mistralai import ChatMistralAI
+# from langchain_mistralai import ChatMistralAI
 from langchain_core.prompts import ChatPromptTemplate
 import requests
 import json
 import time
-import ollama
+# import ollama
 
 #=============OVH===================
 

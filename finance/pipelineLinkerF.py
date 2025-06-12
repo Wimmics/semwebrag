@@ -220,12 +220,12 @@ def build_knowledge_graph_aligned_with_ontology(text,ontology_path, nlp, rdf_pat
     entityLinker.link_wikiData_entities_to_chunks("finance/outputLinker.ttl", "finance/outputLinkerLinked_tmp.ttl")
 
     #ajouter les voisins direct sur wikidata des entités et les lier à l'entité de base
-    _, neighborList = wikidatautils.add_wikidata_neighbors_to_graph("finance/outputLinkerLinked_tmp.ttl", output_path="finance/outputLinkerLinked.ttl" )  
-    # owlThingList = remove_useless_owl_things("finance/outputLinkerLinked.ttl", "finance/outputLinkerLinked.ttl")
 
-    #ajouter les labels de owl:Thing restants dans via le dao
-    for label in neighborList:
-        DAO.insert(label, embeddings.embed_query(label))
+
+    # _, neighborList = wikidatautils.add_wikidata_neighbors_to_graph("finance/outputLinkerLinked_tmp.ttl", output_path="finance/outputLinkerLinked.ttl" )  
+    # #ajouter les labels de owl:Thing restants dans via le dao
+    # for label in neighborList:
+    #     DAO.insert(label, embeddings.embed_query(label))
 
 
     #g.serialize(destination=rdf_path, format="turtle")
@@ -393,7 +393,7 @@ def process_query(query_text, rdf_graph_path, embeddings_model=embeddings, outpu
     return "\n".join(enriched_results)
 
 # à commenter pour pas reconstruire le graphe
-build_knowledge_graph_aligned_with_ontology(text, "finance/dev.fibo-quickstart.ttl", nlp, "finance/knowledge_graphNoWiki.ttl", embeddings)
+# build_knowledge_graph_aligned_with_ontology(text, "finance/dev.fibo-quickstart.ttl", nlp, "finance/knowledge_graphNoWiki.ttl", embeddings)
 # remove_useless_owl_things("finance/outputLinkerLinked.ttl", "finance/outputLinkerLinked.ttl")
 
 # convert_wikidata_with_regex("finance/outputLinkerLinked.ttl", "finance/outputLinkerLinked.ttl")

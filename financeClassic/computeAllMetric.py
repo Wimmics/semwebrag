@@ -1,0 +1,116 @@
+# prendre toutes les questions (getAllQA), les évaluer et stocker la moyenne de chaque métrique dans un fichier csv
+
+import csv
+import os
+import code
+import subprocess
+import time
+import random
+import nltk
+import pandas as pd
+from finance.getAllQA import getAllQA
+import json
+import re
+import time
+from time import sleep
+
+
+allQAJson = getAllQA()
+questions = allQAJson["questions"]
+answers = allQAJson["answers"]
+
+nChunk = 0 
+
+venv_python = os.path.join('venv', 'Scripts', 'python.exe')
+
+
+
+if not os.path.exists('finance/evaluation2.csv'):
+    with open('finance/evaluation2.csv', mode='w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(['nChunks', 'METEOR', 'BLEU', 'BERT', 'ROUGE','OVERLAP'])
+
+# ajouter les lignes nchunk allant de 0 à 10, et les valeurs de chaque métrique à 0
+for i in range(11):
+    with open('evaluation2.csv', mode='a', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow([i, 0, 0, 0, 0,0])
+
+#fonction pour ajouter les valeurs de chaque métrique à la ligne correspondante de nChunks dans le fichier csv
+def addToCSV(nChunks, meteor, bleu, bert, rouge,overlap):
+    df = pd.read_csv('finance/evaluation2.csv')
+    df.loc[df['nChunks'] == nChunks, 'METEOR'] = meteor
+    df.loc[df['nChunks'] == nChunks, 'BLEU'] = bleu
+    df.loc[df['nChunks'] == nChunks, 'BERT'] = bert
+    df.loc[df['nChunks'] == nChunks, 'ROUGE'] = rouge
+    df.loc[df['nChunks'] == nChunks, 'OVERLAP'] = overlap
+    df.to_csv('finance/evaluation2.csv', index=False)
+
+nChunk = 10
+while(nChunk>=0):
+    resMeteor=0
+    resBleu=0
+    resBert=0
+    resRouge=0
+    resOverlap=0
+    for question in questions:
+        print("index : ", questions.index(question))
+        answer = answers[questions.index(question)]
+        if(questions.index(question) > 10):
+            break
+        result = subprocess.run([venv_python, '-m', 'finance.eval', str(nChunk), question, answer], 
+                                  capture_output=True, 
+                                  text=True, 
+                                  check=True)
+
+        output = (result.stdout)
+        print("output : ", output)
+        # meteor_match = re.search(r"(METEOR Score:.*)", output)
+        meteor_match = re.search(r"(METEOR Score: ([\d.]+))", output)
+
+        resM = float(meteor_match.group(2)) if meteor_match else None
+        print("resM : ", resM)
+        resMeteor+=resM
+        # bleu_match = re.search(r"(BLEU Score:.*)", output)
+        bleu_match = re.search(r"(BLEU Score: ([\d.]+))", output)
+
+        resBl = float(bleu_match.group(2)) if bleu_match else None
+        print("resBl : ", resBl)
+        resBleu+=resBl
+
+        bert_match = re.search(r"BERT Score Precision: ([\d.]+)", output)   
+        print("bert_match : ",bert_match)
+        resB = float(bert_match.group(1)) if bert_match else None
+        
+        print("resB : ", resB)
+        rouge_match = re.search(r"rougeL: Score\(precision=([\d.]+)", output)
+        resr = float(rouge_match.group(1)) if rouge_match else None
+        print (resr)
+        resRouge+=resr  
+        resBert+=resB
+        overlap_match = re.search(r"Overlap Coefficient: ([\d.]+)", output)
+        resO = float(overlap_match.group(1)) if overlap_match else None
+        resOverlap+=resO
+        sleep(80)
+        
+    # print("resMeteor : ", resMeteor/len(questions))
+    # print("resBleu : ", resBleu/len(questions))
+    # print("resBert : ", resBert/len(questions))
+    # print("resrouge : ", resRouge/len(questions))
+    # print("resOverlap : ", resOverlap/len(questions))
+
+    print("resMeteor : ", resMeteor/10)
+    print("resBleu : ", resBleu/10)
+    print("resBert : ", resBert/10)
+    print("resrouge : ", resRouge/10)
+    print("resOverlap : ", resOverlap/10)
+    
+    if (resbleu/10 >1):
+        resBleu = 0
+    else : 
+        resBleu = resBleu/10
+
+    addToCSV(nChunk, resMeteor/10, resBleu, resBert/10, resRouge/10, resOverlap/10)
+
+
+    nChunk -= 1
