@@ -82,6 +82,7 @@ def build_knowledge_graph_aligned_with_ontology(text,ontology_path, nlp, rdf_pat
 import re
 
 def process_query(query_text, rdf_graph_path, embeddings_model=embeddings, output_file="financeClassic/query_enrichie.txt", neighborChunks=0): #traite la query, trouve les entités pertinente dans le graphe et enrichit la query avec les chunks liés
+    doc = nlp(text)
     tload = time.time()
     DAO = FaissDAO(384)
     DAO.load_index("financeClassic/embeddings.index")
@@ -106,9 +107,24 @@ def process_query(query_text, rdf_graph_path, embeddings_model=embeddings, outpu
     #pour chaque entité dans la requete
     embedded_query = embeddings_model.embed_query(query_text)
     #chergcher et afficher les nChunks les plus proches
-    correspondingEnt, distance = DAO.search(embedded_query, k=neighborChunks+1)
+    correspondingEnt, distance = DAO.search(embedded_query, k=1)
+
+    if(neighborChunks > 0):
+        chunks = chunk_text(text)
+        #chercher les nchunks en haut et en bas par rapport au chunk trouvé dans la liste
+        chunk_index = chunks.index(correspondingEnt[0]) if correspondingEnt[0] in chunks else -1
+        # if chunk_index != -1:
+        #     continue
+        for i in range(1, neighborChunks):
+            if chunk_index - i >= 0:
+                correspondingEnt.append(chunks[chunk_index - i])
+                distance.append(0)
+            if chunk_index + i < len(chunks):
+                correspondingEnt.append(chunks[chunk_index + i])
+
+    
     for i, ent in enumerate(correspondingEnt):
-        print(f"Entité {i+1} : {ent} (distance : {distance[i]})")
+        print(f"Entité {i+1} : {ent} (distance : ")#{distance[i]})")
         if ent not in chunks_already_mentioned:
             enriched_results.append(f"{ent}\n")
             chunks_already_mentioned.append(ent)
@@ -150,7 +166,7 @@ def process_query(query_text, rdf_graph_path, embeddings_model=embeddings, outpu
 
 
  
-# process_query("What are the main domains of NVIDIA","finance/outputLinkerLinked.ttl", embeddings, neighborChunks=10)
+# process_query("What are the main domains of NVIDIA","finance/outputLinkerLinked.ttl", embeddings, neighborChunks=5)
 
 
 print("temps d'importation : ", temps, "s")

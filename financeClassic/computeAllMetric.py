@@ -25,8 +25,8 @@ venv_python = os.path.join('venv', 'Scripts', 'python.exe')
 
 
 
-if not os.path.exists('finance/evaluation2.csv'):
-    with open('finance/evaluation2.csv', mode='w', newline='') as file:
+if not os.path.exists('financeClassic/evaluation2.csv'):
+    with open('financeClassic/evaluation2.csv', mode='w', newline='') as file:
         writer = csv.writer(file)
         writer.writerow(['nChunks', 'METEOR', 'BLEU', 'BERT', 'ROUGE','OVERLAP'])
 
@@ -38,13 +38,13 @@ for i in range(11):
 
 #fonction pour ajouter les valeurs de chaque métrique à la ligne correspondante de nChunks dans le fichier csv
 def addToCSV(nChunks, meteor, bleu, bert, rouge,overlap):
-    df = pd.read_csv('finance/evaluation2.csv')
+    df = pd.read_csv('financeClassic/evaluation2.csv')
     df.loc[df['nChunks'] == nChunks, 'METEOR'] = meteor
     df.loc[df['nChunks'] == nChunks, 'BLEU'] = bleu
     df.loc[df['nChunks'] == nChunks, 'BERT'] = bert
     df.loc[df['nChunks'] == nChunks, 'ROUGE'] = rouge
     df.loc[df['nChunks'] == nChunks, 'OVERLAP'] = overlap
-    df.to_csv('finance/evaluation2.csv', index=False)
+    df.to_csv('financeClassic/evaluation2.csv', index=False)
 
 nChunk = 10
 while(nChunk>=0):
@@ -58,7 +58,7 @@ while(nChunk>=0):
         answer = answers[questions.index(question)]
         if(questions.index(question) > 10):
             break
-        result = subprocess.run([venv_python, '-m', 'finance.eval', str(nChunk), question, answer], 
+        result = subprocess.run([venv_python, '-m', 'financeClassic.eval', str(nChunk), question, answer], 
                                   capture_output=True, 
                                   text=True, 
                                   check=True)

@@ -182,7 +182,7 @@ def build_knowledge_graph_aligned_with_ontology(text,ontology_path, nlp, rdf_pat
     
     # Ajouter les entités du texte et les relier aux chunks
     for i, ent in enumerate(entities):
-        print("inesertion des entités et leur embedding dans le DAO")
+        print("insertion des entités et leur embedding dans le DAO")
         DAO.insert(ent.text, embeddings.embed_query(ent.text))
         # Créer URI pour l'entité extraite du texte
         entity_uri = URIRef(f"http://example.org/entity/{entityForURIRef[i]}")
@@ -222,12 +222,17 @@ def build_knowledge_graph_aligned_with_ontology(text,ontology_path, nlp, rdf_pat
     #ajouter les voisins direct sur wikidata des entités et les lier à l'entité de base
 
 
-    # _, neighborList = wikidatautils.add_wikidata_neighbors_to_graph("finance/outputLinkerLinked_tmp.ttl", output_path="finance/outputLinkerLinked.ttl" )  
-    # #ajouter les labels de owl:Thing restants dans via le dao
+    _, neighborList = wikidatautils.add_wikidata_neighbors_to_graph("finance/outputLinkerLinked_tmp.ttl", output_path="finance/outputLinkerLinked.ttl" )  
+    #ajouter les labels de owl:Thing restants dans via le dao
     # for label in neighborList:
     #     DAO.insert(label, embeddings.embed_query(label))
+    wikidatautils.make_property_stats("finance/outputLinkerLinked.ttl", "finance/property_stats.json")
 
+    neighborLabelList = wikidatautils.filter_neigbor("finance/outputLinkerLinked.ttl", "finance/property_stats.json", "finance/outputLinkerLinked.ttl", wikidatautils.calculate_quantiles_on_property_stats("finance/property_stats.json"))
 
+    for label in neighborLabelList:
+        DAO.insert(label, embeddings.embed_query(label))
+    
     #g.serialize(destination=rdf_path, format="turtle")
     print(f"Graphe sauvegardé, {len(g)} triplets.")
     DAO.save_index("finance/embeddings.index")
@@ -256,40 +261,6 @@ def convert_wikidata_with_regex(input_file, output_file):
 
 
 
-def remove_useless_owl_things(input_file, output_file):
-
-    g = Graph()
-    g.parse(input_file, format="ttl")
-   
-    owl_things = list(g.subjects(RDF.type, OWL.Thing))
-   
-    to_remove = []
-    for thing in owl_things:
-        prefLabels = list(g.objects(thing, SKOS.prefLabel))
-        if len(prefLabels) == 0:
-            to_remove.append(thing)
-            
-    print(f"Total owl:Thing: {len(owl_things)}")
-    print(f"owl:Thing à supprimer (sans prefLabel): {len(to_remove)}")
-   
-    for thing in to_remove:
-        g.remove((thing, None, None))
-        g.remove((None, None, thing))
-   
-    remaining = list(g.subjects(RDF.type, OWL.Thing))
-    print(f"owl:Thing restants: {len(remaining)}")
-   
-    g.serialize(destination=output_file, format="ttl")
-    
-    remaining_preflabels = []
-    for thing in remaining:
-        for label in g.objects(thing, SKOS.prefLabel):
-            remaining_preflabels.append((str(thing), str(label)))
-    
-    for i, (thing, label) in enumerate(remaining_preflabels):
-        print(f"Remaining owl:Thing {i+1}: {thing} with label: {label}")
-    
-    return remaining_preflabels
 
 
 
@@ -301,26 +272,6 @@ def extract_labels_from_graph(graph):
 
     return labelList
 
-def get_embeddings_from_labels(labelList):
-    embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
-    embeddingsList = []
-    for name in labelList:
-        embedding = embeddings.embed_query(name)
-        embeddingsList.append(embedding)
-    
-    return embeddingsList
-
-def retrieve_corresponding_label(entity, embeddingsList, labelList):
-    embedding = embeddings.embed_query(entity.text)
-    best_similarity = -1
-    best_entity = None
-    for i, e in enumerate(embeddingsList):
-        similarity = np.dot(embedding, e) / (np.linalg.norm(embedding) * np.linalg.norm(e))
-        if similarity > best_similarity:
-            best_similarity = similarity
-            best_entity = labelList[i]
-
-    return best_entity
 
 def process_query(query_text, rdf_graph_path, embeddings_model=embeddings, output_file="finance/query_enrichie.txt", neighborChunks=0): #traite la query, trouve les entités pertinente dans le graphe et enrichit la query avec les chunks liés
     tload = time.time()
@@ -394,20 +345,14 @@ def process_query(query_text, rdf_graph_path, embeddings_model=embeddings, outpu
 
 # à commenter pour pas reconstruire le graphe
 # build_knowledge_graph_aligned_with_ontology(text, "finance/dev.fibo-quickstart.ttl", nlp, "finance/knowledge_graphNoWiki.ttl", embeddings)
-# remove_useless_owl_things("finance/outputLinkerLinked.ttl", "finance/outputLinkerLinked.ttl")
 
-# convert_wikidata_with_regex("finance/outputLinkerLinked.ttl", "finance/outputLinkerLinked.ttl")
-# DAO = FaissDAO(384)
-# DAO.load_index("finance/embeddings.index")
-# correspondingEnt, distance = DAO.search(embeddings.embed_query("single"), k=1)
-# print("correspondingEnt : ", correspondingEnt)
-# l1,l2 = wikidatautils.retrieve_mentioned_chunks("finance/outputLinkerLinked.ttl", correspondingEnt[0], [], 0)
-# print("l1 : ", l1)
-# print("l2 : ", l2)
-# print ("enrichissement de la requête ...")
 
- 
-# process_query("What are the main domains of NVIDIA","finance/outputLinkerLinked.ttl", embeddings)
+# process_query("The Owners","finance/outputLinkerLinked.ttl", embeddings)
+# dao = FaissDAO(384)
+# dao.load_index("finance/embeddings.index")
+# dao.remove("The Deep")
+
+# dao.save_index("finance/embeddings.index")
 
 
 print("temps d'importation : ", temps, "s")

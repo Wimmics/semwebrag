@@ -6,6 +6,7 @@ import os
 import json
 import time
 from rdflib import Namespace, RDF, OWL, RDFS, URIRef, Literal
+import statistics
 
 def get_uri_wikidata(entite, langue="en"): # doit forcement retourner une URI wikidata
 
@@ -158,21 +159,21 @@ def retrieve_mentioned_chunks(graph_path, entity, chunk_already_Mentionned, neig
     PREFIX skos: <http://www.w3.org/2004/02/skos/core#> 
 
     SELECT ?entity ?chunk ?label WHERE {
-    # {
+    {
     ?entity rel:mentionedIn ?chunk .
     ?chunk skos:prefLabel ?label .
     FILTER (CONTAINS(LCASE(str(?label)), LCASE(str(?entity_label)))) }
 
-    # UNION
-    # {
-    # ?entity skos:prefLabel ?label2 .
-    # ?entity ex:isWikidataNeighborOf ?neighbor_entity .
-    # ?neighbor a ?neighbor_entity .
-    # ?neighbor rel:mentionedIn ?chunk .
-    # OPTIONAL{?chunk skos:prefLabel ?label} . 
-    # FILTER (CONTAINS(LCASE(str(?label2)), LCASE(str(?entity_label))) && bound(?label)) .
-    # }
-    # }
+    UNION
+    {
+    ?entity skos:prefLabel ?label2 .
+    ?entity ex:isWikidataNeighborOf ?neighbor_entity .
+    ?neighbor a ?neighbor_entity .
+    ?neighbor rel:mentionedIn ?chunk .
+    OPTIONAL{?chunk skos:prefLabel ?label} . 
+    FILTER (CONTAINS(LCASE(str(?label2)), LCASE(str(?entity_label))) && bound(?label)) .
+    }
+    }
     """
 
     results = graph.query(query, initBindings={'entity_label': entity})
@@ -520,5 +521,124 @@ def enrich_entity(graph, entity_id, limit=100):
     return graph
 
 
+def make_property_stats(graph_path, output_path="property_stats.json"):
+    import rdflib
+    import json
+    
+    # count properties and their occurrences in the graph
+    graph = rdflib.Graph()
+    graph.parse(graph_path, format='turtle')
+    property_stats = {}
+    
+    query = """
+    SELECT ?property (COUNT(DISTINCT ?subject) AS ?count)
+    WHERE {
+        ?subject ?property ?object .
+    }
+    GROUP BY ?property
+    """
+    
+    results = graph.query(query)
+    for row in results:
+        property_uri = str(row.property)
+        
+        count_value = row['count']  
+        
+        if hasattr(count_value, 'toPython'):
+            count = int(count_value.toPython())
+        else:
+            count = int(count_value)
+        
+        property_stats[property_uri] = count
+ 
+    with open(output_path, 'w') as f:
+        json.dump(property_stats, f, indent=4)
+    
+    return property_stats
+
+def filter_neigbor(graph_path, property_stats_path, output_path="filtered_graph.ttl", threshold=20):
+    # for each entity in the graph that as the iswikidataneighborof relation, see if it as a relation wich occurs less than threshold times
+    # if it is NOT the case, remove the relation from the graph
+    import rdflib
+    import json
+    graph = rdflib.Graph()
+    graph.parse(graph_path, format='turtle')
+    with open(property_stats_path, 'r') as f:
+        property_stats = json.load(f)
+    neighborlist = []
+    for s,p,o in graph.triples((None, rdflib.URIRef("http://example.org/isWikidataNeighborOf"), None)):
+        if s:
+            neighborlist.append(s)
+            print("Neighbor accepted :", s)
+    print(f"Nombre de voisins trouvés : {len(neighborlist)}")
+    print(f"debut neghborlist : {neighborlist[:10]}")
+
+    #then for each neighbor, check if it has a relation that occurs less than threshold times, if not remove from list and graph
+    reslist = []
+    for neighbor in neighborlist:
+        print(f"Vérification du voisin : {neighbor}")
+        for p in graph.predicates(subject=neighbor):
+            if str(p) in property_stats and property_stats[str(p)] <= threshold:
+                print(f" voisin {neighbor} validé.")
+                if neighbor not in reslist:
+                    reslist.append(neighbor)
+                
+    #delete all subject from the graph that are not in reslist but in neighborlist
+    for s in neighborlist:
+        if s not in reslist:
+            print(f"Suppression du voisin {s} du graphe")
+            graph.remove((s, None, None))  # remove all triples with this subject
+            graph.remove((None, None, s))  # remove all triples with this object      
+                
+    
+    graph.serialize(output_path, format='turtle')
+    print(f"Graphe filtré enregistré dans {output_path}")
+
+    #prendre les labels des entités de resList
+    labelList = []
+    for entity in reslist:
+        query = """
+        SELECT ?label WHERE {
+            <""" + str(entity) + """> skos:prefLabel ?label .
+        }
+        """
+        results = graph.query(query)
+        for row in results:
+            label = str(row.label)
+            if label not in labelList:
+                labelList.append(label)
+                print(f"Ajouté le label '{label}' pour l'entité {entity}")
+
+
+    return labelList # to add in the DAO
+
+def calculate_quantiles_on_property_stats(property_stats_path):
+    # calculate the median of the property stats
+    with open(property_stats_path, 'r') as f:
+        property_stats = json.load(f)
+
+    counts = list(property_stats.values())
+    if not counts:
+        return None
+
+    quantile = statistics.quantiles(counts, n=4)
+    print(f"Quartiles des occurrences des propriétés : {quantile}")
+    median = statistics.median(counts)
+    print(f"Médiane des occurrences des propriétés : {median}")
+    quantile_75 = quantile[2]  
+    print(f"Quantile 75 des occurrences des propriétés : {quantile_75}")
+    return quantile_75
+
+
+
 # testlist =retrieve_mentioned_chunks("finance/outputLinkerLinked.ttl", "Grady Linder Webster", [], 0)
 # print(testlist)
+
+# make_property_stats("finance/outputLinkerLinked.ttl", "finance/property_stats.json")
+
+
+# filter_neigbor("finance/outputLinkerLinkedtest.ttl", "finance/property_stats.json", "finance/outputLinkerLinkedtest.ttl", 20)
+
+# testlist =retrieve_mentioned_chunks("finance/filtered_graph.ttl", "encode", [], 0)
+# print(testlist)
+# print (calculate_quantiles_on_property_stats("finance/property_stats.json"))
