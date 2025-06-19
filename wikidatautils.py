@@ -195,7 +195,7 @@ def retrieve_mentioned_chunks(graph_path, entity, chunk_already_Mentionned, neig
 
         base_chunks.append(chunk_uri)
 
-    # Ajouter les chunks voisins
+    # Add neighboors chunks
     if neighborChunks > 0:
         pattern = re.compile(r'(.*chunk_)(\d+)$')
         for uri in base_chunks:
@@ -225,7 +225,7 @@ def retrieve_mentioned_chunks(graph_path, entity, chunk_already_Mentionned, neig
             if label not in chunk_already_Mentionned:
                 chunk_already_Mentionned.append(label)
 
-        print
+        
 
     return l, chunk_already_Mentionned
 
@@ -250,7 +250,7 @@ def add_to_json_file(file_path, data):
     with open(file_path, 'r+') as json_file:
         content = json.load(json_file)
         content.append(data)  
-        json_file.seek(0)  #revenir au début du fichier
+        json_file.seek(0)  #go at the begining of the file
         json.dump(content, json_file)
 
 
@@ -306,7 +306,7 @@ def get_entity_labels_for_uris(uris):
         if uri.startswith("http://www.wikidata.org/entity/"):
             print(f"Récupération du label pour l'URI : {uri}")
             entity_id = uri.split("/")[-1]
-            time.sleep(1)  #pause pour éviter erreru 429
+            time.sleep(1)  #pause pour éviter erreur 429
             label = get_entity_label(entity_id)
             if label:
                 labels[uri] = label
@@ -558,7 +558,7 @@ def make_property_stats(graph_path, output_path="property_stats.json"):
 
 def filter_neigbor(graph_path, property_stats_path, output_path="filtered_graph.ttl", threshold=20):
     # for each entity in the graph that as the iswikidataneighborof relation, see if it as a relation wich occurs less than threshold times
-    # if it is NOT the case, remove the relation from the graph
+    # if it is NOT the case, we remove the relation from the graph
     import rdflib
     import json
     graph = rdflib.Graph()
@@ -610,7 +610,7 @@ def filter_neigbor(graph_path, property_stats_path, output_path="filtered_graph.
                 print(f"Ajouté le label '{label}' pour l'entité {entity}")
 
 
-    return labelList # to add in the DAO
+    return labelList # to add in the DAO later 
 
 def calculate_quantiles_on_property_stats(property_stats_path):
     # calculate the median of the property stats
@@ -631,14 +631,3 @@ def calculate_quantiles_on_property_stats(property_stats_path):
 
 
 
-# testlist =retrieve_mentioned_chunks("finance/outputLinkerLinked.ttl", "Grady Linder Webster", [], 0)
-# print(testlist)
-
-# make_property_stats("finance/outputLinkerLinked.ttl", "finance/property_stats.json")
-
-
-# filter_neigbor("finance/outputLinkerLinkedtest.ttl", "finance/property_stats.json", "finance/outputLinkerLinkedtest.ttl", 20)
-
-# testlist =retrieve_mentioned_chunks("finance/filtered_graph.ttl", "encode", [], 0)
-# print(testlist)
-# print (calculate_quantiles_on_property_stats("finance/property_stats.json"))

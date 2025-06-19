@@ -2,39 +2,36 @@ import json
 import csv
 
 
-#Scripts pour trasformer le début de covidQA en csv (utilisé pour l'évaluation)
+
+#Script made to transform the beginning of covidQA into a csv file (used for evaluation)
 
 
-
-# Chemin du fichier JSON (à adapter selon votre environnement)
 input_file = '200421_covidQA.json'
 
 def extract_first_paragraph_qa(file_path):
-    # Lire le contenu du fichier
+    
     with open(file_path, 'r', encoding='utf-8') as f:
         content = f.read()
     
-    # Trouver la partie JSON dans le fichier
+    
     json_start = content.find('{')
     json_end = content.find('sachant qu')
     json_str = content[json_start:json_end].strip()
     
-    # Corriger la chaîne JSON si elle est incomplète
     if not json_str.endswith('}'):
         json_str += '}'
     
-    # Charger la chaîne JSON
     try:
         data = json.loads(json_str)
         
-        # Vérifier si les données sont structurées comme prévu
+        # Check if 'data' and 'paragraphs' exist and are not empty
         if 'data' in data and len(data['data']) > 0:
             if 'paragraphs' in data['data'][0] and len(data['data'][0]['paragraphs']) > 0:
-                # Extraire les questions et réponses du premier paragraphe uniquement
+                #only extract questions and answers from the first paragraph
                 qa_pairs = []
                 for qa in data['data'][0]['paragraphs'][0]['qas']:
                     question = qa['question']
-                    # Prendre la première réponse si plusieurs sont disponibles
+                    #Take the first answer if it exists, otherwise set to "Pas de réponse"
                     answer = qa['answers'][0]['text'] if qa['answers'] else "Pas de réponse"
                     qa_pairs.append({'question': question, 'answer': answer})
                 
@@ -45,14 +42,13 @@ def extract_first_paragraph_qa(file_path):
     return []
 
 def save_to_csv(qa_pairs, output_file):
-    # Enregistrer les paires Q/R dans un fichier CSV
+    # save Q/A in a csv file
     with open(output_file, 'w', encoding='utf-8', newline='') as f:
         writer = csv.writer(f)
         writer.writerow(['Question', 'Réponse'])
         for pair in qa_pairs:
             writer.writerow([pair['question'], pair['answer']])
 
-# Extraire les Q/R et les enregistrer
 qa_pairs = extract_first_paragraph_qa(input_file)
 if qa_pairs:
     output_file = 'questions_reponses.csv'

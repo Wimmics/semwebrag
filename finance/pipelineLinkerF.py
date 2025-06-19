@@ -39,12 +39,7 @@ def extract_entities(ontology_file):
     entities_list = []
     labels_list = []
     
-    # prendre les entités qui ont un skos:prefLabel
-    # for s in g.subjects(RDF.type, None):
-    #     pref_label = g.value(s, SKOS.prefLabel)
-    #     if pref_label and isinstance(pref_label, Literal):
-    #         entities_list.append(s)
-    #         labels_list.append(pref_label.value)
+
 
     # prendre les entités qui ont un rdfs:label
     for s in g.subjects(RDF.type, None):
@@ -346,13 +341,6 @@ def process_query(query_text, rdf_graph_path, embeddings_model=embeddings, outpu
 # à commenter pour pas reconstruire le graphe
 # build_knowledge_graph_aligned_with_ontology(text, "finance/dev.fibo-quickstart.ttl", nlp, "finance/knowledge_graphNoWiki.ttl", embeddings)
 
-
-# process_query("The Owners","finance/outputLinkerLinked.ttl", embeddings)
-# dao = FaissDAO(384)
-# dao.load_index("finance/embeddings.index")
-# dao.remove("The Deep")
-
-# dao.save_index("finance/embeddings.index")
 
 
 print("temps d'importation : ", temps, "s")

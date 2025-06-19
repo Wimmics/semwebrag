@@ -1,7 +1,8 @@
 from sentence_transformers import SentenceTransformer
 import os
 
-# script pour sauvegarder le modèle d'embedding localement
+# to save locally the embedding model and call it later wich saves time
+
 
 
 local_model_path = ".embeddings/models/all-MiniLM-L6-v2"

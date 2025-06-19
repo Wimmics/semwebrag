@@ -61,22 +61,22 @@ class FaissDAO:
     def remove(self, label):
 
         try:
-            # Trouver l'index du label à supprimer
+            #find the index of the label to remove
             label_index = self.labels.index(label)
         except ValueError:
             print(f"Label '{label}' non trouvé dans l'index")
             return False
         
-        # Récupérer tous les embeddings existants
+        # retrieve the embedding corresponding to the label
         embeddings_array = np.zeros((self.index.ntotal, self.dim), dtype=np.float32)
         for i in range(self.index.ntotal):
             embeddings_array[i] = self.index.reconstruct(i)
         
-        # Supprimer le label et l'embedding correspondant
+        # remove the label and its corresponding embedding
         self.labels.pop(label_index)
         embeddings_array = np.delete(embeddings_array, label_index, axis=0)
         
-        # Reconstruire l'index FAISS sans l'élément supprimé
+        # recreate the index with the remaining embeddings
         self.index = faiss.IndexFlatL2(self.dim)
         
         if len(embeddings_array) > 0:
