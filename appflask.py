@@ -9,7 +9,7 @@ from sys import argv
 import datetime
 import re
 import time
-from langchain_mistralai import ChatMistralAI
+# from langchain_mistralai import ChatMistralAI
 from langchain_core.prompts import ChatPromptTemplate
 import spacy
 import importlib
@@ -73,6 +73,7 @@ def readLog(text_path) :
 def run_in_venv_query(query, domain, nChunks=0) :
          # Chemin vers le Python de l'environnement virtuel sous Windows
     venv_python = os.path.join(venv_path, 'Scripts', 'python.exe')
+    print ("run_in_venv_query domain : ", domain)
     
     try:
         result = subprocess.run([venv_python, '-m', f'{domain}.userPrompt', query, str(nChunks)], 
@@ -101,6 +102,9 @@ def ask():
     user_prompt = data.get('prompt')
     domain = data.get('domain')
     nChunks = data.get('nChunks')
+
+    print("domain : ",domain)
+    print ("prompt : ", user_prompt)
 
     finance_directory = os.path.join(os.path.dirname(os.path.abspath(__file__)), domain)
     
@@ -172,6 +176,7 @@ def evaluate():
         bert_match = re.search(r"(BERT Score Precision:.*)", output)
         rouge_match = re.search(r"(rougeScores:.*)", output)
         overlap_match = re.search(r"(Overlap Coefficient:.*)", output)
+        overlapE_match = re.search(r"(OverlapE Coefficient:.*)", output)
         
         # Extraire les valeurs (ou utiliser des chaînes vides si non trouvées)
         question = question_match.group(1).strip() if question_match else ""
@@ -182,6 +187,7 @@ def evaluate():
         bert = bert_match.group(1).strip() if bert_match else ""
         rouge = rouge_match.group(1).strip() if rouge_match else ""
         overlap = overlap_match.group(1).strip() if overlap_match else ""
+        overlapE = overlapE_match.group(1).strip() if overlapE_match else ""
         
        
         response_data = {
@@ -192,13 +198,15 @@ def evaluate():
             "bleu": bleu,
             "bert": bert,
             "rouge": rouge,
-            "overlap": overlap
+            "overlap": overlap,
+            "overlapE": overlapE
         }
         print("meteor : ", meteor)
         print("bleu : ", bleu)
         print("bert : ", bert)
         print ("rouge : ", rouge)
         print ("overlap : ", overlap)
+        print ("overlapE : ", overlapE)
         
         return jsonify(response_data)
     
@@ -283,6 +291,8 @@ def compare():
 
 
 nlp = spacy.load("en_core_web_md")
+
+nlpfr = spacy.load("fr_core_news_md")
 
 
 def extract_key_phrases(doc, nlp):

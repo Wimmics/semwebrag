@@ -1,11 +1,11 @@
 import argparse
 
-from langchain_mistralai import ChatMistralAI
+# from langchain_mistralai import ChatMistralAI
 from langchain_core.prompts import ChatPromptTemplate
 import requests
 import json
 import time
-import ollama
+# import ollama
 
 #=============OVH===================
 
@@ -18,21 +18,16 @@ import ollama
 #                         api_key=key,
 #                         endpoint='https://llama-3-1-70b-instruct.endpoints.kepler.ai.cloud.ovh.net/api/openai_compat/v1', 
 #                         max_tokens=1500)
-
-
 #   prompt = ChatPromptTemplate.from_messages([
 #     ("system", "You are Nestor, a virtual assistant. Answer to the question by using the context given bellow."),
 #     ("human", "{question}"),
 #   ])
 
 #   chain = prompt | model
-
 #   response = chain.invoke(question)
 
 #   print(f" {response.content}")
 #   return response.content
-
-
 #=============Groq===================
 def chat_completion(question: str):
     with open("key.txt", "r", encoding="utf-8") as file:

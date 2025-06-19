@@ -6,6 +6,7 @@ import os
 import json
 import time
 from rdflib import Namespace, RDF, OWL, RDFS, URIRef, Literal
+import statistics
 
 def get_uri_wikidata(entite, langue="en"): # doit forcement retourner une URI wikidata
 
@@ -126,29 +127,57 @@ def retrieve_mentioned_chunks(graph_path, entity, chunk_already_Mentionned, neig
     
     mentioned_chunks = set() 
 
+    # query = """
+    # PREFIX ex: <http://example.org/>
+    # SELECT ?entity ?chunk ?label WHERE {
+    # {
+    
+    #     ?entity rel:mentionedIn ?chunk .
+    #     ?chunk skos:prefLabel ?label .
+    #     FILTER (CONTAINS(LCASE(str(?label)), LCASE(str(?entity_label))))
+    # }
+    # UNION
+    # {
+    #     ?entity ex:isWikidataNeighborOf ?wikidata_uri .
+    #     ?entity skos:prefLabel ?label2 .
+
+        
+    #     ?mentioned_entity a ?wikidata_uri .
+        
+    #     ?mentioned_entity rel:mentionedIn ?chunk .
+    #     ?chunk skos:prefLabel ?label .
+    #     FILTER (CONTAINS(LCASE(str(?label2)), LCASE(str(?entity_label))))
+    # }
+    # }
+    # """
+
+
     query = """
+
+    PREFIX ex: <http://example.org/> 
+    PREFIX rel: <http://relations.example.org/> 
+    PREFIX skos: <http://www.w3.org/2004/02/skos/core#> 
+
     SELECT ?entity ?chunk ?label WHERE {
     {
-    
-        ?entity rel:mentionedIn ?chunk .
-        ?chunk skos:prefLabel ?label .
-        FILTER (CONTAINS(LCASE(str(?label)), LCASE(str(?entity_label))))
-    }
+    ?entity rel:mentionedIn ?chunk .
+    ?chunk skos:prefLabel ?label .
+    FILTER (CONTAINS(LCASE(str(?label)), LCASE(str(?entity_label)))) }
+
     UNION
     {
-        ?entity ex:isWikidataNeighborOf ?wikidata_uri .
-        ?entity skos:prefLabel ?label2 .
-        ?mentioned_entity a ?wikidata_uri .
-        
-        ?mentioned_entity rel:mentionedIn ?chunk .
-        ?chunk skos:prefLabel ?label .
-        FILTER (CONTAINS(LCASE(str(?label2)), LCASE(str(?entity_label))))
+    ?entity skos:prefLabel ?label2 .
+    ?entity ex:isWikidataNeighborOf ?neighbor_entity .
+    ?neighbor a ?neighbor_entity .
+    ?neighbor rel:mentionedIn ?chunk .
+    OPTIONAL{?chunk skos:prefLabel ?label} . 
+    FILTER (CONTAINS(LCASE(str(?label2)), LCASE(str(?entity_label))) && bound(?label)) .
     }
     }
     """
 
-
     results = graph.query(query, initBindings={'entity_label': entity})
+    print(f"Nombre de résultats trouvés : {len(results)}")
 
     base_chunks = []
 
@@ -166,7 +195,7 @@ def retrieve_mentioned_chunks(graph_path, entity, chunk_already_Mentionned, neig
 
         base_chunks.append(chunk_uri)
 
-    # Ajouter les chunks voisins
+    # Add neighboors chunks
     if neighborChunks > 0:
         pattern = re.compile(r'(.*chunk_)(\d+)$')
         for uri in base_chunks:
@@ -196,7 +225,7 @@ def retrieve_mentioned_chunks(graph_path, entity, chunk_already_Mentionned, neig
             if label not in chunk_already_Mentionned:
                 chunk_already_Mentionned.append(label)
 
-        print
+        
 
     return l, chunk_already_Mentionned
 
@@ -221,7 +250,7 @@ def add_to_json_file(file_path, data):
     with open(file_path, 'r+') as json_file:
         content = json.load(json_file)
         content.append(data)  
-        json_file.seek(0)  #revenir au début du fichier
+        json_file.seek(0)  #go at the begining of the file
         json.dump(content, json_file)
 
 
@@ -277,7 +306,7 @@ def get_entity_labels_for_uris(uris):
         if uri.startswith("http://www.wikidata.org/entity/"):
             print(f"Récupération du label pour l'URI : {uri}")
             entity_id = uri.split("/")[-1]
-            time.sleep(1)  #pause pour éviter erreru 429
+            time.sleep(1)  #pause pour éviter erreur 429
             label = get_entity_label(entity_id)
             if label:
                 labels[uri] = label
@@ -315,9 +344,25 @@ def add_labels_to_entities(graph, entity_uris):
     
     print(f"Ajouté {len(labels)} labels aux entités")
 
+
+
+
+
+
+
 def add_wikidata_neighbors_to_graph(graph_path, output_path="enriched_graph.ttl", limit_per_entity=100):
-   
-    graph = rdflib.Graph()
+
+    import rdflib
+    from rdflib import URIRef, Literal, Graph
+    from rdflib.namespace import RDF, RDFS, OWL, SKOS
+    import time
+    
+    WD = rdflib.Namespace("http://www.wikidata.org/wiki/")
+    WDT = rdflib.Namespace("http://www.wikidata.org/prop/direct/")
+    SCHEMA = rdflib.Namespace("http://schema.org/")
+    EX = rdflib.Namespace("http://example.org/")
+    
+    graph = Graph()
     graph.parse(graph_path, format='turtle')
     
     graph.bind("ex", EX)
@@ -327,37 +372,147 @@ def add_wikidata_neighbors_to_graph(graph_path, output_path="enriched_graph.ttl"
     graph.bind("schema", SCHEMA)
     graph.bind("owl", OWL)
     graph.bind("rdfs", RDFS)
+
+    labelList = []
     
+    #take wikidata entities in the graph
     query = """
     PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-    SELECT ?entity ?type WHERE {
+    SELECT ?entity ?type
+    WHERE {
         ?entity a ?type .
         FILTER(STRSTARTS(STR(?type), "https://www.wikidata.org/wiki/"))
     }
     """
     results = graph.query(query)
     
-    print("Entités Wikidata trouvées :")
-    all_entities_to_label = set()  
+    print(f"{len(results)} entités Wikidata")
     
+    wikidata_endpoint = "https://query.wikidata.org/sparql"
+    
+    #For each entity seach neighbors with label and add them to the graph
     for row in results:
         entity_uri = row.entity
         wikidata_uri = row.type
-        wikidata_code = str(wikidata_uri).split("/")[-1]
-        print(f"- {entity_uri} (wikidata: {wikidata_code})")
+        wikidata_id = str(wikidata_uri).split("/")[-1]
         
-        time.sleep(1)  #pause pour eviter une erreur 429
-        neighbors = get_wikidata_neighbors(wikidata_code, limit=limit_per_entity)
-    
-        entities_to_label = enrich_graph_with_neighbors(graph, wikidata_code, neighbors)
-        all_entities_to_label.update(entities_to_label)
-    
-    print(f"Ajout de labels pour {len(all_entities_to_label)} entités...")
-    add_labels_to_entities(graph, all_entities_to_label)
-    
+        print(f"entité: {entity_uri} (Wikidata: {wikidata_id})")
+        
+        # outgoing relations
+        sparql_query_out = f"""
+        PREFIX wd: <http://www.wikidata.org/entity/>
+            SELECT ?predicate ?object ?objectLabel
+                WHERE {{
+                SERVICE <https://query.wikidata.org/sparql> {{
+                    wd:{wikidata_id} ?predicate ?object .
+                    FILTER(STRSTARTS(STR(?predicate), "http://www.wikidata.org/prop/"))
+                    ?object rdfs:label ?objectLabel .
+                    FILTER(LANG(?objectLabel) = "fr" || LANG(?objectLabel) = "en")
+                }}
+                }}
+                #LIMIT 1000
+        """
+        
+        # incoming relations
+        sparql_query_in = f"""
+        PREFIX wd: <http://www.wikidata.org/entity/>
+        SELECT ?predicate ?subject ?subjectLabel
+        WHERE {{
+          SERVICE <https://query.wikidata.org/sparql> {{
+            ?subject ?predicate wd:{wikidata_id} .
+            FILTER(STRSTARTS(STR(?predicate), "http://www.wikidata.org/prop/"))
+            ?subject rdfs:label ?subjectLabel .
+            FILTER(LANG(?subjectLabel) = "fr" || LANG(?subjectLabel) = "en")
+          }}
+        }}
+        LIMIT 1000
+        """
+        
+        try:
+            results_out = graph.query(sparql_query_out)
+            print(f"RESULTS OUT: {results_out}, TAILLE : {len(results_out)}")
+            results_in = graph.query(sparql_query_in)
+            print(f"RESULTS IN: {results_in}, TAILLE : {len(results_in)}")
+            
+            total_results = len(results_out) + len(results_in)
+            print(f"{total_results} relations trouvées")
+            
+            entity_count = 0
+            
+            for result in results_out:
+
+               
+                predicate_uri = str(result.predicate)
+               
+               
+                object_value = str(result.object)
+                
+             
+
+                clean_predicate = predicate_uri.replace("http://www.wikidata.org/prop/", "")
+                clean_predicate = clean_predicate.replace("direct/", "")
+                clean_predicate_uri = WDT[clean_predicate]
+                
+                if isinstance(result.object, URIRef):
+                    obj = URIRef(object_value)
+                     
+                    graph.add((URIRef(f"http://www.wikidata.org/wiki/{wikidata_id}"), clean_predicate_uri, obj))
+                    
+                    graph.add((obj, RDF.type, OWL.Thing))
+                    
+                    #add isWikidataNeighborOf relation used when we want to get chunks linked to the entity
+                    graph.add((obj, EX.isWikidataNeighborOf, URIRef(f"http://www.wikidata.org/wiki/{wikidata_id}")))
+                    graph.add((obj, EX.relationDirection, Literal("outgoing")))
+                    
+                    #add label
+                    label = str(result.objectLabel)
+                    graph.add((obj, SKOS.prefLabel, Literal(label)))
+                    if(label not in labelList):
+                        labelList.append(label)
+                    print(f"Ajouté le label '{label}' pour l'entité {obj}")
+                    entity_count += 1
+                else:
+                    print("!!!===================ALERT LITTERAL VALUE =========================================")
+                    print(Literal(object_value))
+                    #if it is a litteral value, add it directly
+                    graph.add((URIRef(f"http://www.wikidata.org/wiki/{wikidata_id}"), clean_predicate_uri, Literal(object_value)))
+            
+            for result in results_in:
+                subject_uri = str(result.subject)
+                predicate_uri = str(result.predicate)
+                subject_label = str(result.subjectLabel)
+                if(label not in labelList):
+                    labelList.append(subject_label)
+                print(f"Ajouté le label '{subject_label}' pour l'entité {subject_uri}")
+                
+                clean_predicate = predicate_uri.replace("http://www.wikidata.org/prop/", "")
+                clean_predicate = clean_predicate.replace("direct/", "")
+                clean_predicate_uri = WDT[clean_predicate]
+                
+                subj = URIRef(subject_uri)
+                graph.add((subj, clean_predicate_uri, URIRef(f"http://www.wikidata.org/wiki/{wikidata_id}")))
+                
+                graph.add((subj, RDF.type, OWL.Thing))
+                
+                graph.add((subj, EX.isWikidataNeighborOf, URIRef(f"http://www.wikidata.org/wiki/{wikidata_id}")))
+                graph.add((subj, EX.relationDirection, Literal("incoming")))
+                
+                graph.add((subj, SKOS.prefLabel, Literal(subject_label)))
+                entity_count += 1
+            
+            print(f"{entity_count} entités ajoutées")
+            
+            
+            time.sleep(1)  #to avoid error 429 
+        except Exception as e:
+            print(f"Erreur lors de la requête SPARQL pour {wikidata_id}: {e} \n")
+           
     
     graph.serialize(output_path, format="turtle")
     print(f"Graphe enrichi enregistré dans {output_path}")
+    
+    return graph, labelList
+
 
 def enrich_entity(graph, entity_id, limit=100):
     neighbors = get_wikidata_neighbors(entity_id, limit)
@@ -365,6 +520,114 @@ def enrich_entity(graph, entity_id, limit=100):
     add_labels_to_entities(graph, entities_to_label)
     return graph
 
-# add_wikidata_neighbors_to_graph("finance/outputLinkerLinked.ttl")
-# testlist = get_wikidata_neighbors("Q296782")
-# print(testlist)
+
+def make_property_stats(graph_path, output_path="property_stats.json"):
+    import rdflib
+    import json
+    
+    # count properties and their occurrences in the graph
+    graph = rdflib.Graph()
+    graph.parse(graph_path, format='turtle')
+    property_stats = {}
+    
+    query = """
+    SELECT ?property (COUNT(DISTINCT ?subject) AS ?count)
+    WHERE {
+        ?subject ?property ?object .
+    }
+    GROUP BY ?property
+    """
+    
+    results = graph.query(query)
+    for row in results:
+        property_uri = str(row.property)
+        
+        count_value = row['count']  
+        
+        if hasattr(count_value, 'toPython'):
+            count = int(count_value.toPython())
+        else:
+            count = int(count_value)
+        
+        property_stats[property_uri] = count
+ 
+    with open(output_path, 'w') as f:
+        json.dump(property_stats, f, indent=4)
+    
+    return property_stats
+
+def filter_neigbor(graph_path, property_stats_path, output_path="filtered_graph.ttl", threshold=20):
+    # for each entity in the graph that as the iswikidataneighborof relation, see if it as a relation wich occurs less than threshold times
+    # if it is NOT the case, we remove the relation from the graph
+    import rdflib
+    import json
+    graph = rdflib.Graph()
+    graph.parse(graph_path, format='turtle')
+    with open(property_stats_path, 'r') as f:
+        property_stats = json.load(f)
+    neighborlist = []
+    for s,p,o in graph.triples((None, rdflib.URIRef("http://example.org/isWikidataNeighborOf"), None)):
+        if s:
+            neighborlist.append(s)
+            print("Neighbor accepted :", s)
+    print(f"Nombre de voisins trouvés : {len(neighborlist)}")
+    print(f"debut neghborlist : {neighborlist[:10]}")
+
+    #then for each neighbor, check if it has a relation that occurs less than threshold times, if not remove from list and graph
+    reslist = []
+    for neighbor in neighborlist:
+        print(f"Vérification du voisin : {neighbor}")
+        for p in graph.predicates(subject=neighbor):
+            if str(p) in property_stats and property_stats[str(p)] <= threshold:
+                print(f" voisin {neighbor} validé.")
+                if neighbor not in reslist:
+                    reslist.append(neighbor)
+                
+    #delete all subject from the graph that are not in reslist but in neighborlist
+    for s in neighborlist:
+        if s not in reslist:
+            print(f"Suppression du voisin {s} du graphe")
+            graph.remove((s, None, None))  # remove all triples with this subject
+            graph.remove((None, None, s))  # remove all triples with this object      
+                
+    
+    graph.serialize(output_path, format='turtle')
+    print(f"Graphe filtré enregistré dans {output_path}")
+
+    #prendre les labels des entités de resList
+    labelList = []
+    for entity in reslist:
+        query = """
+        SELECT ?label WHERE {
+            <""" + str(entity) + """> skos:prefLabel ?label .
+        }
+        """
+        results = graph.query(query)
+        for row in results:
+            label = str(row.label)
+            if label not in labelList:
+                labelList.append(label)
+                print(f"Ajouté le label '{label}' pour l'entité {entity}")
+
+
+    return labelList # to add in the DAO later 
+
+def calculate_quantiles_on_property_stats(property_stats_path):
+    # calculate the median of the property stats
+    with open(property_stats_path, 'r') as f:
+        property_stats = json.load(f)
+
+    counts = list(property_stats.values())
+    if not counts:
+        return None
+
+    quantile = statistics.quantiles(counts, n=4)
+    print(f"Quartiles des occurrences des propriétés : {quantile}")
+    median = statistics.median(counts)
+    print(f"Médiane des occurrences des propriétés : {median}")
+    quantile_75 = quantile[2]  
+    print(f"Quantile 75 des occurrences des propriétés : {quantile_75}")
+    return quantile_75
+
+
+

@@ -126,6 +126,10 @@
                 <div class="flex items-center space-x-3">
                     <button class="tab-button active px-4 py-2 text-sm font-medium rounded-md transition-colors" data-domain="finance" onclick="changeDomain('finance')">Finance</button>
                     <button class="tab-button px-4 py-2 text-sm font-medium rounded-md transition-colors" data-domain="medical" onclick="changeDomain('medical')">Medical</button>
+                    <button class="tab-button active px-4 py-2 text-sm font-medium rounded-md transition-colors" data-domain="callForTender" onclick="changeDomain('callForTender')">SOLIHA-Chunking1</button>
+                    <button class="tab-button px-4 py-2 text-sm font-medium rounded-md transition-colors" data-domain="callForTender2" onclick="changeDomain('callForTender2')">SOLIHA-Chunking2</button>
+
+
                 </div>
                 
                 <button id="redirect-button" class="px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-md hover:bg-green-700 transition-colors shadow-sm" onclick="redirectToEvaluation(selectedDomain)">Voir Évaluation</button>
@@ -186,6 +190,9 @@
         
         document.querySelector('.tab-button[data-domain="finance"]').classList.add('bg-blue-600', 'text-white');
         document.querySelector('.tab-button[data-domain="medical"]').classList.add('bg-gray-200', 'text-gray-700');
+        document.querySelector('.tab-button[data-domain="callForTender"]').classList.add('bg-blue-600', 'text-white');
+        document.querySelector('.tab-button[data-domain="callForTender2"]').classList.add('bg-gray-200', 'text-gray-700');
+        
 
         
         closeModal.onclick = function() {

@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
+    <style>
+        
+        .markdown-content ul {
+            list-style-type: disc;
+            padding-left: 1.5rem;
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .markdown-content ol {
+            list-style-type: decimal;
+            padding-left: 1.5rem;
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .markdown-content li {
+            margin-bottom: 0.25rem;
+        }
+        .markdown-content pre {
+            background-color: #f3f4f6;
+            padding: 0.75rem;
+            border-radius: 0.375rem;
+            overflow-x: auto;
+            margin: 0.5rem 0;
+        }
+        .markdown-content p {
+            margin-bottom: 0.75rem;
+        }
+        .markdown-content h1, .markdown-content h2, .markdown-content h3, .markdown-content h4 {
+            font-weight: 600;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        .markdown-content h1 { font-size: 1.5rem; }
+        .markdown-content h2 { font-size: 1.25rem; }
+        .markdown-content h3 { font-size: 1.125rem; }
+        .markdown-content h4 { font-size: 1rem; }
+        .markdown-content code {
+            background-color: #f3f4f6;
+            padding: 0.1rem 0.25rem;
+            border-radius: 0.25rem;
+            font-family: monospace;
+        }
+        .markdown-content blockquote {
+            border-left: 4px solid #e5e7eb;
+            padding-left: 1rem;
+            font-style: italic;
+            margin: 0.5rem 0;
+        }
+        
+       
+        .entity-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+        }
+        .entity-table th, .entity-table td {
+            border: 1px solid #e5e7eb;
+            padding: 0.5rem;
+            text-align: left;
+        }
+        .entity-table th {
+            background-color: #f3f4f6;
+            font-weight: 600;
+        }
+        .entity-table tr:nth-child(even) {
+            background-color: #f9fafb;
+        }
+        
+ 
+        .entity-highlight {
+            background-color: #fee2e2;
+            color: #991b1b;
+            padding: 0 2px;
+            border-radius: 2px;
+            font-weight: 500;
+        }
+        
+        .entity-legend {
+            display: flex;
+            align-items: center;
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+        
+        .entity-legend-box {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            background-color: #fee2e2;
+            border: 1px solid #991b1b;
+            margin-right: 0.5rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+    <div class="flex h-screen p-4">
+        <!-- chat Container -->
+        <div class="flex-1 flex flex-col rounded-lg shadow-lg bg-white mr-4 relative">
+            <!-- Domain Selection, nChunks & More Information Checkbox-->
+            <div class="p-4 bg-gray-50 border-b border-gray-200 rounded-t-lg flex justify-between items-center">
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-2">
+                        <label for="nChunks" class="text-sm font-medium text-gray-700">nChunks:</label>
+                        <input type="number" id="nChunks" min="0" value="0" class="w-20 p-2 text-center border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    
+                    <!-- More Information Checkbox -->
+                    <div class="flex items-center space-x-2">
+                        <input type="checkbox" id="moreInfo" class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                        <label for="moreInfo" class="text-sm font-medium text-gray-700">More Information</label>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-3">
+                    <button class="tab-button active px-4 py-2 text-sm font-medium rounded-md transition-colors" data-domain="financeClassic" onclick="changeDomain('financeClassic')">Finance</button>
+                    <!-- <button class="tab-button px-4 py-2 text-sm font-medium rounded-md transition-colors" data-domain="medical" onclick="changeDomain('medical')">Medical</button>
+                    <button class="tab-button active px-4 py-2 text-sm font-medium rounded-md transition-colors" data-domain="callForTender" onclick="changeDomain('callForTender')">SOLIHA-Chunking1</button>
+                    <button class="tab-button px-4 py-2 text-sm font-medium rounded-md transition-colors" data-domain="callForTender2" onclick="changeDomain('callForTender2')">SOLIHA-Chunking2</button>
+ -->
+
+                </div>
+                
+                <button id="redirect-button" class="px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-md hover:bg-green-700 transition-colors shadow-sm" onclick="redirectToEvaluation(selectedDomain)">Voir Évaluation</button>
+            </div>
+            
+            <!-- Chat -->
+            <div id="chat-box" class="flex-1 p-4 overflow-y-auto space-y-4 bg-gray-50">
+            </div>
+            
+            <!-- Input -->
+            <div class="p-4 border-t border-gray-200 bg-white rounded-b-lg">
+                <div class="flex space-x-2">
+                    <input type="text" id="user-input" class="flex-1 p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" placeholder="Posez votre question...">
+                    <button onclick="sendMessage()" class="px-4 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition-colors shadow-sm">Envoyer</button>
+                </div>
+            </div>
+        </div>
+        
+        
+        <div class="w-108 bg-white rounded-lg shadow-lg overflow-hidden flex flex-col">
+            <div class="p-4 bg-gray-50 border-b border-gray-200">
+                <h4 class="font-medium text-lg text-gray-800">Logs</h4>
+            </div>
+            <div class="flex-1 p-4 overflow-y-auto">
+                <ul id="log-list" class="space-y-2 text-sm">
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div id="infoModal" class="hidden fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50 flex items-center justify-center">
+        <div class="bg-white rounded-lg shadow-xl w-11/12 max-w-4xl max-h-[80vh] overflow-y-auto">
+            <div class="flex justify-between items-center p-4 border-b border-gray-200">
+                <h3 class="text-lg font-medium text-gray-900">Détails du Log</h3>
+                <button class="close-modal text-gray-400 hover:text-gray-500">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <div id="modal-text" class="p-6">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedDomain = 'financeClassic';
+        let logCounter = 0;
+
+        
+        let messageLogs = {};
+
+        
+        const modal = document.getElementById('infoModal');
+        const modalText = document.getElementById('modal-text');
+        const closeModal = document.querySelector('.close-modal');
+
+        
+        document.querySelector('.tab-button[data-domain="financeClassic"]').classList.add('bg-blue-600', 'text-white');
+        document.querySelector('.tab-button[data-domain="medical"]').classList.add('bg-gray-200', 'text-gray-700');
+        document.querySelector('.tab-button[data-domain="callForTender"]').classList.add('bg-blue-600', 'text-white');
+        document.querySelector('.tab-button[data-domain="callForTender2"]').classList.add('bg-gray-200', 'text-gray-700');
+        
+
+        
+        closeModal.onclick = function() {
+            modal.classList.add('hidden');
+        }
+
+        // fermer le modal quand on clique a coté
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.classList.add('hidden');
+            }
+        }
+
+        marked.use({
+            gfm: true,
+            breaks: true,
+            sanitize: false, 
+            pedantic: false,
+            smartLists: true,
+            smartypants: true
+        });
+
+        
+        function addRelatedChunksListeners() {
+            document.querySelectorAll('.related-chunks-link').forEach(link => {
+                link.addEventListener('click', function() {
+                    const index = this.getAttribute('data-index');
+                    const logId = this.getAttribute('data-log-id');
+                    const chunksDisplay = document.getElementById(`chunks-${logId}-${index}`);
+                    
+                    
+                    if (chunksDisplay.classList.contains('hidden')) {
+                        chunksDisplay.classList.remove('hidden');
+                    } else {
+                        chunksDisplay.classList.add('hidden');
+                    }
+                });
+            });
+        }
+
+        function redirectToEvaluation(domain) {
+            const nChunks = document.getElementById('nChunks').value;
+            window.location.href = `evalClassic.html?domain=${domain}&nChunks=${nChunks}`;
+        }
+
+        // Fonction pour créer un tableau HTML d'entités à partir des données JSON
+        function createEntitiesTable(jsonData) {
+            if (!jsonData || jsonData.length === 0) {
+                return '<div class="text-gray-500 italic">No entities found.</div>';
+            }
+
+            let tableHTML = `
+                <table class="entity-table">
+                    <thead>
+                        <tr>
+                            <th>Entity</th>
+                            <th>Corresponding Entity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            jsonData.forEach(entry => {
+                tableHTML += `
+                    <tr>
+                        <td>${entry.entity}</td>
+                        <td>${entry.correspondingEnt}</td>
+                    </tr>
+                `;
+            });
+
+            tableHTML += `
+                    </tbody>
+                </table>
+            `;
+
+            return tableHTML;
+        }
+
+        //charger les logs du domaine et renvoyer les entités pour l'affichage immédiat
+        async function loadDomainJSONLog(domain, logId) {
+            try {
+                const response = await fetch(`${domain}/logs.json`);
+                const jsonLog = await response.json();
+
+                // Préparer le contenu HTML pour afficher les entités dans le modal
+                let entitiesHTML = '<h3 class="text-lg font-medium mb-4">Entities in Log</h3>';
+                jsonLog.forEach((logEntry, index) => {
+                    entitiesHTML += `
+                        <div class="p-3 bg-gray-50 rounded-md mb-3 shadow-sm">
+                            <div class="font-medium"> ${logEntry.entity}</div>
+                            <div class="mb-2">Corresponding Entity: ${logEntry.correspondingEnt}</div>
+                            <button class="related-chunks-link text-blue-600 text-sm hover:underline" data-index="${index}" data-log-id="${logId}">
+                                See related chunks
+                            </button>
+                            <div class="chunks-display hidden p-3 mt-2 bg-gray-100 rounded" id="chunks-${logId}-${index}">
+                                ${logEntry.chunkCount.map((chunk, chunkIndex) => 
+                                    `<div class="mb-2"><span class="font-medium">Chunk ${chunkIndex + 1}:</span> ${chunk}</div>`
+                                ).join('')}
+                            </div>
+                        </div>
+                    `;
+                });
+
+                // Mettre à jour les logs spécifiques de ce message
+                messageLogs[logId].jsonLog = entitiesHTML;
+                messageLogs[logId].entities = jsonLog;
+
+                setTimeout(() => {
+                    addRelatedChunksListeners();
+                }, 100);
+
+                return jsonLog; 
+
+            } catch (error) {
+                console.error('Error loading JSON log:', error);
+                messageLogs[logId].jsonLog = '<div class="text-red-500">Erreur de chargement du fichier log.json</div>';
+                return null;
+            }
+        }
+
+        
+        function highlightEntitiesInText(text, entities) {
+            if (!entities || entities.length === 0) return text;
+            
+            // s'assurer de prendre les mots en entier
+            const entitiesPattern = entities.map(entity => {
+                
+                const escapedEntity = entity.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                
+                return `\\b${escapedEntity}\\b`;
+            }).join('|');
+            
+            
+            const regex = new RegExp(entitiesPattern, 'gi');
+            
+            //surligner chaque occurence
+            return text.replace(regex, match => `<span class="entity-highlight">${match}</span>`);
+        }
+
+        
+        async function detectEntitiesInResponse(botResponse) {
+            try {
+                const response = await fetch('http://localhost:5000/responseEntityDetection', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ 
+                        response: botResponse
+                    })
+                });
+                
+                const data = await response.json();
+                console.log('Entities detected in response:', data.entities);
+                return data.entities || []; 
+                
+            } catch (error) {
+                console.error('Error detecting entities in response:', error);
+                return [];
+            }
+        }
+
+        
+        function openInfoModal(logId) {
+            const log = messageLogs[logId];
+            
+            // Créer le contenu de la fenêtre modale
+            modalText.innerHTML = `
+                <div class="space-y-4">
+                    <div class="p-4 bg-blue-50 rounded-md">
+                        <h4 class="font-medium text-blue-800 mb-1">Bot Response:</h4>
+                        <div class="text-gray-700 markdown-content">${log.botResponse}</div>
+                    </div>
+                    
+                    <div class="p-4 bg-gray-50 rounded-md">
+                        <h4 class="font-medium text-gray-800 mb-1">User Message:</h4>
+                        <div class="text-gray-700">${log.userMessage}</div>
+                    </div>
+                    
+                    <div class="mt-4">
+                        ${log.jsonLog || "<div class='text-gray-500 italic'>No log information available.</div>"}
+                    </div>
+                </div>
+            `;
+            
+            
+            modal.classList.remove('hidden');
+
+            
+            setTimeout(() => {
+                renderMarkdown();
+                addRelatedChunksListeners();
+            }, 100);
+        }
+
+        
+        async function changeDomain(domain) {
+            selectedDomain = domain;
+            
+            
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('bg-blue-600', 'text-white');
+                button.classList.remove('bg-gray-200', 'text-gray-700');
+                
+                if (button.getAttribute('data-domain') === domain) {
+                    button.classList.add('bg-blue-600', 'text-white');
+                } else {
+                    button.classList.add('bg-gray-200', 'text-gray-700');
+                }
+            });
+            
+            
+            const chatBox = document.getElementById("chat-box");
+            chatBox.innerHTML = "";
+
+            try {
+                const timeResponse = await fetch('http://localhost:5000/currentTime', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+                const time = await timeResponse.json();
+                
+                
+                const logList = document.getElementById("log-list");
+                const userLog = document.createElement("li");
+                userLog.className = "text-gray-600";
+                userLog.textContent = time.response + " - domain set to " + domain;
+                logList.appendChild(userLog);
+            } catch (error) {
+                console.error('Error fetching current time:', error);
+            }
+        }
+
+        function add_zero(n) {
+            return n < 10 ? '0' + n : n;
+        }
+
+       
+        function renderMarkdown() {
+            document.querySelectorAll('.markdown-content').forEach(element => {
+                
+                const originalContent = element.innerHTML;
+                
+                
+                element.innerHTML = marked.parse(originalContent);
+            });
+        }
+
+        async function sendMessage() {
+            const userInput = document.getElementById("user-input").value;
+            if (userInput.trim() === "") return;
+
+            const nChunks = document.getElementById("nChunks").value;
+            const showMoreInfo = document.getElementById("moreInfo").checked;
+
+            //afficher le message de l'utilisateur
+            const chatBox = document.getElementById("chat-box");
+            const userMessage = document.createElement("div");
+            userMessage.className = "p-3 bg-blue-100 rounded-lg max-w-[75%] ml-auto";
+            userMessage.textContent = userInput;
+            chatBox.appendChild(userMessage);
+
+            // "Thinking..."
+            const thinkingMessage = document.createElement("div");
+            thinkingMessage.className = "p-3 bg-gray-100 rounded-lg max-w-[75%] animate-pulse";
+            thinkingMessage.textContent = "Thinking...";
+            chatBox.appendChild(thinkingMessage);
+
+            //mettre le message dans les logs
+            const logList = document.getElementById("log-list");
+            const userLog = document.createElement("li");
+            userLog.className = "text-gray-600";
+            var d = new Date();
+            userLog.textContent = d.getFullYear() + "-" + add_zero(d.getMonth() + 1) + "-" + add_zero(d.getDate()) + " " + 
+                                add_zero(d.getHours()) + ":" + add_zero(d.getMinutes()) + ":" + add_zero(d.getSeconds()) + 
+                                " - " + userInput;
+            logList.appendChild(userLog);
+
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            try {
+                const response = await fetch('http://localhost:5000/ask', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ 
+                        prompt: userInput, 
+                        domain: selectedDomain,
+                        nChunks: parseInt(nChunks)
+                    })
+                });
+                const data = await response.json();
+
+                const logId = `log-${++logCounter}`;
+                messageLogs[logId] = {
+                    userMessage: userInput,
+                    botResponse: data.response,
+                    jsonLog: "",
+                };
+
+                chatBox.removeChild(thinkingMessage);
+
+                if (showMoreInfo) {
+                    
+                    const entityData = await loadDomainJSONLog(selectedDomain, logId);
+                    
+                    if (entityData && entityData.length > 0) {
+                        
+                        const entityInfoDiv = document.createElement("div");
+                        entityInfoDiv.className = "p-3 bg-yellow-50 rounded-lg max-w-[75%] mb-3 border border-yellow-200";
+                        
+                        const infoTitle = document.createElement("h4");
+                        infoTitle.className = "font-medium text-yellow-800 mb-2";
+                        infoTitle.textContent = "Entities Detected:";
+                        entityInfoDiv.appendChild(infoTitle);
+                        
+                        entityInfoDiv.innerHTML += createEntitiesTable(entityData);
+                        
+                        chatBox.appendChild(entityInfoDiv);
+                    }
+                    
+                    const responseEntities = await detectEntitiesInResponse(data.response);
+                    
+                    
+                    if (responseEntities.length > 0) {
+                       
+                        const botMessage = document.createElement("div");
+                        botMessage.className = "p-3 bg-gray-100 rounded-lg max-w-[75%] markdown-content";
+                        
+                        const highlightedResponse = highlightEntitiesInText(data.response, responseEntities);
+                        botMessage.innerHTML = highlightedResponse;
+                        chatBox.appendChild(botMessage);
+                        
+                        //légende
+                        const legendDiv = document.createElement("div");
+                        legendDiv.className = "entity-legend ml-2 mt-1";
+                        legendDiv.innerHTML = `
+                            <span class="entity-legend-box"></span>
+                            <span>Detected entities</span>
+                        `;
+                        chatBox.appendChild(legendDiv);
+                        
+                        
+                        messageLogs[logId].responseEntities = responseEntities;
+                    } else {
+                        const botMessage = document.createElement("div");
+                        botMessage.className = "p-3 bg-gray-100 rounded-lg max-w-[75%] markdown-content";
+                        botMessage.textContent = data.response;
+                        chatBox.appendChild(botMessage);
+                    }
+                } else {
+                    loadDomainJSONLog(selectedDomain, logId);
+                    
+                    const botMessage = document.createElement("div");
+                    botMessage.className = "p-3 bg-gray-100 rounded-lg max-w-[75%] markdown-content";
+                    botMessage.textContent = data.response;
+                    chatBox.appendChild(botMessage);
+                }
+                
+                renderMarkdown();
+                
+                chatBox.scrollTop = chatBox.scrollHeight;
+
+                //log
+                const botLog = document.createElement("li");
+                botLog.className = "flex items-center";
+                
+                const logText = document.createElement("span");
+                logText.className = "text-gray-600 mr-2";
+                var d2 = new Date();
+                logText.textContent = d2.getFullYear() + "-" + add_zero(d2.getMonth() + 1) + "-" + add_zero(d2.getDate()) + " " + 
+                                add_zero(d2.getHours()) + ":" + add_zero(d2.getMinutes()) + ":" + add_zero(d2.getSeconds()) + 
+                                " - response : ";
+                botLog.appendChild(logText);
+
+                // plus d'info
+                const moreInfoLink = document.createElement("span");
+                moreInfoLink.textContent = "See logs";
+                moreInfoLink.className = "text-blue-600 hover:underline cursor-pointer text-sm";
+                moreInfoLink.setAttribute('data-log-id', logId);
+
+                moreInfoLink.onclick = function() {
+                    openInfoModal(logId);
+                };
+
+                botLog.appendChild(moreInfoLink);
+                logList.appendChild(botLog);
+
+            } catch (error) {
+                console.error('Erreur:', error);
+                
+                chatBox.removeChild(thinkingMessage);
+                const errorMessage = document.createElement("div");
+                errorMessage.className = "p-3 bg-red-100 text-red-700 rounded-lg max-w-[75%]";
+                errorMessage.textContent = "Erreur.";
+                chatBox.appendChild(errorMessage);
+            }
+
+            document.getElementById("user-input").value = '';
+        }
+
+        // appui sur la touche entrée
+        document.getElementById("user-input").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                sendMessage();
+            }
+        });
+    </script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
+</body>
+</html>

@@ -1,5 +1,4 @@
 import spacy
-#from langchain.embeddings import HuggingFaceEmbeddings
 import numpy as np
 from spacy.tokens import Span
 import re
@@ -14,17 +13,15 @@ from rdflib.namespace import SKOS
 REL = Namespace("http://relations.example.org/")
 WD = Namespace("http://www.wikidata.org/wiki/")
 
-def divide_text(text, max_size=999999):
+def divide_text(text, max_size=999999):# to divide the text into parts of max_size characters
     res = []
     if len(text) <= max_size:
         res.append(text)
         return res
     else:
         print("DIVISION")
-        # mettre les max_size premiers caractères dans un chunk
         res.append(text[:max_size])
         text = text[max_size:]
-        # diviser le reste du texte
         res += divide_text(text, max_size)
         return res
     
@@ -130,35 +127,22 @@ def add_entity_linked_to_graph(graph_path,graph_destination, text):
     graph.serialize(destination= graph_destination, format='turtle')
 
 
-# def link_wikiData_entities_to_chunks(graph_path, graph_destination):
-#     graph = Graph()
-#     graph.parse(graph_path, format='turtle')
-#     #ajouter les liens entre les entités et les chunks
-#     for s, p, o in graph.triples((None, RDF.type, None)):
-#         if "wikidata" in str(o):
-#             entity = s
-#             print("entity : ", entity)
-#             for s2, p2, o2 in graph.triples((None, REL.mentionedIn, None)):
-#                 chunk = s2
-#                 print("chunk : ", chunk)
-#                 graph.add((entity, REL.mentionedIn, chunk))
-#     graph.serialize(destination= graph_destination, format='turtle')
+
 
 def link_wikiData_entities_to_chunks(graph_path, graph_destination):
     graph = Graph()
     graph.parse(graph_path, format='turtle')
 
-    # Parcourir toutes les entités Wikidata
+    
     for entity, _, entity_type in graph.triples((None, RDF.type, None)):
         if "wikidata" in str(entity_type):
-            # Récupérer le prefLabel de l'entité
             entity_pref_label = None
             for _, _, label in graph.triples((entity, SKOS.prefLabel, None)):
                 entity_pref_label = str(label).strip().lower()
                 break
 
             if not entity_pref_label:
-                continue  # Passer si l'entité n'a pas de prefLabel
+                continue  # skip if no prefLabel
 
             print(f"Traitement de l'entité : {entity_pref_label}")
 
@@ -171,12 +155,11 @@ def link_wikiData_entities_to_chunks(graph_path, graph_destination):
                     break
 
                 if not chunk_pref_label:
-                    continue  # Passer si le chunk n'a pas de prefLabel
+                    continue  # skip if no  prefLabel for the chunk
 
-                # Vérifier si le prefLabel de l'entité est contenu dans celui du chunk
+                # chinking if prefLabel of entity is in chunk prefLabel
                 if entity_pref_label in chunk_pref_label:
                     print(f" {entity} rel:mentionedIn {chunk}")
                     graph.add((entity, REL.mentionedIn, chunk))
 
-    # Sauvegarder le graphe mis à jour
     graph.serialize(destination=graph_destination, format='turtle')

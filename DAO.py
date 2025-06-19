@@ -12,6 +12,8 @@ class FaissDAO:
         embedding = np.array(embedding, dtype=np.float32).reshape(1, self.dim)
         self.index.add(embedding)
         self.labels.append(label)
+
+   
    
     def save_index(self, index_file):
 
@@ -56,3 +58,29 @@ class FaissDAO:
         
         return results, valid_distances
 
+    def remove(self, label):
+
+        try:
+            #find the index of the label to remove
+            label_index = self.labels.index(label)
+        except ValueError:
+            print(f"Label '{label}' non trouvé dans l'index")
+            return False
+        
+        # retrieve the embedding corresponding to the label
+        embeddings_array = np.zeros((self.index.ntotal, self.dim), dtype=np.float32)
+        for i in range(self.index.ntotal):
+            embeddings_array[i] = self.index.reconstruct(i)
+        
+        # remove the label and its corresponding embedding
+        self.labels.pop(label_index)
+        embeddings_array = np.delete(embeddings_array, label_index, axis=0)
+        
+        # recreate the index with the remaining embeddings
+        self.index = faiss.IndexFlatL2(self.dim)
+        
+        if len(embeddings_array) > 0:
+            self.index.add(embeddings_array)
+        
+        print(f"Label '{label}' supprimé avec succès")
+        return True

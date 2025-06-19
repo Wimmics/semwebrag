@@ -5,25 +5,6 @@ from langchain_core.prompts import ChatPromptTemplate
 import requests
 
 
-# def chat_completion(question: str):
-#   key = ''
-#   with open("key.txt", "r", encoding="utf-8") as file:
-#     key = file.read()
-#   model = ChatMistralAI(model="Meta-Llama-3_1-70B-Instruct", 
-#                         api_key=key,
-#                         endpoint='https://llama-3-1-70b-instruct.endpoints.kepler.ai.cloud.ovh.net/api/openai_compat/v1', 
-#                         max_tokens=1500)
-
-#   prompt = ChatPromptTemplate.from_messages([
-#     ("system", "You are Nestor, a virtual assistant. Answer to the question by using the contexte given bellow."),
-#     ("human", "{question}"),
-#   ])
-
-#   chain = prompt | model
-
-#   response = chain.invoke(question)
-
-#   print(f" {response.content}")
 
 
 def chat_completion(question: str):
@@ -67,4 +48,3 @@ if __name__ == '__main__' :
 
     chat_completion(text)
 
-    
