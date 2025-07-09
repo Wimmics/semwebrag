@@ -11,4 +11,4 @@ query = argv[1]
 nChunks = int(argv[2])
 
 
-medical.pipelineLinkerM.process_query(query,"medical/outputLinkerLinkedM.ttl", neighborChunks=nChunks)#, embeddings) 
+medical.pipelineLinkerM.process_query(query,"medical/outputLinkerLinked.ttl", neighborChunks=nChunks)#, embeddings) 

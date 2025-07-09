@@ -2,7 +2,7 @@ question :
 
 
 
-what is the main cause of HIV transmission on children
+editors editors editors Editors Editors
 
 
 
@@ -10,35 +10,6 @@ context :
 
 
 
-Mother-to-child transmission (MTCT) is the main cause of HIV-1 infection in children worldwide.
-In the most heavilyaffected countries, such as Zimbabwe, HIV-1 is responsible for one third of all deaths among children under the age of five.
-Given that the C-type lectin receptor, dendritic cell-specific ICAM-grabbing non-integrin-related (DC-SIGNR, also known as CD209L or liver/lymph node–specific ICAM-grabbing non-integrin (L-SIGN)), can interact with pathogens including HIV-1 and is expressed at the maternal-fetal interface, we hypothesized that it could influence MTCT of HIV-1.
-The implicated H1 and H3 haplotypes share two single nucleotide polymorphisms (SNPs) in promoter region (p-198A) and intron 2 (int2-180A) that were associated with increased risk of both IU (P = 0.045 and P = 0.003, respectively) and IP (P = 0.025, for int2-180A) HIV-1 infection.
-UNAIDS estimates that last year alone, more than 400,000 children were infected worldwide, mostly through MTCT and 90% of them lived in sub-Saharan Africa.
-CONCLUSION: These results suggest that DC-SIGNR plays a crucial role in MTCT of HIV-1 and that impaired placental DC-SIGNR expression increases risk of transmission.\n\nText: Without specific interventions, the rate of HIV-1 mother-tochild transmission (MTCT) is approximately 15-45% [1] .
-In homozygous H1 infants bearing both the p-198A and int2-180A mutations, we observed a 4-fold decrease in the level of placental DC-SIGNR transcripts, disproportionately affecting the expression of membrane-bound isoforms compared to infant noncarriers (P = 0.011).
-To investigate the potential role of DC-SIGNR in MTCT of HIV-1, we carried out a genetic association study of DC-SIGNR in a well-characterized cohort of 197 HIV-infected mothers and their infants recruited in Harare, Zimbabwe.
-BACKGROUND:
-Functional Genetic Variants in DC-SIGNR Are Associated with Mother-to-Child Transmission of HIV-1\n\nhttps://www.ncbi.nlm.nih.gov/pmc/articles/PMC2752805/\n\nBoily-Larouche, Geneviève; Iscache, Anne-Laure; Zijenah, Lynn S.; Humphrey, Jean H.; Mouland, Andrew J.; Ward, Brian J.; Roger, Michel\n2009-10-07\nDOI:10.1371/journal.pone.0007211\nLicense:cc-by\n\nAbstract:
-METHODS AND FINDINGS:
-Infants harbouring two copies of DC-SIGNR H1 and/or H3 haplotypes (H1-H1, H1-H3, H3-H3) had a 3.6-fold increased risk of in utero (IU) (P = 0.013) HIV-1 infection and a 5.7-fold increased risk of intrapartum (IP) (P = 0.025) HIV-1 infection after adjusting for a number of maternal factors.
-The promoter variant reduced transcriptional activity in vitro.
-To investigate the potential role of DC-SIGNR in MTCT of HIV-1, we carried out a genetic association study of DC-SIGNR in a well-characterized cohort of HIV-infected mothers and their infants recruited in Zimbabwe, and identified specific DC-SIGNR variants associated with increased risks of HIV transmission.
-DC-SIGNR is organized in three distinct domains, an N-terminal cytoplasmic tail, a repeat region containing seven repeat of 23 amino acids and a C-terminal domain implicated in pathogen binding.
-Although antiretrovirals can reduce MTCT to 2%, limited access to timely diagnostics and drugs in many developing world countries limits the potential impact of this strategy.
-Of the 97 HIV-1-infected infants, 57 were infected IU, 11 were infected IP, and 17 were infected PP as determined by PCR analyses of blood samples collected at birth, 6 weeks, 3 and 6 months of age and according to the following definitions adapted from Bryson and colleagues
-Alternative splicing of DC-SIGNR gene leads to the production of a highly diversify isoforms repertoire which includes membrane-bound and soluble isoforms [3] .
-[2] but DC-SIGNR can also internalize and mediate proteasome-dependant degradation of viruses [4] that may differently affect the outcome of infection.\n\nGiven the presence of DC-SIGNR at the maternal-fetal interface and its interaction with HIV-1, we hypothesized that it could influence MTCT of HIV-1.
-It has been proposed that interaction between DC-SIGNR and HIV-1 might enhance viral transfer to other susceptible cell types
-100 infants were considered to be uninfected as they were ELISA negative at 18 months or older and had two DNA PCR negative results from samples collected at a younger age.
-Mother's serological status was determined by ELISA and confirmed by Western Blot.
-Antiretroviral prophylaxis for HIV-1-positive antenatal women was not available in the Harare public-sector during ZVITAMBO patient recruitment.
-We further characterized the functional impact of these genetic variants on DC-SIGNR expression and show that they affect both the level and type of DC-SIGNR transcripts produced in the placenta.\n\nSamples consisted of stored DNA extracts obtained from 197 mother-child pairs co-enrolled immediately postpartum in the ZVITAMBO Vitamin A supplementation trial (Harare, Zimbabwe) and followed at 6 weeks, and 3-monthly intervals up to 24 months.
-The samples were consecutively drawn from two groups: 97 HIV-1-positive mother/HIV-1-positive child pairs and 100 HIV-1-positive mother/HIV-negative child pairs.
-A better understanding of the mechanisms acting at the maternal-fetal interface is crucial for the design of alternative interventions to antiretroviral therapy for transmission prevention.\n\nDendritic cell-specific ICAM-grabbing non-integrin-related (DC-SIGNR, also known as CD209L or liver/lymph node-specific ICAM-grabbing non-integrin (L-SIGN)) can interact with a plethora of pathogens including HIV-1 and is expressed in placental capillary endothelial cells [2] .
-Infants were considered to be infected if they were HIV-1 seropositive at 18 months or older and had two or more positive HIV-1-DNA polymerase chain reaction (PCR) results at earlier ages.
-High maternal viral load, low CD4 cells count, vaginal delivery, low gestational age have all been identified as independent factors associated with MTCT of HIV-1 [1] .
-MTCT of HIV-1 can occur during pregnancy (in utero, IU), delivery (intrapartum, IP) or breastfeeding (postpartum, PP).
-The samples used in the present study were from mother-child pairs randomly assigned to the placebo group of the ZVITAMBO project.
-The ZVITAMBO project was a randomized placebocontrolled clinical trial that enrolled 14,110 mother-child pairs, between November 1997 and January 2000, with the main objective of investigating the impact of immediate postpartum vitamin A supplementation on MTCT of HIV-1.
-[5] .
+New Online Current Issue
+JOURNAL INFORMATION
+For Authors Editors & Publishers

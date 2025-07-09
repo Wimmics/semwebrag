@@ -2,5 +2,6 @@ venv/
 key.txt
 keyback.txt
 key1.txt
+keyForgeron.txt
 sonar-project.properties
 .scannerwork/

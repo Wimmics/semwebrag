@@ -1,0 +1,53 @@
+question :
+
+
+
+What may be a likely cause of sink-to-sink spreading of pathogens in the hospital setting?
+
+
+
+context : 
+
+
+
+In summary, this work for the first time better models the mechanisms of spread of multidrug-resistant pathogens arising from the sink drain and infecting patients.
+
+This would require additional testing and is planned as future work.
+
+
+
+Droplet dispersion from the P-trap does not happen directly.
+
+We also did not completely characterize the droplet sizes, nor do we demonstrate air sampling to understand if the dispersion is only droplet or if there are also aerosols that contain GFP-expressing E. coli.
+
+Rather it is a multistage process: dispersal originates from the strainer and/or the bowl after growth of the biofilm up from the microbial reservoir of the P-trap.
+
+We are not clear how widespread the practice of disposing of dextrose-containing intravenous fluids or leftover beverages in the hand-wash sinks is; however, we have observed this practice, and anecdotally it appears to be relatively common in the United States.
+
+We also demonstrate sink-to-sink transmission via a common sanitary pipe.
+
+Another limitation was the need to add nutrients to the drain to ensure rapid and robust colonization.
+
+This work could have implications for patient safety, infection control, and interventions as well as the design of future hospital plumbing systems to eliminate this mode of transmission to vulnerable hospitalized patients.
+
+
+
+However, to address the monomicrobial dominance of the GFP-expressing E. coli added to the system, we kept the system open, and other environmental organisms were able to cocolonize in an attempt to mimic the hospital system.
+
+Sink gallery design.
+
+GFP-expressing E. coli is a laboratory surrogate, and the putative biofilms established in the short time frame of our experiments are unlikely to be as complex or stable as biofilms developed in a hospital wastewater system over many years.
+
+A dedicated sink gallery was set up to simulate hospital hand-washing sinks.
+
+However, we speculate that transmission could occur on larger systems over greater time scales, especially if heavy nutrient and contamination loads were also included.
+
+The gallery was comprised of five sink modules assembled next to each other (Fig. 4) .
+
+Similarly the sink-to-sink transmission may not be applicable to all wastewater plumbing systems as the fixtures on the pipe are very close together, unlike most layouts in health care settings.
+
+The five hand-wash sink stations were identical in bowl designs and dimensions and were modeled from the most common intensive care unit hand-washing sink type in the acute care hospital at the University of Virginia Medical Center.
+
+First the use of similar sink bowls across these sinks only examines the dispersion pattern of this particular sink design.
+
+Partitions made of 24-in.-high Plexiglas sheet were installed between the sinks to prevent splatter and cross contamination.

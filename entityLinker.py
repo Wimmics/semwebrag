@@ -57,6 +57,7 @@ def extract_key_phrases(doc, nlp):
 
 
 def add_entity_linked_to_graph(graph_path,graph_destination, text):
+   
     REL = Namespace("http://relations.example.org/")
     WD = Namespace("http://www.wikidata.org/wiki/")
 
@@ -130,6 +131,7 @@ def add_entity_linked_to_graph(graph_path,graph_destination, text):
 
 
 def link_wikiData_entities_to_chunks(graph_path, graph_destination):
+    wiki_label_list = []
     graph = Graph()
     graph.parse(graph_path, format='turtle')
 
@@ -160,6 +162,9 @@ def link_wikiData_entities_to_chunks(graph_path, graph_destination):
                 # chinking if prefLabel of entity is in chunk prefLabel
                 if entity_pref_label in chunk_pref_label:
                     print(f" {entity} rel:mentionedIn {chunk}")
+                    wiki_label_list.append(entity_pref_label)
+                    print ("wikiLabel added in list : ", entity_pref_label)
                     graph.add((entity, REL.mentionedIn, chunk))
 
     graph.serialize(destination=graph_destination, format='turtle')
+    return wiki_label_list

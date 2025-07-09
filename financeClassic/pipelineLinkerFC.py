@@ -122,16 +122,11 @@ def process_query(query_text, rdf_graph_path, embeddings_model=embeddings, outpu
             if chunk_index + i < len(chunks):
                 correspondingEnt.append(chunks[chunk_index + i])
 
-    
     for i, ent in enumerate(correspondingEnt):
         print(f"Entité {i+1} : {ent} (distance : ")#{distance[i]})")
         if ent not in chunks_already_mentioned:
             enriched_results.append(f"{ent}\n")
             chunks_already_mentioned.append(ent)
-   
-
-
-
 
     entity_data = {
         'entity': query_text,
@@ -141,8 +136,6 @@ def process_query(query_text, rdf_graph_path, embeddings_model=embeddings, outpu
     wikidatautils.add_to_json_file("financeClassic/logs.json", entity_data)
 
 
-
-    
     with open(output_file, "w", encoding="utf-8") as f:
         f.write("\n".join(enriched_results))
 
@@ -159,13 +152,6 @@ def process_query(query_text, rdf_graph_path, embeddings_model=embeddings, outpu
 # build_knowledge_graph_aligned_with_ontology(text, "financeClassic/dev.fibo-quickstart.ttl", nlp, "financeClassic/knowledge_graphNoWiki.ttl", embeddings)
 # remove_useless_owl_things("finance/outputLinkerLinked.ttl", "finance/outputLinkerLinked.ttl")
 
-
-
-
-
-
-
- 
 # process_query("What are the main domains of NVIDIA","finance/outputLinkerLinked.ttl", embeddings, neighborChunks=5)
 
 

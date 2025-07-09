@@ -174,13 +174,14 @@ def build_knowledge_graph_aligned_with_ontology(text,ontology_path, nlp, rdf_pat
     
     # Ajouter les entités du texte et les relier aux chunks
     for i, ent in enumerate(entities):
-        print("inesertion des entités et leur embedding dans le DAO")
+        print("insertion des entités et leur embedding dans le DAO")
         DAO.insert(ent.text, embeddings.embed_query(ent.text))
         # Créer URI pour l'entité extraite du texte
         entity_uri = URIRef(f"http://example.org/entity/{entityForURIRef[i]}")
         
         #récupérer l'entité correspondante
         ontology_entity, similarity = entityRetriever(embeddings.embed_query(ent.text), ontologyEmbeddings,ontologyEntities)
+
         
         # Ajouter l'entité au graphe
         g.add((entity_uri, SKOS.prefLabel, Literal(ent.text)))
@@ -208,13 +209,58 @@ def build_knowledge_graph_aligned_with_ontology(text,ontology_path, nlp, rdf_pat
 
    
     g.serialize(destination=rdf_path, format="turtle")
-    entityLinker.add_entity_linked_to_graph(rdf_path, "medical/outputLinkerM.ttl", text)
-    entityLinker.link_wikiData_entities_to_chunks("medical/outputLinkerM.ttl", "medical/outputLinkerLinkedM.ttl")
+    entityLinker.add_entity_linked_to_graph(rdf_path, "medical/outputLinker.ttl", text)
+    wiki_label_list = entityLinker.link_wikiData_entities_to_chunks("medical/outputLinker.ttl", "medical/outputLinkerLinked.ttl")
+
+    for label in wiki_label_list:
+        if label not in wikidataLabelList:
+            wikidataLabelList.append(label)
+            DAO.insert(label, embeddings.embed_query(label))
+
+
+
+
+    #prendre les entités wikidata, leur label, et s'ils ne sont pas déjà dans le DAO, les ajouter
+    print("Récupération des entités Wikidata et de leurs labels ...")
+
+
+    
+    # _, neighborList = wikidatautils.add_wikidata_neighbors_to_graph("medical/outputLinkerLinked_tmp.ttl", output_path="medical/outputLinkerLinked.ttl" )  
+    # wikidatautils.make_property_stats("medical/outputLinkerLinked.ttl", "medical/property_stats.json")
+    # neighborLabelList = wikidatautils.filter_neigbor("medical/outputLinkerLinked.ttl", "medical/property_stats.json", "medical/outputLinkerLinked.ttl", wikidatautils.calculate_quantiles_on_property_stats("medical/property_stats.json"))
+
+    # for label in neighborLabelList:
+    #     DAO.insert(label, embeddings.embed_query(label))
+        
+
+
     #g.serialize(destination=rdf_path, format="turtle")
     print(f"Graphe sauvegardé, {len(g)} triplets.")
 
     DAO.save_index("medical/embeddings.index")
+    convert_wikidata_with_regex("medical/outputLinkerLinked.ttl", "medical/outputLinkerLinked.ttl")
+
     return g
+
+def convert_wikidata_with_regex(input_file, output_file):
+
+  
+    with open(input_file, 'r', encoding='utf-8') as f:
+        content = f.read()
+    
+
+    pattern = r'wd:Q(\d+)(?![a-zA-Z])'
+    
+
+    transformed = re.sub(pattern, r'<https://www.wikidata.org/wiki/Q\1>', content)
+
+    with open(output_file, 'w', encoding='utf-8') as f:
+        f.write(transformed)
+    
+    print(f"Conversion terminée : {output_file} créé avec succès.")
+
+
+
 
 def extract_labels_from_graph(graph):
     labelList = []
@@ -316,10 +362,11 @@ def process_query(query_text, rdf_graph_path, embedding_model=embeddings, output
     return "\n".join(enriched_results)
 
 # à commenter pour pas reconstruire le graphe
-#build_knowledge_graph_aligned_with_ontology(text, "medical/ATC.ttl", nlp, "medical/knowledge_graphNoWiki.ttl", embeddings)
+# build_knowledge_graph_aligned_with_ontology(text, "medical/ATC.ttl", nlp, "medical/knowledge_graphNoWiki.ttl", embeddings)
+# build_knowledge_graph_aligned_with_ontology(text, "medical/ATC.ttl", nlp, "medical/knowledge_graphNoWiki.ttl", embeddings)
 
 print ("enrichissement de la requête ...")
 
-#process_query("How many children were infected by HIV-1 in 2008-2009, worldwide? ", "outputLinkerLinked.ttl", embeddings)
+# process_query("How many children were infected by HIV-1 in 2008-2009, worldwide? ", "medical/outputLinkerLinked.ttl", embeddings)
 # process_query("what is the predominant factor of aids infection on kids? ","knowledge_graph.ttl", embeddings) 
 # process_query("what is the main cause of AIDs infection on childs ?","medical/outputLinkerLinkedM.ttl", embeddings) 

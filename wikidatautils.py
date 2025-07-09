@@ -5,7 +5,7 @@ import rdflib
 import os
 import json
 import time
-from rdflib import Namespace, RDF, OWL, RDFS, URIRef, Literal
+from rdflib import Namespace, RDF, OWL, RDFS, URIRef, Literal,Graph
 import statistics
 
 def get_uri_wikidata(entite, langue="en"): # doit forcement retourner une URI wikidata
@@ -127,54 +127,43 @@ def retrieve_mentioned_chunks(graph_path, entity, chunk_already_Mentionned, neig
     
     mentioned_chunks = set() 
 
+    query = """
+    PREFIX ex: <http://example.org/>
+    SELECT ?entity ?chunk ?label WHERE {
+    {
+    
+        ?entity rel:mentionedIn ?chunk .
+        ?chunk skos:prefLabel ?label .
+        FILTER (CONTAINS(LCASE(str(?label)), LCASE(str(?entity_label))))
+    }
+    }
+    
+    """
+
+
     # query = """
-    # PREFIX ex: <http://example.org/>
+
+    # PREFIX ex: <http://example.org/> 
+    # PREFIX rel: <http://relations.example.org/> 
+    # PREFIX skos: <http://www.w3.org/2004/02/skos/core#> 
+
     # SELECT ?entity ?chunk ?label WHERE {
     # {
-    
-    #     ?entity rel:mentionedIn ?chunk .
-    #     ?chunk skos:prefLabel ?label .
-    #     FILTER (CONTAINS(LCASE(str(?label)), LCASE(str(?entity_label))))
-    # }
+    # ?entity rel:mentionedIn ?chunk .
+    # ?chunk skos:prefLabel ?label .
+    # FILTER (CONTAINS(LCASE(str(?label)), LCASE(str(?entity_label)))) }
+
     # UNION
     # {
-    #     ?entity ex:isWikidataNeighborOf ?wikidata_uri .
-    #     ?entity skos:prefLabel ?label2 .
-
-        
-    #     ?mentioned_entity a ?wikidata_uri .
-        
-    #     ?mentioned_entity rel:mentionedIn ?chunk .
-    #     ?chunk skos:prefLabel ?label .
-    #     FILTER (CONTAINS(LCASE(str(?label2)), LCASE(str(?entity_label))))
+    # ?entity skos:prefLabel ?label2 .
+    # ?entity ex:isWikidataNeighborOf ?neighbor_entity .
+    # ?neighbor a ?neighbor_entity .
+    # ?neighbor rel:mentionedIn ?chunk .
+    # OPTIONAL{?chunk skos:prefLabel ?label} . 
+    # FILTER (CONTAINS(LCASE(str(?label2)), LCASE(str(?entity_label))) && bound(?label)) .
     # }
     # }
     # """
-
-
-    query = """
-
-    PREFIX ex: <http://example.org/> 
-    PREFIX rel: <http://relations.example.org/> 
-    PREFIX skos: <http://www.w3.org/2004/02/skos/core#> 
-
-    SELECT ?entity ?chunk ?label WHERE {
-    {
-    ?entity rel:mentionedIn ?chunk .
-    ?chunk skos:prefLabel ?label .
-    FILTER (CONTAINS(LCASE(str(?label)), LCASE(str(?entity_label)))) }
-
-    UNION
-    {
-    ?entity skos:prefLabel ?label2 .
-    ?entity ex:isWikidataNeighborOf ?neighbor_entity .
-    ?neighbor a ?neighbor_entity .
-    ?neighbor rel:mentionedIn ?chunk .
-    OPTIONAL{?chunk skos:prefLabel ?label} . 
-    FILTER (CONTAINS(LCASE(str(?label2)), LCASE(str(?entity_label))) && bound(?label)) .
-    }
-    }
-    """
 
     results = graph.query(query, initBindings={'entity_label': entity})
     print(f"Nombre de résultats trouvés : {len(results)}")
@@ -228,6 +217,7 @@ def retrieve_mentioned_chunks(graph_path, entity, chunk_already_Mentionned, neig
         
 
     return l, chunk_already_Mentionned
+
 
 
 
@@ -631,3 +621,107 @@ def calculate_quantiles_on_property_stats(property_stats_path):
 
 
 
+# def get_entity_info(graph_path, label):
+#     # Charge le graphe
+#     g = rdflib.Graph()
+#     g.parse(graph_path, format="turtle")
+
+#     # Définir le namespace SKOS manuellement puisque tu ne l’as pas importé explicitement
+#     SKOS = Namespace("http://www.w3.org/2004/02/skos/core#")
+
+#     # Parcourt les triplets pour trouver le prefLabel
+#     for s, p, o in g.triples((None, SKOS.prefLabel, None)):
+#         if str(o) == label:
+#             # Cherche le type RDF.type
+#             for _, _, t in g.triples((s, RDF.type, None)):
+#                 return f"{label} ({s}) is of type {t}"
+#             # Si pas de type trouvé
+#             return f"{label} ({s}) has no rdf:type"
+
+#     return f"No entity found with label '{label}'"
+
+
+
+
+def get_wikidata_info(wikidata_uri):
+    # Extraire l'ID Qxxxx
+    match = re.search(r'Q\d+', str(wikidata_uri))
+    if not match:
+        return {"label": None, "description": None, "aliases": []}
+
+    qid = match.group(0)
+
+    # SPARQL vers Wikidata
+    url = "https://query.wikidata.org/sparql"
+    query = f"""
+    SELECT ?label ?description ?alias WHERE {{
+      wd:{qid} rdfs:label ?label .
+      FILTER (lang(?label) = "en")
+      OPTIONAL {{
+        wd:{qid} schema:description ?description .
+        FILTER (lang(?description) = "en")
+      }}
+      OPTIONAL {{
+        wd:{qid} skos:altLabel ?alias .
+        FILTER (lang(?alias) = "en")
+      }}
+    }}
+    """
+    headers = {"Accept": "application/sparql-results+json"}
+    response = requests.get(url, params={"query": query}, headers=headers)
+    if response.status_code != 200:
+        return {"label": None, "description": None, "aliases": []}
+
+    results = response.json()["results"]["bindings"]
+
+    label = None
+    description = None
+    aliases = []
+
+    for result in results:
+        if 'label' in result:
+            label = result['label']['value']
+        if 'description' in result:
+            description = result['description']['value']
+        if 'alias' in result:
+            aliases.append(result['alias']['value'])
+
+    # Coupe la description si trop longue
+    if description and len(description) > 200:
+        description = description[:200] + "..."
+
+    return {"label": label, "description": description, "aliases": list(set(aliases))}
+
+
+def get_entity_info(graph_path, label):
+    g = rdflib.Graph()
+    g.parse(graph_path, format="turtle")
+
+    SKOS = Namespace("http://www.w3.org/2004/02/skos/core#")
+
+    for s, _, o in g.triples((None, SKOS.prefLabel, None)):
+        if str(o) == label:
+            for _, _, t in g.triples((s, RDF.type, None)):
+                t_str = str(t)
+                if "wikidata.org" in t_str:
+                    info = get_wikidata_info(t)
+                    type_label = info['label'] if info['label'] else t_str
+                    desc = info['description'] if info['description'] else "No description"
+                    aliases = ", ".join(info['aliases']) if info['aliases'] else "No aliases"
+                    return (
+                        f"{label} ({s}) is of type {type_label} ({t_str})\n"
+                        f"Description: {desc}\n"
+                        f"Also known as: {aliases}"
+                    )
+                else:
+                    return f"{label} ({s}) is of type {t_str} (non-Wikidata type)"
+
+            return f"{label} ({s}) has no rdf:type"
+
+    return f"No entity found with label '{label}'"
+
+
+# listtest = verbalize_rdf_types("finance/outputLinkerLinked.ttl")
+# print("Verbalizations:")
+# for v in listtest:
+#     print(v)

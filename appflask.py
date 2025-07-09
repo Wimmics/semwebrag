@@ -91,13 +91,11 @@ def run_in_venv_query(query, domain, nChunks=0) :
 
 app = Flask(__name__)
 
-# Activer CORS pour toutes les origines
 CORS(app)
-# CORS(app, resources={r"/*": {"origins": "*"}})
 
 @app.route('/ask', methods=['POST'])
 def ask():
-    # Récupérer la question envoyée par l'utilisateur
+    # retrieve the query
     data = request.get_json()
     user_prompt = data.get('prompt')
     domain = data.get('domain')

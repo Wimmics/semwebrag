@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comparaison des Métriques CSV</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen py-8">
+    <div class="container mx-auto px-4">
+        <h1 class="text-3xl font-bold text-gray-800 mb-8 text-center">Comparaison des Métriques d'Évaluation</h1>
+        
+        <div class="mb-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
+
+            
+            <input type="file" id="csvFileInput" multiple accept=".csv" 
+                   class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 file:cursor-pointer cursor-pointer">
+        </div>
+
+        <div id="fileList" class="hidden mb-6 bg-white rounded-lg shadow-sm border p-4">
+            <h3 class="text-lg font-semibold text-gray-800 mb-2">Fichiers chargés :</h3>
+            <div id="fileListContent" class="flex flex-wrap gap-2"></div>
+        </div>
+
+        <div id="loading" class="hidden text-center py-8">
+            <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+            <p class="mt-2 text-gray-600">Traitement des fichiers...</p>
+        </div>
+
+        <div id="tablesContainer" class="space-y-8"></div>
+        
+        <!-- <div id="summary" class="mt-8 hidden">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Résumé des Valeurs Optimales par nChunks</h2>
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">nChunks</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Métrique</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Valeur Optimale</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fichier</th>
+                            </tr>
+                        </thead>
+                        <tbody id="summaryTableBody" class="bg-white divide-y divide-gray-200">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+    <script>
+        let allData = {};
+        let optimalValuesByChunk = {};
+        let allMetrics = new Set();
+        let allChunks = new Set();
+
+        document.getElementById('csvFileInput').addEventListener('change', handleFiles);
+
+        function handleFiles(event) {
+            const files = Array.from(event.target.files);
+            if (files.length === 0) return;
+
+            displayFileList(files);
+
+            document.getElementById('loading').classList.remove('hidden');
+            document.getElementById('tablesContainer').innerHTML = '';
+            // document.getElementById('summary').classList.add('hidden');
+            
+            allData = {};
+            optimalValuesByChunk = {};
+            allMetrics.clear();
+            allChunks.clear();
+
+            let processedFiles = 0;
+            const totalFiles = files.filter(file => file.name.endsWith('.csv')).length;
+
+            files.forEach(file => {
+                if (file.name.endsWith('.csv')) {
+                    Papa.parse(file, {
+                        header: true,
+                        dynamicTyping: true,
+                        skipEmptyLines: true,
+                        complete: function(results) {
+                            const fileName = file.name.replace('.csv', '');
+                            allData[fileName] = results.data;
+                            
+                            if (results.data.length > 0) {
+                                Object.keys(results.data[0]).forEach(key => {
+                                    if (key !== 'nChunks') {
+                                        allMetrics.add(key);
+                                    }
+                                });
+                                
+                                results.data.forEach(row => {
+                                    if (row.nChunks !== undefined && row.nChunks !== null) {
+                                        allChunks.add(row.nChunks);
+                                    }
+                                });
+                            }
+                            
+                            processedFiles++;
+                            if (processedFiles === totalFiles) {
+                                calculateOptimalValuesByChunk();
+                                displayAllTables();
+                                // displaySummary();
+                                document.getElementById('loading').classList.add('hidden');
+                            }
+                        },
+                        error: function(error) {
+                            console.error('Erreur lors du parsing de', file.name, error);
+                            processedFiles++;
+                            if (processedFiles === totalFiles) {
+                                calculateOptimalValuesByChunk();
+                                displayAllTables();
+                                // displaySummary();
+                                document.getElementById('loading').classList.add('hidden');
+                            }
+                        }
+                    });
+                }
+            });
+        }
+
+        function displayFileList(files) {
+            const fileListDiv = document.getElementById('fileList');
+            const fileListContent = document.getElementById('fileListContent');
+            
+            fileListContent.innerHTML = '';
+            
+            files.forEach(file => {
+                if (file.name.endsWith('.csv')) {
+                    const badge = document.createElement('span');
+                    badge.className = 'inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800';
+                    badge.textContent = file.name;
+                    fileListContent.appendChild(badge);
+                }
+            });
+            
+            fileListDiv.classList.remove('hidden');
+        }
+
+        function calculateOptimalValuesByChunk() {
+            const higherIsBetterMetrics = ['METEOR', 'BLEU', 'BERT', 'ROUGE', 'OVERLAP', 'OVERLAPE'];
+            const lowerIsBetterMetrics = ['TEMPS'];
+
+            allChunks.forEach(chunk => {
+                optimalValuesByChunk[chunk] = {};
+                
+                allMetrics.forEach(metric => {
+                    let optimalValue = null;
+                    let optimalSource = '';
+                    let isHigherBetter = higherIsBetterMetrics.includes(metric);
+                    let isLowerBetter = lowerIsBetterMetrics.includes(metric);
+                    
+                    if (!isHigherBetter && !isLowerBetter) return;
+                    
+                    if (isHigherBetter) {
+                        optimalValue = -Infinity;
+                    } else if (isLowerBetter) {
+                        optimalValue = Infinity;
+                    }
+
+                    Object.keys(allData).forEach(fileName => {
+                        const rowForChunk = allData[fileName].find(row => row.nChunks === chunk);
+                        if (rowForChunk && rowForChunk[metric] !== undefined && rowForChunk[metric] !== null) {
+                            const value = rowForChunk[metric];
+                            
+                            if (isHigherBetter && value > optimalValue) {
+                                optimalValue = value;
+                                optimalSource = fileName;
+                            } else if (isLowerBetter && value < optimalValue) {
+                                optimalValue = value;
+                                optimalSource = fileName;
+                            }
+                        }
+                    });
+
+                    if (optimalValue !== -Infinity && optimalValue !== Infinity) {
+                        optimalValuesByChunk[chunk][metric] = {
+                            value: optimalValue,
+                            source: optimalSource
+                        };
+                    }
+                });
+            });
+        }
+
+        function displayAllTables() {
+            const container = document.getElementById('tablesContainer');
+            
+            Object.keys(allData).forEach((fileName, index) => {
+                const tableDiv = document.createElement('div');
+                tableDiv.className = 'bg-white rounded-lg shadow-md overflow-hidden mb-8';
+                
+                const data = allData[fileName];
+                if (data.length === 0) return;
+
+                const headers = Object.keys(data[0]);
+                
+                const colors = [
+                    'from-blue-500 to-blue-600',
+                    'from-green-500 to-green-600',
+                    'from-purple-500 to-purple-600',
+                    'from-red-500 to-red-600',
+                    'from-yellow-500 to-yellow-600',
+                    'from-indigo-500 to-indigo-600',
+                    'from-pink-500 to-pink-600',
+                    'from-teal-500 to-teal-600'
+                ];
+                const colorClass = colors[index % colors.length];
+                
+                tableDiv.innerHTML = `
+                    <div class="px-6 py-4 bg-gradient-to-r ${colorClass} border-b border-gray-200">
+                        <h3 class="text-lg font-semibold text-white">${fileName}</h3>
+                        <p class="text-sm text-white opacity-90">${data.length} lignes</p>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    ${headers.map(header => 
+                                        `<th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">${header}</th>`
+                                    ).join('')}
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                ${data.map(row => `
+                                    <tr class="hover:bg-gray-50 transition-colors duration-150">
+                                        ${headers.map(header => {
+                                            const value = row[header];
+                                            const isOptimal = isOptimalValueForChunk(row.nChunks, header, value, fileName);
+                                            let cellClass = '';
+                                            
+                                            if (isOptimal) {
+                                                if (header === 'TEMPS') {
+                                                    cellClass = 'font-bold text-blue-600 bg-blue-50';
+                                                } else if (header !== 'nChunks') {
+                                                    cellClass = 'font-bold text-green-600 bg-green-50';
+                                                }
+                                            }
+                                            
+                                            return `<td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900 ${cellClass}">
+                                                ${value !== undefined && value !== null ? 
+                                                    (typeof value === 'number' ? value.toFixed(4) : value) : 
+                                                    '-'}
+                                            </td>`;
+                                        }).join('')}
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+                
+                container.appendChild(tableDiv);
+            });
+        }
+
+        function isOptimalValueForChunk(chunk, metric, value, fileName) {
+            if (metric === 'nChunks' || value === undefined || value === null) return false;
+            
+            const optimal = optimalValuesByChunk[chunk] && optimalValuesByChunk[chunk][metric];
+            if (!optimal) return false;
+            
+            return Math.abs(value - optimal.value) < 0.0001 && optimal.source === fileName;
+        }
+
+    //     function displaySummary() {
+    //         const summaryBody = document.getElementById('summaryTableBody');
+    //         const sortedChunks = Array.from(allChunks).sort((a, b) => a - b);
+    //         const sortedMetrics = Array.from(allMetrics).sort();
+            
+    //         let summaryRows = [];
+            
+    //         sortedChunks.forEach(chunk => {
+    //             sortedMetrics.forEach(metric => {
+    //                 const optimal = optimalValuesByChunk[chunk] && optimalValuesByChunk[chunk][metric];
+    //                 if (optimal) {
+    //                     const isTime = metric === 'TEMPS';
+    //                     const label = isTime ? 'Minimal' : 'Maximal';
+                        
+    //                     summaryRows.push(`
+    //                         <tr class="hover:bg-gray-50 transition-colors duration-150">
+    //                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${chunk}</td>
+    //                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${metric}</td>
+    //                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 ${isTime ? 'text-blue-600' : 'text-green-600'} font-semibold">
+    //                                 ${typeof optimal.value === 'number' ? optimal.value.toFixed(4) : optimal.value}
+    //                                 <span class="text-xs text-gray-500 ml-1">(${label})</span>
+    //                             </td>
+    //                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${optimal.source}</td>
+    //                         </tr>
+    //                     `);
+    //                 }
+    //             });
+    //         });
+
+    //         summaryBody.innerHTML = summaryRows.join('');
+
+    //         if (summaryRows.length > 0) {
+    //             document.getElementById('summary').classList.remove('hidden');
+    //         }
+    //     }
+    // </script>
+</body>
+</html>

@@ -102,6 +102,14 @@
             border: 1px solid #991b1b;
             margin-right: 0.5rem;
         }
+
+        .classic-rag-message {
+            background-color: #f0f9ff;
+        }
+        
+        .graph-rag-message {
+            background-color: #f3f4f6;
+        }
     </style>
 </head>
 <body class="bg-gray-100 font-sans">
@@ -121,6 +129,12 @@
                         <input type="checkbox" id="moreInfo" class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
                         <label for="moreInfo" class="text-sm font-medium text-gray-700">More Information</label>
                     </div>
+
+                    <!-- Compare with Classic RAG Checkbox -->
+                    <div class="flex items-center space-x-2">
+                        <input type="checkbox" id="compareRAG" class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                        <label for="compareRAG" class="text-sm font-medium text-gray-700">Compare with Classic RAG</label>
+                    </div>
                 </div>
                 
                 <div class="flex items-center space-x-3">
@@ -128,8 +142,6 @@
                     <button class="tab-button px-4 py-2 text-sm font-medium rounded-md transition-colors" data-domain="medical" onclick="changeDomain('medical')">Medical</button>
                     <button class="tab-button active px-4 py-2 text-sm font-medium rounded-md transition-colors" data-domain="callForTender" onclick="changeDomain('callForTender')">SOLIHA-Chunking1</button>
                     <button class="tab-button px-4 py-2 text-sm font-medium rounded-md transition-colors" data-domain="callForTender2" onclick="changeDomain('callForTender2')">SOLIHA-Chunking2</button>
-
-
                 </div>
                 
                 <button id="redirect-button" class="px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-md hover:bg-green-700 transition-colors shadow-sm" onclick="redirectToEvaluation(selectedDomain)">Voir Évaluation</button>
@@ -148,14 +160,31 @@
             </div>
         </div>
         
-        
+        <!-- Logs Panel (modifié pour supporter deux colonnes) -->
         <div class="w-108 bg-white rounded-lg shadow-lg overflow-hidden flex flex-col">
             <div class="p-4 bg-gray-50 border-b border-gray-200">
                 <h4 class="font-medium text-lg text-gray-800">Logs</h4>
             </div>
-            <div class="flex-1 p-4 overflow-y-auto">
-                <ul id="log-list" class="space-y-2 text-sm">
-                </ul>
+            <div id="logs-container" class="flex-1 overflow-y-auto">
+                <!-- Single column layout by default -->
+                <div id="single-log-column" class="p-4">
+                    <ul id="log-list" class="space-y-2 text-sm">
+                    </ul>
+                </div>
+                
+                <!-- Two column layout for comparison -->
+                <div id="dual-log-columns" class="hidden h-full flex">
+                    <div class="w-1/2 p-2 border-r border-gray-200">
+                        <h5 class="font-medium text-sm text-blue-600 mb-2">Classic RAG Logs</h5>
+                        <ul id="classic-log-list" class="space-y-2 text-sm">
+                        </ul>
+                    </div>
+                    <div class="w-1/2 p-2">
+                        <h5 class="font-medium text-sm text-green-600 mb-2">Graph RAG Logs</h5>
+                        <ul id="graph-log-list" class="space-y-2 text-sm">
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -178,28 +207,22 @@
     <script>
         let selectedDomain = 'finance';
         let logCounter = 0;
-
-        
         let messageLogs = {};
+        let classicMessageLogs = {};
 
-        
         const modal = document.getElementById('infoModal');
         const modalText = document.getElementById('modal-text');
         const closeModal = document.querySelector('.close-modal');
 
-        
         document.querySelector('.tab-button[data-domain="finance"]').classList.add('bg-blue-600', 'text-white');
         document.querySelector('.tab-button[data-domain="medical"]').classList.add('bg-gray-200', 'text-gray-700');
         document.querySelector('.tab-button[data-domain="callForTender"]').classList.add('bg-blue-600', 'text-white');
         document.querySelector('.tab-button[data-domain="callForTender2"]').classList.add('bg-gray-200', 'text-gray-700');
-        
 
-        
         closeModal.onclick = function() {
             modal.classList.add('hidden');
         }
 
-        // fermer le modal quand on clique a coté
         window.onclick = function(event) {
             if (event.target == modal) {
                 modal.classList.add('hidden');
@@ -215,14 +238,12 @@
             smartypants: true
         });
 
-        
         function addRelatedChunksListeners() {
             document.querySelectorAll('.related-chunks-link').forEach(link => {
                 link.addEventListener('click', function() {
                     const index = this.getAttribute('data-index');
                     const logId = this.getAttribute('data-log-id');
                     const chunksDisplay = document.getElementById(`chunks-${logId}-${index}`);
-                    
                     
                     if (chunksDisplay.classList.contains('hidden')) {
                         chunksDisplay.classList.remove('hidden');
@@ -238,7 +259,6 @@
             window.location.href = `eval.html?domain=${domain}&nChunks=${nChunks}`;
         }
 
-        // Fonction pour créer un tableau HTML d'entités à partir des données JSON
         function createEntitiesTable(jsonData) {
             if (!jsonData || jsonData.length === 0) {
                 return '<div class="text-gray-500 italic">No entities found.</div>';
@@ -272,13 +292,11 @@
             return tableHTML;
         }
 
-        //charger les logs du domaine et renvoyer les entités pour l'affichage immédiat
-        async function loadDomainJSONLog(domain, logId) {
+        async function loadDomainJSONLog(domain, logId, isClassic = false) {
             try {
                 const response = await fetch(`${domain}/logs.json`);
                 const jsonLog = await response.json();
 
-                // Préparer le contenu HTML pour afficher les entités dans le modal
                 let entitiesHTML = '<h3 class="text-lg font-medium mb-4">Entities in Log</h3>';
                 jsonLog.forEach((logEntry, index) => {
                     entitiesHTML += `
@@ -297,9 +315,13 @@
                     `;
                 });
 
-                // Mettre à jour les logs spécifiques de ce message
-                messageLogs[logId].jsonLog = entitiesHTML;
-                messageLogs[logId].entities = jsonLog;
+                if (isClassic) {
+                    classicMessageLogs[logId].jsonLog = entitiesHTML;
+                    classicMessageLogs[logId].entities = jsonLog;
+                } else {
+                    messageLogs[logId].jsonLog = entitiesHTML;
+                    messageLogs[logId].entities = jsonLog;
+                }
 
                 setTimeout(() => {
                     addRelatedChunksListeners();
@@ -309,31 +331,29 @@
 
             } catch (error) {
                 console.error('Error loading JSON log:', error);
-                messageLogs[logId].jsonLog = '<div class="text-red-500">Erreur de chargement du fichier log.json</div>';
+                const errorMsg = '<div class="text-red-500">Erreur de chargement du fichier log.json</div>';
+                if (isClassic) {
+                    classicMessageLogs[logId].jsonLog = errorMsg;
+                } else {
+                    messageLogs[logId].jsonLog = errorMsg;
+                }
                 return null;
             }
         }
 
-        
         function highlightEntitiesInText(text, entities) {
             if (!entities || entities.length === 0) return text;
             
-            // s'assurer de prendre les mots en entier
             const entitiesPattern = entities.map(entity => {
-                
                 const escapedEntity = entity.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                
                 return `\\b${escapedEntity}\\b`;
             }).join('|');
             
-            
             const regex = new RegExp(entitiesPattern, 'gi');
             
-            //surligner chaque occurence
             return text.replace(regex, match => `<span class="entity-highlight">${match}</span>`);
         }
 
-        
         async function detectEntitiesInResponse(botResponse) {
             try {
                 const response = await fetch('http://localhost:5000/responseEntityDetection', {
@@ -356,13 +376,16 @@
             }
         }
 
-        
-        function openInfoModal(logId) {
-            const log = messageLogs[logId];
+        function openInfoModal(logId, isClassic = false) {
+            const log = isClassic ? classicMessageLogs[logId] : messageLogs[logId];
+            const ragType = isClassic ? "Classic RAG" : "Graph RAG";
             
-            // Créer le contenu de la fenêtre modale
             modalText.innerHTML = `
                 <div class="space-y-4">
+                    <div class="p-2 ${isClassic ? 'bg-blue-100' : 'bg-green-100'} rounded-md text-center">
+                        <h3 class="font-medium ${isClassic ? 'text-blue-800' : 'text-green-800'}">${ragType} Response Details</h3>
+                    </div>
+                    
                     <div class="p-4 bg-blue-50 rounded-md">
                         <h4 class="font-medium text-blue-800 mb-1">Bot Response:</h4>
                         <div class="text-gray-700 markdown-content">${log.botResponse}</div>
@@ -379,20 +402,33 @@
                 </div>
             `;
             
-            
             modal.classList.remove('hidden');
 
-            
             setTimeout(() => {
                 renderMarkdown();
                 addRelatedChunksListeners();
             }, 100);
         }
 
-        
+        function toggleLogLayout() {
+            const compareRAG = document.getElementById('compareRAG').checked;
+            const singleColumn = document.getElementById('single-log-column');
+            const dualColumns = document.getElementById('dual-log-columns');
+            
+            if (compareRAG) {
+                singleColumn.classList.add('hidden');
+                dualColumns.classList.remove('hidden');
+            } else {
+                singleColumn.classList.remove('hidden');
+                dualColumns.classList.add('hidden');
+            }
+        }
+
+        // Event listener for compare RAG checkbox
+        document.getElementById('compareRAG').addEventListener('change', toggleLogLayout);
+
         async function changeDomain(domain) {
             selectedDomain = domain;
-            
             
             document.querySelectorAll('.tab-button').forEach(button => {
                 button.classList.remove('bg-blue-600', 'text-white');
@@ -404,7 +440,6 @@
                     button.classList.add('bg-gray-200', 'text-gray-700');
                 }
             });
-            
             
             const chatBox = document.getElementById("chat-box");
             chatBox.innerHTML = "";
@@ -418,12 +453,27 @@
                 });
                 const time = await timeResponse.json();
                 
+                // Add to appropriate log list
+                const compareRAG = document.getElementById('compareRAG').checked;
+                const logText = time.response + " - domain set to " + domain;
                 
-                const logList = document.getElementById("log-list");
-                const userLog = document.createElement("li");
-                userLog.className = "text-gray-600";
-                userLog.textContent = time.response + " - domain set to " + domain;
-                logList.appendChild(userLog);
+                if (compareRAG) {
+                    // Add to both log lists
+                    const classicLog = document.createElement("li");
+                    classicLog.className = "text-gray-600";
+                    classicLog.textContent = logText;
+                    document.getElementById("classic-log-list").appendChild(classicLog);
+                    
+                    const graphLog = document.createElement("li");
+                    graphLog.className = "text-gray-600";
+                    graphLog.textContent = logText;
+                    document.getElementById("graph-log-list").appendChild(graphLog);
+                } else {
+                    const userLog = document.createElement("li");
+                    userLog.className = "text-gray-600";
+                    userLog.textContent = logText;
+                    document.getElementById("log-list").appendChild(userLog);
+                }
             } catch (error) {
                 console.error('Error fetching current time:', error);
             }
@@ -433,13 +483,9 @@
             return n < 10 ? '0' + n : n;
         }
 
-       
         function renderMarkdown() {
             document.querySelectorAll('.markdown-content').forEach(element => {
-                
                 const originalContent = element.innerHTML;
-                
-                
                 element.innerHTML = marked.parse(originalContent);
             });
         }
@@ -450,34 +496,78 @@
 
             const nChunks = document.getElementById("nChunks").value;
             const showMoreInfo = document.getElementById("moreInfo").checked;
+            const compareRAG = document.getElementById("compareRAG").checked;
 
-            //afficher le message de l'utilisateur
             const chatBox = document.getElementById("chat-box");
+            
+            // Display user message
             const userMessage = document.createElement("div");
             userMessage.className = "p-3 bg-blue-100 rounded-lg max-w-[75%] ml-auto";
             userMessage.textContent = userInput;
             chatBox.appendChild(userMessage);
 
-            // "Thinking..."
-            const thinkingMessage = document.createElement("div");
-            thinkingMessage.className = "p-3 bg-gray-100 rounded-lg max-w-[75%] animate-pulse";
-            thinkingMessage.textContent = "Thinking...";
-            chatBox.appendChild(thinkingMessage);
+            // Create response container
+            let responseContainer;
+            if (compareRAG) {
+                responseContainer = document.createElement("div");
+                responseContainer.className = "flex space-x-4 w-full";
+                chatBox.appendChild(responseContainer);
+                
+                // Classic RAG thinking message
+                const classicThinking = document.createElement("div");
+                classicThinking.className = "flex-1 p-3 classic-rag-message rounded-lg animate-pulse";
+                classicThinking.innerHTML = `
+                    <div class="text-sm font-medium text-blue-600 mb-1">Classic RAG</div>
+                    <div>Thinking...</div>
+                `;
+                responseContainer.appendChild(classicThinking);
+                
+                // Graph RAG thinking message
+                const graphThinking = document.createElement("div");
+                graphThinking.className = "flex-1 p-3 graph-rag-message rounded-lg animate-pulse";
+                graphThinking.innerHTML = `
+                    <div class="text-sm font-medium text-green-600 mb-1">Graph RAG</div>
+                    <div>Thinking...</div>
+                `;
+                responseContainer.appendChild(graphThinking);
+            } else {
+                const thinkingMessage = document.createElement("div");
+                thinkingMessage.className = "p-3 bg-gray-100 rounded-lg max-w-[75%] animate-pulse";
+                thinkingMessage.textContent = "Thinking...";
+                chatBox.appendChild(thinkingMessage);
+            }
 
-            //mettre le message dans les logs
-            const logList = document.getElementById("log-list");
-            const userLog = document.createElement("li");
-            userLog.className = "text-gray-600";
+            // Add to logs
+            const compareRagEnabled = document.getElementById('compareRAG').checked;
             var d = new Date();
-            userLog.textContent = d.getFullYear() + "-" + add_zero(d.getMonth() + 1) + "-" + add_zero(d.getDate()) + " " + 
-                                add_zero(d.getHours()) + ":" + add_zero(d.getMinutes()) + ":" + add_zero(d.getSeconds()) + 
-                                " - " + userInput;
-            logList.appendChild(userLog);
+            const timestamp = d.getFullYear() + "-" + add_zero(d.getMonth() + 1) + "-" + add_zero(d.getDate()) + " " + 
+                            add_zero(d.getHours()) + ":" + add_zero(d.getMinutes()) + ":" + add_zero(d.getSeconds());
+            
+            if (compareRagEnabled) {
+                // Add to both classic and graph log lists
+                const classicUserLog = document.createElement("li");
+                classicUserLog.className = "text-gray-600";
+                classicUserLog.textContent = timestamp + " - " + userInput;
+                document.getElementById("classic-log-list").appendChild(classicUserLog);
+                
+                const graphUserLog = document.createElement("li");
+                graphUserLog.className = "text-gray-600";
+                graphUserLog.textContent = timestamp + " - " + userInput;
+                document.getElementById("graph-log-list").appendChild(graphUserLog);
+            } else {
+                const userLog = document.createElement("li");
+                userLog.className = "text-gray-600";
+                userLog.textContent = timestamp + " - " + userInput;
+                document.getElementById("log-list").appendChild(userLog);
+            }
 
             chatBox.scrollTop = chatBox.scrollHeight;
 
             try {
-                const response = await fetch('http://localhost:5000/ask', {
+                let promises = [];
+                
+                // Always make Graph RAG request
+                const graphRAGPromise = fetch('http://localhost:5000/ask', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -488,117 +578,320 @@
                         nChunks: parseInt(nChunks)
                     })
                 });
-                const data = await response.json();
+                promises.push(graphRAGPromise);
+
+                // Make Classic RAG request if comparison is enabled
+                let classicRAGPromise = null;
+                if (compareRAG) {
+                    classicRAGPromise = fetch('http://localhost:5000/ask', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ 
+                            prompt: userInput, 
+                            domain: selectedDomain + "Classic",
+                            nChunks: parseInt(nChunks)
+                        })
+                    });
+                    promises.push(classicRAGPromise);
+                }
+
+                const responses = await Promise.all(promises);
+                const graphData = await responses[0].json();
+                const classicData = compareRAG ? await responses[1].json() : null;
 
                 const logId = `log-${++logCounter}`;
+                
+                // Store Graph RAG response
                 messageLogs[logId] = {
                     userMessage: userInput,
-                    botResponse: data.response,
+                    botResponse: graphData.response,
                     jsonLog: "",
                 };
 
-                chatBox.removeChild(thinkingMessage);
+                // Store Classic RAG response if available
+                if (classicData) {
+                    classicMessageLogs[logId] = {
+                        userMessage: userInput,
+                        botResponse: classicData.response,
+                        jsonLog: "",
+                    };
+                }
 
-                if (showMoreInfo) {
+                // Remove thinking messages and display responses
+                if (compareRAG) {
+                    responseContainer.innerHTML = "";
                     
-                    const entityData = await loadDomainJSONLog(selectedDomain, logId);
+                    // Classic RAG response
+                    const classicResponseDiv = document.createElement("div");
+                    classicResponseDiv.className = "flex-1";
                     
-                    if (entityData && entityData.length > 0) {
-                        
-                        const entityInfoDiv = document.createElement("div");
-                        entityInfoDiv.className = "p-3 bg-yellow-50 rounded-lg max-w-[75%] mb-3 border border-yellow-200";
-                        
-                        const infoTitle = document.createElement("h4");
-                        infoTitle.className = "font-medium text-yellow-800 mb-2";
-                        infoTitle.textContent = "Entities Detected:";
-                        entityInfoDiv.appendChild(infoTitle);
-                        
-                        entityInfoDiv.innerHTML += createEntitiesTable(entityData);
-                        
-                        chatBox.appendChild(entityInfoDiv);
-                    }
+                    const classicHeader = document.createElement("div");
+                    classicHeader.className = "text-sm font-medium text-blue-600 mb-2";
+                    classicHeader.textContent = "Classic RAG";
+                    classicResponseDiv.appendChild(classicHeader);
                     
-                    const responseEntities = await detectEntitiesInResponse(data.response);
-                    
-                    
-                    if (responseEntities.length > 0) {
-                       
-                        const botMessage = document.createElement("div");
-                        botMessage.className = "p-3 bg-gray-100 rounded-lg max-w-[75%] markdown-content";
+                    if (showMoreInfo) {
+                        const classicEntityData = await loadDomainJSONLog(selectedDomain + "Classic", logId, true);
                         
-                        const highlightedResponse = highlightEntitiesInText(data.response, responseEntities);
-                        botMessage.innerHTML = highlightedResponse;
-                        chatBox.appendChild(botMessage);
+                        if (classicEntityData && classicEntityData.length > 0) {
+                            const entityInfoDiv = document.createElement("div");
+                            entityInfoDiv.className = "p-3 bg-yellow-50 rounded-lg mb-3 border border-yellow-200";
+                            
+                            const infoTitle = document.createElement("h4");
+                            infoTitle.className = "font-medium text-yellow-800 mb-2";
+                            infoTitle.textContent = "Entities Detected:";
+                            entityInfoDiv.appendChild(infoTitle);
+                            
+                            entityInfoDiv.innerHTML += createEntitiesTable(classicEntityData);
+                            classicResponseDiv.appendChild(entityInfoDiv);
+                        }
                         
-                        //légende
-                        const legendDiv = document.createElement("div");
-                        legendDiv.className = "entity-legend ml-2 mt-1";
-                        legendDiv.innerHTML = `
-                            <span class="entity-legend-box"></span>
-                            <span>Detected entities</span>
-                        `;
-                        chatBox.appendChild(legendDiv);
+                        const classicResponseEntities = await detectEntitiesInResponse(classicData.response);
                         
+                        const classicMessage = document.createElement("div");
+                        classicMessage.className = "p-3 classic-rag-message rounded-lg markdown-content";
                         
-                        messageLogs[logId].responseEntities = responseEntities;
+                        if (classicResponseEntities.length > 0) {
+                            const highlightedResponse = highlightEntitiesInText(classicData.response, classicResponseEntities);
+                            classicMessage.innerHTML = highlightedResponse;
+                            classicResponseDiv.appendChild(classicMessage);
+                            
+                            const legendDiv = document.createElement("div");
+                            legendDiv.className = "entity-legend ml-2 mt-1";
+                            legendDiv.innerHTML = `
+                                <span class="entity-legend-box"></span>
+                                <span>Detected entities</span>
+                            `;
+                            classicResponseDiv.appendChild(legendDiv);
+                            
+                            classicMessageLogs[logId].responseEntities = classicResponseEntities;
+                        } else {
+                            classicMessage.textContent = classicData.response;
+                            classicResponseDiv.appendChild(classicMessage);
+                        }
                     } else {
+                        loadDomainJSONLog(selectedDomain + "Classic", logId, true);
+                        
+                        const classicMessage = document.createElement("div");
+                        classicMessage.className = "p-3 classic-rag-message rounded-lg markdown-content";
+                        classicMessage.textContent = classicData.response;
+                        classicResponseDiv.appendChild(classicMessage);
+                    }
+                    
+                    responseContainer.appendChild(classicResponseDiv);
+                    
+                    // Graph RAG response
+                    const graphResponseDiv = document.createElement("div");
+                    graphResponseDiv.className = "flex-1";
+                    
+                    const graphHeader = document.createElement("div");
+                    graphHeader.className = "text-sm font-medium text-green-600 mb-2";
+                    graphHeader.textContent = "Graph RAG";
+                    graphResponseDiv.appendChild(graphHeader);
+                    
+                    if (showMoreInfo) {
+                        const entityData = await loadDomainJSONLog(selectedDomain, logId);
+                        
+                        if (entityData && entityData.length > 0) {
+                            const entityInfoDiv = document.createElement("div");
+                            entityInfoDiv.className = "p-3 bg-yellow-50 rounded-lg mb-3 border border-yellow-200";
+                            
+                            const infoTitle = document.createElement("h4");
+                            infoTitle.className = "font-medium text-yellow-800 mb-2";
+                            infoTitle.textContent = "Entities Detected:";
+                            entityInfoDiv.appendChild(infoTitle);
+                            
+                            entityInfoDiv.innerHTML += createEntitiesTable(entityData);
+                            graphResponseDiv.appendChild(entityInfoDiv);
+                        }
+                        
+                        const responseEntities = await detectEntitiesInResponse(graphData.response);
+                        
+                        const graphMessage = document.createElement("div");
+                        graphMessage.className = "p-3 graph-rag-message rounded-lg markdown-content";
+                        
+                        if (responseEntities.length > 0) {
+                            const highlightedResponse = highlightEntitiesInText(graphData.response, responseEntities);
+                            graphMessage.innerHTML = highlightedResponse;
+                            graphResponseDiv.appendChild(graphMessage);
+                            
+                            const legendDiv = document.createElement("div");
+                            legendDiv.className = "entity-legend ml-2 mt-1";
+                            legendDiv.innerHTML = `
+                                <span class="entity-legend-box"></span>
+                                <span>Detected entities</span>
+                            `;
+                            graphResponseDiv.appendChild(legendDiv);
+                            
+                            messageLogs[logId].responseEntities = responseEntities;
+                        } else {
+                            graphMessage.textContent = graphData.response;
+                            graphResponseDiv.appendChild(graphMessage);
+                        }
+                    } else {
+                        loadDomainJSONLog(selectedDomain, logId);
+                        
+                        const graphMessage = document.createElement("div");
+                        graphMessage.className = "p-3 graph-rag-message rounded-lg markdown-content";
+                        graphMessage.textContent = graphData.response;
+                        graphResponseDiv.appendChild(graphMessage);
+                    }
+                    
+                    responseContainer.appendChild(graphResponseDiv);
+                    
+                } else {
+                    // Single response mode (existing logic)
+                    chatBox.removeChild(chatBox.lastChild); // Remove thinking message
+
+                    if (showMoreInfo) {
+                        const entityData = await loadDomainJSONLog(selectedDomain, logId);
+                        
+                        if (entityData && entityData.length > 0) {
+                            const entityInfoDiv = document.createElement("div");
+                            entityInfoDiv.className = "p-3 bg-yellow-50 rounded-lg max-w-[75%] mb-3 border border-yellow-200";
+                            
+                            const infoTitle = document.createElement("h4");
+                            infoTitle.className = "font-medium text-yellow-800 mb-2";
+                            infoTitle.textContent = "Entities Detected:";
+                            entityInfoDiv.appendChild(infoTitle);
+                            
+                            entityInfoDiv.innerHTML += createEntitiesTable(entityData);
+                            chatBox.appendChild(entityInfoDiv);
+                        }
+                        
+                        const responseEntities = await detectEntitiesInResponse(graphData.response);
+                        
+                        if (responseEntities.length > 0) {
+                            const botMessage = document.createElement("div");
+                            botMessage.className = "p-3 bg-gray-100 rounded-lg max-w-[75%] markdown-content";
+                            
+                            const highlightedResponse = highlightEntitiesInText(graphData.response, responseEntities);
+                            botMessage.innerHTML = highlightedResponse;
+                            chatBox.appendChild(botMessage);
+                            
+                            const legendDiv = document.createElement("div");
+                            legendDiv.className = "entity-legend ml-2 mt-1";
+                            legendDiv.innerHTML = `
+                                <span class="entity-legend-box"></span>
+                                <span>Detected entities</span>
+                            `;
+                            chatBox.appendChild(legendDiv);
+                            
+                            messageLogs[logId].responseEntities = responseEntities;
+                        } else {
+                            const botMessage = document.createElement("div");
+                            botMessage.className = "p-3 bg-gray-100 rounded-lg max-w-[75%] markdown-content";
+                            botMessage.textContent = graphData.response;
+                            chatBox.appendChild(botMessage);
+                        }
+                    } else {
+                        loadDomainJSONLog(selectedDomain, logId);
+                        
                         const botMessage = document.createElement("div");
                         botMessage.className = "p-3 bg-gray-100 rounded-lg max-w-[75%] markdown-content";
-                        botMessage.textContent = data.response;
+                        botMessage.textContent = graphData.response;
                         chatBox.appendChild(botMessage);
                     }
-                } else {
-                    loadDomainJSONLog(selectedDomain, logId);
-                    
-                    const botMessage = document.createElement("div");
-                    botMessage.className = "p-3 bg-gray-100 rounded-lg max-w-[75%] markdown-content";
-                    botMessage.textContent = data.response;
-                    chatBox.appendChild(botMessage);
                 }
                 
                 renderMarkdown();
-                
                 chatBox.scrollTop = chatBox.scrollHeight;
 
-                //log
-                const botLog = document.createElement("li");
-                botLog.className = "flex items-center";
-                
-                const logText = document.createElement("span");
-                logText.className = "text-gray-600 mr-2";
+                // Add response logs
                 var d2 = new Date();
-                logText.textContent = d2.getFullYear() + "-" + add_zero(d2.getMonth() + 1) + "-" + add_zero(d2.getDate()) + " " + 
-                                add_zero(d2.getHours()) + ":" + add_zero(d2.getMinutes()) + ":" + add_zero(d2.getSeconds()) + 
-                                " - response : ";
-                botLog.appendChild(logText);
+                const responseTimestamp = d2.getFullYear() + "-" + add_zero(d2.getMonth() + 1) + "-" + add_zero(d2.getDate()) + " " + 
+                                        add_zero(d2.getHours()) + ":" + add_zero(d2.getMinutes()) + ":" + add_zero(d2.getSeconds());
 
-                // plus d'info
-                const moreInfoLink = document.createElement("span");
-                moreInfoLink.textContent = "See logs";
-                moreInfoLink.className = "text-blue-600 hover:underline cursor-pointer text-sm";
-                moreInfoLink.setAttribute('data-log-id', logId);
+                if (compareRagEnabled) {
+                    // Classic RAG log
+                    const classicBotLog = document.createElement("li");
+                    classicBotLog.className = "flex items-center";
+                    
+                    const classicLogText = document.createElement("span");
+                    classicLogText.className = "text-gray-600 mr-2";
+                    classicLogText.textContent = responseTimestamp + " - response : ";
+                    classicBotLog.appendChild(classicLogText);
 
-                moreInfoLink.onclick = function() {
-                    openInfoModal(logId);
-                };
+                    const classicMoreInfoLink = document.createElement("span");
+                    classicMoreInfoLink.textContent = "See logs";
+                    classicMoreInfoLink.className = "text-blue-600 hover:underline cursor-pointer text-sm";
+                    classicMoreInfoLink.setAttribute('data-log-id', logId);
 
-                botLog.appendChild(moreInfoLink);
-                logList.appendChild(botLog);
+                    classicMoreInfoLink.onclick = function() {
+                        openInfoModal(logId, true);
+                    };
+
+                    classicBotLog.appendChild(classicMoreInfoLink);
+                    document.getElementById("classic-log-list").appendChild(classicBotLog);
+
+                    // Graph RAG log
+                    const graphBotLog = document.createElement("li");
+                    graphBotLog.className = "flex items-center";
+                    
+                    const graphLogText = document.createElement("span");
+                    graphLogText.className = "text-gray-600 mr-2";
+                    graphLogText.textContent = responseTimestamp + " - response : ";
+                    graphBotLog.appendChild(graphLogText);
+
+                    const graphMoreInfoLink = document.createElement("span");
+                    graphMoreInfoLink.textContent = "See logs";
+                    graphMoreInfoLink.className = "text-green-600 hover:underline cursor-pointer text-sm";
+                    graphMoreInfoLink.setAttribute('data-log-id', logId);
+
+                    graphMoreInfoLink.onclick = function() {
+                        openInfoModal(logId, false);
+                    };
+
+                    graphBotLog.appendChild(graphMoreInfoLink);
+                    document.getElementById("graph-log-list").appendChild(graphBotLog);
+                } else {
+                    // Single log
+                    const botLog = document.createElement("li");
+                    botLog.className = "flex items-center";
+                    
+                    const logText = document.createElement("span");
+                    logText.className = "text-gray-600 mr-2";
+                    logText.textContent = responseTimestamp + " - response : ";
+                    botLog.appendChild(logText);
+
+                    const moreInfoLink = document.createElement("span");
+                    moreInfoLink.textContent = "See logs";
+                    moreInfoLink.className = "text-blue-600 hover:underline cursor-pointer text-sm";
+                    moreInfoLink.setAttribute('data-log-id', logId);
+
+                    moreInfoLink.onclick = function() {
+                        openInfoModal(logId);
+                    };
+
+                    botLog.appendChild(moreInfoLink);
+                    document.getElementById("log-list").appendChild(botLog);
+                }
 
             } catch (error) {
                 console.error('Erreur:', error);
                 
-                chatBox.removeChild(thinkingMessage);
-                const errorMessage = document.createElement("div");
-                errorMessage.className = "p-3 bg-red-100 text-red-700 rounded-lg max-w-[75%]";
-                errorMessage.textContent = "Erreur.";
-                chatBox.appendChild(errorMessage);
+                // Remove thinking messages
+                if (compareRAG) {
+                    responseContainer.innerHTML = "";
+                    const errorMessage = document.createElement("div");
+                    errorMessage.className = "p-3 bg-red-100 text-red-700 rounded-lg w-full";
+                    errorMessage.textContent = "Erreur lors de la récupération des réponses.";
+                    responseContainer.appendChild(errorMessage);
+                } else {
+                    chatBox.removeChild(chatBox.lastChild);
+                    const errorMessage = document.createElement("div");
+                    errorMessage.className = "p-3 bg-red-100 text-red-700 rounded-lg max-w-[75%]";
+                    errorMessage.textContent = "Erreur.";
+                    chatBox.appendChild(errorMessage);
+                }
             }
 
             document.getElementById("user-input").value = '';
         }
 
-        // appui sur la touche entrée
+        // Event listener for Enter key
         document.getElementById("user-input").addEventListener("keypress", function(event) {
             if (event.key === "Enter") {
                 event.preventDefault();

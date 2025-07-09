@@ -1,7 +1,7 @@
 import argparse
 
-from langchain_mistralai import ChatMistralAI
-from langchain_core.prompts import ChatPromptTemplate
+# from langchain_mistralai import ChatMistralAI
+# from langchain_core.prompts import ChatPromptTemplate
 import requests
 
 

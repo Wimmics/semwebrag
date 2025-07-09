@@ -17,20 +17,22 @@ import subprocess
 import os
 import time
 from sys import argv
+import spacy
 
-def get_random_question_response() : 
+
+
+def get_all_questions_responses(code="NVDA") :
     #dans le fichier financ/Financial-QA-10k.csv, lire les lignes contenant le le code dans la colone "ticker", prendre une de ces lignes au hasard et renvoyer le contenu de la colonne question et answer
-    with open("medical/questions_reponses.csv", "r", encoding="utf-8") as file:
+    with open("finance/Financial-QA-10k.csv", "r", encoding="utf-8") as file:
         reader = csv.DictReader(file)
-        rows = [row for row in reader ]
+        rows = [row for row in reader if row["ticker"] == code]
         if rows:
-            row = random.choice(rows)
-            question = row["Question"]
-            answer = row["Reponse"]
-            return question, answer
-
-
-
+            questions = []
+            answers = []
+            for row in rows:
+                questions.append(row["question"])
+                answers.append(row["answer"])
+            return questions, answers
 
 
 def calculate_overlap(set1, set2):
@@ -43,11 +45,66 @@ def calculate_overlap(set1, set2):
     
     if smaller_set_size == 0:
         return 0.0
+
+    if len(set1) == 0 or len(set2) == 0:
+        return 0.0
         
-    return intersection / smaller_set_size
+    # return intersection / smaller_set_size
+    return intersection / len(set1)
 
 
-def evaluate_metrics(nChunks,question, true_answer):
+def calculate_overlap_entities(true_answer, predicted_answer):
+    true_entities = getEntities(true_answer)
+    predicted_entities = getEntities(predicted_answer)
+
+    print("True Entities:", [ent.text for ent in true_entities])
+    print("Predicted Entities:", [ent.text for ent in predicted_entities])
+
+    intersections = 0
+    for true_entity in true_entities:
+        for predicted_entity in predicted_entities:
+            if true_entity.text.strip().lower() == predicted_entity.text.strip().lower():
+                intersections += 1
+                break  # Stop after finding the first match for this true entity
+    print("Intersections:", intersections)
+
+    return intersections /len(true_entities) if true_entities else 0.0
+    #return calculate_overlap(set(true_entities), set(predicted_entities))
+
+def getEntities(text):
+    nlp = spacy.load("en_core_web_md")
+    doc = nlp(text)
+    query_entities = extract_key_phrases(doc, nlp)
+    return query_entities
+
+def extract_key_phrases(doc, nlp):
+    # ner
+    entities = list(doc.ents)
+    
+    # prendre les chunk avec + de 1 mot
+    noun_chunks = [chunk for chunk in doc.noun_chunks if len(chunk.text.split()) > 1]
+    
+    # ajouter les chunks aux entités
+    all_entities = entities + noun_chunks
+    
+    # enlever les doublons
+    unique_entities = []
+    seen_texts = set()
+    
+    for ent in all_entities:
+        normalized_text = ent.text.strip().lower()
+        if normalized_text not in seen_texts and len(normalized_text) > 3:
+            seen_texts.add(normalized_text)
+            unique_entities.append(ent)
+    
+    return unique_entities
+
+
+
+
+
+
+def evaluate_metrics(nChunks, question, true_answer):
 
     nltk.download('punkt')
     nltk.download('wordnet')
@@ -101,7 +158,10 @@ def evaluate_metrics(nChunks,question, true_answer):
     Bhyp = predicted_answer.split()
 
     bleu_score = sentence_bleu([Bref], Bhyp)
+    if bleu_score < 0.001:
+        bleu_score = 0.0
     print("BLEU Score:", bleu_score)
+
     resBleiu = f"BLEU Score: {bleu_score}"
 
 
@@ -131,11 +191,16 @@ def evaluate_metrics(nChunks,question, true_answer):
     overlap_coef = calculate_overlap(ref_tokens, hyp_tokens)
     resOverlap = f"Overlap Coefficient: {overlap_coef:.4f}"
 
+    everlapE_coef = calculate_overlap_entities(true_answer, predicted_answer)
+    resOverlapE = f"OverlapE Coefficient: {everlapE_coef:.4f}"
+
+    print(resRouge)
     print(resOverlap)
-
-
+    print(resOverlapE)
     print (resRouge)
-    return question, true_answer, predicted_answer, resMeteor, resBleiu, resBert, resRouge, resOverlap
+    time.sleep(30)
+    return question, true_answer, predicted_answer, resMeteor, resBleiu, resBert, resRouge, resOverlap, resOverlapE
 
 evaluate_metrics(argv[1], argv[2], argv[3])
 
+# print("overlape : ",calculate_overlap_entities(argv[1], argv[2]))
