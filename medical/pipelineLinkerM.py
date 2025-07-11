@@ -239,6 +239,7 @@ def build_knowledge_graph_aligned_with_ontology(text,ontology_path, nlp, rdf_pat
 
     DAO.save_index("medical/embeddings.index")
     convert_wikidata_with_regex("medical/outputLinkerLinked.ttl", "medical/outputLinkerLinked.ttl")
+    wikidatautils.align_unlinked_entities_to_wikidata("medical/outputLinkerLinked.ttl", "medical/outputLinkerLinked.ttl")
 
     return g
 
@@ -292,6 +293,7 @@ def retrieve_corresponding_label(entity, embeddingsList, labelList):
     return best_entity
 
 def process_query(query_text, rdf_graph_path, embedding_model=embeddings, output_file="medical/query_enrichie.txt", neighborChunks=0):
+    verbalisation_list = []
     DAO = FaissDAO(384)
     DAO.load_index("medical/embeddings.index")
     
@@ -308,8 +310,12 @@ def process_query(query_text, rdf_graph_path, embedding_model=embeddings, output
     print("temps d'extraction des entités de la requête : ", time.time()-t2)
 
     enriched_results = ["question :","\n\n", query_text, "\n\n"]
-    enriched_results.append("context : ")
-    enriched_results.append("\n\n")
+    enriched_context = []
+    enriched_context.append("context : ")
+    enriched_context.append("\n\n")
+    enriched_verbalisation = []
+    enriched_verbalisation.append("detail of entities detected in the query : \n\n")
+    enriched_verbalisation.append("\n\n")
 
 
     print("extraction des labels du graphe ...")
@@ -338,19 +344,30 @@ def process_query(query_text, rdf_graph_path, embedding_model=embeddings, output
         # correspondingEnt = retrieve_corresponding_label(ent, embeddingsList, labelsList)
         correspondingEnt, distance = DAO.search(embeddings.embed_query(ent.text), k=1)
         print("correspondingEnt de : ",ent.text," ", correspondingEnt)
+        verbalisation = wikidatautils.analyze_entity(rdf_graph_path,correspondingEnt[0],"medical/ATC.ttl")
+        print("verbalisation : ",verbalisation )
+        verbalisation_list.append(verbalisation)
+        enriched_verbalisation.append(verbalisation)
+
         l, chunkList = wikidatautils.retrieve_mentioned_chunks(rdf_graph_path, correspondingEnt[0], chunkList, neighborChunks)
 
         
         entity_data = {
             'entity': ent.text,
             'correspondingEnt': correspondingEnt,
-            'chunkCount': l  
+            'chunkCount': l  ,
+            'verbalisation': verbalisation
         }
         wikidatautils.add_to_json_file("medical/logs.json", entity_data)
 
     for chunk in chunkList:
-        enriched_results.append(chunk)
+        enriched_context.append(chunk)
     print("chunks_already_mentioned : ", chunks_already_mentioned)
+
+    enriched_results.append("\n".join(enriched_verbalisation))
+    enriched_results.append("\n")
+    enriched_results.append("\n".join(enriched_context))
+    
 
     
     with open(output_file, "w", encoding="utf-8") as f:
@@ -359,6 +376,7 @@ def process_query(query_text, rdf_graph_path, embedding_model=embeddings, output
     print("temps de la dernière partie : ", time.time()-t5)
 
     print(f"Requête enrichie sauvegardée dans {output_file}")
+    print("total des verbalisations : ", verbalisation_list)
     return "\n".join(enriched_results)
 
 # à commenter pour pas reconstruire le graphe
@@ -367,6 +385,8 @@ def process_query(query_text, rdf_graph_path, embedding_model=embeddings, output
 
 print ("enrichissement de la requête ...")
 
-# process_query("How many children were infected by HIV-1 in 2008-2009, worldwide? ", "medical/outputLinkerLinked.ttl", embeddings)
-# process_query("what is the predominant factor of aids infection on kids? ","knowledge_graph.ttl", embeddings) 
+# process_query("cell-specific targeting", "medical/outputLinkerLinked.ttl", embeddings)
+# process_query("What is the amino acid similarity between IFITM5 and the other IFITM proteins? ","medical/outputLinkerLinked.ttl", embeddings) 
 # process_query("what is the main cause of AIDs infection on childs ?","medical/outputLinkerLinkedM.ttl", embeddings) 
+# wikidatautils.align_unlinked_entities_to_wikidata("medical/outputLinkerLinked_tmp.ttl", "medical/outputLinkerLinked.ttl")
+# print(wikidatautils.analyze_entity("medical/outputLinkerLinked.ttl", "people", "medical/ATC.ttl"))

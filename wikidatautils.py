@@ -8,7 +8,7 @@ import time
 from rdflib import Namespace, RDF, OWL, RDFS, URIRef, Literal,Graph
 import statistics
 
-def get_uri_wikidata(entite, langue="en"): # doit forcement retourner une URI wikidata
+def get_uri_wikidata(entite, langue="en"): # doit forcement retourner une URI wikidata # not used
 
     # recherche directement avec le mot tel quel
     uri = recherche_directe(entite, langue)
@@ -38,7 +38,7 @@ def get_uri_wikidata(entite, langue="en"): # doit forcement retourner une URI wi
     else:
         return "http://www.wikidata.org/wiki/Q35120"  # Q35120 = entité
 
-def recherche_directe(terme, langue="fr"):
+def recherche_directe(terme, langue="fr"): #not used
 
     url = "https://www.wikidata.org/w/api.php"
     params = {
@@ -61,7 +61,7 @@ def recherche_directe(terme, langue="fr"):
         print(f"Erreur lors de la recherche: {e}")
         return None
 
-def generer_transformations(entite):
+def generer_transformations(entite): # not used
 
     transformations = []
 
@@ -620,29 +620,6 @@ def calculate_quantiles_on_property_stats(property_stats_path):
     return quantile_75
 
 
-
-# def get_entity_info(graph_path, label):
-#     # Charge le graphe
-#     g = rdflib.Graph()
-#     g.parse(graph_path, format="turtle")
-
-#     # Définir le namespace SKOS manuellement puisque tu ne l’as pas importé explicitement
-#     SKOS = Namespace("http://www.w3.org/2004/02/skos/core#")
-
-#     # Parcourt les triplets pour trouver le prefLabel
-#     for s, p, o in g.triples((None, SKOS.prefLabel, None)):
-#         if str(o) == label:
-#             # Cherche le type RDF.type
-#             for _, _, t in g.triples((s, RDF.type, None)):
-#                 return f"{label} ({s}) is of type {t}"
-#             # Si pas de type trouvé
-#             return f"{label} ({s}) has no rdf:type"
-
-#     return f"No entity found with label '{label}'"
-
-
-
-
 def get_wikidata_info(wikidata_uri):
     # Extraire l'ID Qxxxx
     match = re.search(r'Q\d+', str(wikidata_uri))
@@ -720,8 +697,274 @@ def get_entity_info(graph_path, label):
 
     return f"No entity found with label '{label}'"
 
+def analyze_entity(graph_path: str, label: str, ontology_path: str) -> str:
+    # Load the main graph
+    g = Graph()
+    try:
+        g.parse(graph_path, format="turtle")
+    except Exception as e:
+        return f"Error loading graph: {e}"
+    
+    # Load the ontology
+    ontology = Graph()
+    try:
+        ontology.parse(ontology_path, format="turtle")
+    except Exception as e:
+        print(f"Warning: Error loading ontology: {e}")
+    
+    # Find entity URI by label
+    entity_uri = None
+    for s, p, o in g.triples((None, SKOS.prefLabel, Literal(label))):
+        entity_uri = s
+        break
+    if not entity_uri:
+        for s, p, o in g.triples((None, RDFS.label, Literal(label))):
+            entity_uri = s
+            break
+    
+    if not entity_uri:
+        return f"Entity '{label}' has no complementary information."
+    
+    # Get entity type
+    entity_type = None
+    for s, p, o in g.triples((entity_uri, RDF.type, None)):
+        entity_type = o
+        break
+    
+    if not entity_type:
+        return f"Entity '{label}' has no complementary information."
+    
+    # Check if it's a Wikidata entity
+    if str(entity_type).startswith("https://www.wikidata.org/wiki/Q"):
+        wikidata_id = str(entity_type).split("/")[-1]
+        
+        # with P31
+        sparql_query_with_type = f"""
+        SELECT ?typeLabel ?description ?altLabel WHERE {{
+          wd:{wikidata_id} wdt:P31 ?type .
+          wd:{wikidata_id} schema:description ?description .
+          OPTIONAL {{ wd:{wikidata_id} skos:altLabel ?altLabel . }}
+          
+          SERVICE wikibase:label {{ 
+            bd:serviceParam wikibase:language "en" .
+            ?type rdfs:label ?typeLabel .
+          }}
+          
+          FILTER(LANG(?description) = "en")
+          FILTER(LANG(?altLabel) = "en" || !BOUND(?altLabel))
+        }}
+        LIMIT 10
+        """
+        
+        #Only description and aliases without type
+        sparql_query_without_type = f"""
+        SELECT ?description ?altLabel WHERE {{
+          wd:{wikidata_id} schema:description ?description .
+          OPTIONAL {{ wd:{wikidata_id} skos:altLabel ?altLabel . }}
+          
+          FILTER(LANG(?description) = "en")
+          FILTER(LANG(?altLabel) = "en" || !BOUND(?altLabel))
+        }}
+        LIMIT 10
+        """
+        
+        try:
+            endpoint = "https://query.wikidata.org/sparql"
+            headers = {
+                'User-Agent': 'RDF-Entity-Analyzer/1.0',
+                'Accept': 'application/json'
+            }
+            
+            # Try with type first
+            response = requests.get(
+                endpoint,
+                params={'query': sparql_query_with_type, 'format': 'json'},
+                headers=headers,
+                timeout=10
+            )
+            
+            if response.status_code == 200:
+                data = response.json()
+                bindings = data.get('results', {}).get('bindings', [])
+                
+                if bindings:
+                    result = bindings[0]
+                    
+                    type_label = result.get('typeLabel', {}).get('value', 'Unknown')
+                    description = result.get('description', {}).get('value', '')
+                    alt_labels = [b.get('altLabel', {}).get('value', '') 
+                                 for b in bindings if b.get('altLabel')]
+                    
+                    # Limit description to 200 characters
+                    if len(description) > 200:
+                        description = description[:199] + "..."
+                    
+                    # Limit aliases to 200 characters total
+                    alt_labels_str = ", ".join(alt_labels) if alt_labels else "No alternative names"
+                    if len(alt_labels_str) > 200:
+                        alt_labels_str = alt_labels_str[:199] + "..."
+                    
+                    return f"{label} is of type {type_label}, as description: {description}, is also known as: {alt_labels_str}"
+                
+                # of no P31 found, try without type
+                else:
+                    response = requests.get(
+                        endpoint,
+                        params={'query': sparql_query_without_type, 'format': 'json'},
+                        headers=headers,
+                        timeout=10
+                    )
+                    
+                    if response.status_code == 200:
+                        data = response.json()
+                        bindings = data.get('results', {}).get('bindings', [])
+                        
+                        if bindings:
+                            result = bindings[0]
+                            
+                            description = result.get('description', {}).get('value', '')
+                            alt_labels = [b.get('altLabel', {}).get('value', '') 
+                                         for b in bindings if b.get('altLabel')]
+                            
+                            # Limit description to 200 characters
+                            if len(description) > 200:
+                                description = description[:199] + "..."
+                            
+                            # Limit aliases to 200 characters total
+                            alt_labels_str = ", ".join(alt_labels) if alt_labels else "No alternative names"
+                            if len(alt_labels_str) > 200:
+                                alt_labels_str = alt_labels_str[:199] + "..."
+                            
+                            return f"{label} (type unknown), as description: {description}, is also known as: {alt_labels_str}"
+                    
+        except Exception as e:
+            pass
+    
+    # Check if it's an ontology entity
+    for s, p, o in ontology.triples((entity_type, None, None)):
+        # Found in ontology, get label
+        for s2, p2, o2 in ontology.triples((entity_type, SKOS.prefLabel, None)):
+            return f"{label} is of type {o2}"
+        for s2, p2, o2 in ontology.triples((entity_type, RDFS.label, None)):
+            return f"{label} is of type {o2}"
+        # If no label found, use URI
+        return f"{label} is of type {str(entity_type)}"
+    
+    # Default case
+    return f"Entity '{label}' has no complementary information."
 
-# listtest = verbalize_rdf_types("finance/outputLinkerLinked.ttl")
-# print("Verbalizations:")
-# for v in listtest:
-#     print(v)
+
+
+import requests
+import time
+from rdflib import Graph, URIRef, Literal, Namespace
+from rdflib.namespace import RDF, RDFS, SKOS
+import difflib
+
+def align_unlinked_entities_to_wikidata(ttl_file_path: str, output_path: str = None):
+    #try to align with wikidata entities with rel:mentioned in not aligned with either ontology or wikidata
+
+    g = Graph()
+    g.parse(ttl_file_path, format='turtle')
+
+    REL = Namespace("http://example.org/rel/")
+
+    query = """
+    SELECT ?entity ?label WHERE {
+        ?entity skos:prefLabel ?label .
+        ?entity rel:mentionedIn ?chunk .
+        FILTER NOT EXISTS { ?entity rdf:type ?type }
+    }
+    """
+    
+    g.bind("rel", REL)
+    g.bind("skos", SKOS)
+    g.bind("rdf", RDF)
+    
+    results = g.query(query)
+    entities_to_align = [(row.entity, str(row.label)) for row in results]
+    
+    print(f"Trouvé {len(entities_to_align)} entités à aligner")
+
+    session = requests.Session()
+    session.headers.update({
+        'User-Agent': 'WikidataAligner/1.0'
+    })
+    
+    aligned_count = 0
+    
+    for entity_uri, entity_label in entities_to_align:
+        print(f"Traitement: {entity_label}")
+
+        search_url = "https://www.wikidata.org/w/api.php"
+        search_params = {
+            'action': 'wbsearchentities',
+            'search': entity_label,
+            'language': 'en',
+            'format': 'json',
+            'limit': 5,
+            'type': 'item'
+        }
+        
+        try:
+            response = session.get(search_url, params=search_params)
+            response.raise_for_status()
+            data = response.json()
+            
+            if 'search' in data and data['search']:
+                candidates = data['search']
+
+                best_match = None
+                best_score = 0.0
+                
+                for candidate in candidates:
+                    candidate_label = candidate.get('label', '')
+                    candidate_description = candidate.get('description', '')
+
+                    score = difflib.SequenceMatcher(None, 
+                                                  entity_label.lower(), 
+                                                  candidate_label.lower()).ratio()
+
+                    if entity_label.lower() == candidate_label.lower():
+                        score = 1.0
+                    
+                    if score > best_score and score >= 0.5:
+                        best_score = score
+                        best_match = candidate
+                
+                if best_match:
+                    wikidata_id = best_match['id']
+                    wikidata_uri = URIRef(f"https://www.wikidata.org/wiki/{wikidata_id}")
+                    description = best_match.get('description', '')
+                    
+                    # add triplet
+                    g.add((entity_uri, RDF.type, wikidata_uri))
+                    g.add((entity_uri, REL.alignedWith, wikidata_uri))
+                    g.add((entity_uri, REL.alignmentScore, Literal(best_score)))
+                    
+                    if description:
+                        g.add((entity_uri, RDFS.comment, Literal(description)))
+                    
+                    print(f"  -> aligned with {wikidata_id} (score: {best_score:.3f})")
+                    aligned_count += 1
+                else:
+                    print(f"  -> no sufficient correspondence")
+            else:
+                print(f"  -> no results found ")
+                
+        except requests.RequestException as e:
+            print(f"  -> Error API: {e}")
+        
+        # Délai pour éviter de surcharger l'API
+        time.sleep(0.1)
+    
+    # Sauvegarder le graphe modifié
+    if output_path is None:
+        base_name = ttl_file_path.rsplit('.', 1)[0]
+        output_path = f"{base_name}_aligned.ttl"
+    
+    g.serialize(destination=output_path, format='turtle')
+    print(f"Alignement terminé: {aligned_count} entités alignées")
+    print(f"Fichier sauvegardé: {output_path}")
+    
+    return output_path

@@ -2,14 +2,34 @@ question :
 
 
 
-editors editors editors Editors Editors
+What was the age range for the people surveyed?
 
+
+
+detail of entities detected in the query : 
+
+
+
+
+
+the age is of type Age Group
+people (type unknown), as description: plurality of persons considered as a whole, from a government perspective, is also known as: folks, peoples, folk, volk
 
 
 context : 
 
 
 
-New Online Current Issue
-JOURNAL INFORMATION
-For Authors Editors & Publishers
+In the most heavilyaffected countries, such as Zimbabwe, HIV-1 is responsible for one third of all deaths among children under the age of five.
+The survey results in 2010 and 2000 were standardized against the age structures of China's census population in 2010.
+Especially in developing countries including China, ARTIs, mainly pneumonia, are the leading cause of death among children under the age of 5 years.
+91Á4% (276/302) of co-infection cases were tested in the age group of 4 years old or younger ( Table 2) , but among all age groups, no statistical difference in co-infection rate was found (v 2 = 1Á83, P = 0Á8721).
+However, it is not clear that it is any different or better at spread between people, and perhaps with the same pattern of most cases not causing further spread.
+
+
+Many people are developing COPD, and the cause of this condition is complicated and not thoroughly understood.
+Unfortunately, the new virusappears to be spreading from people much earlier in the course of illness, and even with mild symptoms - which was never documented for SARS.
+Passive case finding is the routine practice in developing countries where sputum microscopy is performed to identify TB cases among people with persistent cough.
+The majority of TB patients, 54.5% of sputum positive cases and 47.3% of bacteriologically confirmed cases, were from people 65 years or older.
+The World Health Organization estimates that 300 million people are currently affected and that, by the year 2025, another 100 million will be affected by the disease [98] .
+In the winter season there comes the time of upper and lower respiratory tract infections characterised by cough, dyspnea and eventually fever (influenza-like illness).Some of the patients, especially older people living alone affected by the disease ,may need hospitalization and eventually intensive care.
