@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualisations CSV</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .chart-container {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .bar-group {
+            cursor: pointer;
+        }
+        
+        .bar-group:hover {
+            opacity: 0.8;
+        }
+        
+        .best-nchunk {
+            stroke: #f59e0b;
+            stroke-width: 4;
+            filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.6));
+        }
+        
+        .highest-bar {
+            stroke: #000000;
+            stroke-width: 3;
+            filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.4));
+        }
+        
+        .tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            pointer-events: none;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 5px 10px;
+        }
+        
+        .legend-color {
+            width: 15px;
+            height: 15px;
+            margin-right: 8px;
+            border-radius: 2px;
+        }
+        
+        .radar-axis {
+            stroke: #ccc;
+            stroke-width: 1;
+        }
+        
+        .radar-grid {
+            stroke: #e5e7eb;
+            stroke-width: 1;
+            fill: none;
+        }
+        
+        .radar-path {
+            fill: none;
+            stroke-width: 2;
+            transition: all 0.3s ease;
+        }
+        
+        .radar-path:hover {
+            stroke-width: 3;
+        }
+        
+        .radar-path.best-method {
+            stroke-width: 4;
+            filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.3));
+        }
+        
+        .radar-point {
+            transition: all 0.2s ease;
+        }
+        
+        .radar-point:hover {
+            r: 6;
+        }
+        
+        .best-method-indicator {
+            background: linear-gradient(45deg, #12ae10, #0bf526);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin: 10px 0;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(245, 158, 11, 0.3);
+        }
+        
+        .best-nchunk-indicator {
+            background: linear-gradient(45deg, #06b6d4, #0891b2);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin: 10px 0;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(8, 145, 178, 0.3);
+        }
+        
+        .performance-stats {
+            background: #f0f9ff;
+            border: 1px solid #0ea5e9;
+            border-radius: 8px;
+            padding: 12px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold text-gray-800 mb-8 text-center">Dashboard d'Évaluation des Méthodes</h1>
+        
+        <!-- Section de sélection des fichiers -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-xl font-semibold mb-4">Sélectionner les fichiers CSV</h2>
+            <input type="file" id="csvFiles" multiple accept=".csv" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"/>
+            <div id="fileList" class="mt-4"></div>
+        </div>
+        
+        <!-- Graphique en barres groupées -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-xl font-semibold mb-4">Comparaison des métriques par nChunk</h2>
+            <div id="bestNChunkInfo" class="performance-stats" style="display: none;">
+                <div id="bestNChunkIndicator" class="best-nchunk-indicator"></div>
+                <div id="bestNChunkDetails" class="text-sm text-gray-700 mt-2"></div>
+            </div>
+            <div id="barChart" class="chart-container"></div>
+            <div id="barLegend" class="flex flex-wrap justify-center mt-4"></div>
+        </div>
+        
+        <!-- Sélection du nChunk et graphique radar -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-xl font-semibold mb-4">Comparaison des méthodes par nChunk</h2>
+            <div class="mb-4">
+                <label for="nChunkSelect" class="block text-sm font-medium text-gray-700 mb-2">Sélectionner nChunk:</label>
+                <select id="nChunkSelect" class="block w-full max-w-xs px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                </select>
+            </div>
+            <div id="bestMethodInfo" class="performance-stats" style="display: none;">
+                <div id="bestMethodIndicator" class="best-method-indicator"></div>
+                <div id="bestMethodDetails" class="text-sm text-gray-700 mt-2"></div>
+            </div>
+            <div id="radarChart" class="chart-container"></div>
+            <div id="radarLegend" class="flex flex-wrap justify-center mt-4"></div>
+        </div>
+    </div>
+    
+    <div id="tooltip" class="tooltip" style="display: none;"></div>
+
+    <script>
+        let csvData = [];
+        let fileNames = [];
+        const metrics = ['METEOR', 'BLEU', 'BERT', 'ROUGE', 'OVERLAP', 'OVERLAPE'];
+        const colors = ['#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899'];
+        const methodColors = ['#1f2937', '#dc2626', '#059669', '#d97706', '#7c3aed', '#be185d', '#0891b2', '#ea580c'];
+        
+        // Fonction pour parser un CSV
+        function parseCSV(text) {
+            const lines = text.trim().split('\n');
+            const headers = lines[0].split(',');
+            const data = [];
+            
+            for (let i = 1; i < lines.length; i++) {
+                const values = lines[i].split(',');
+                const row = {};
+                headers.forEach((header, index) => {
+                    row[header.trim()] = isNaN(values[index]) ? values[index] : parseFloat(values[index]);
+                });
+                data.push(row);
+            }
+            
+            return data;
+        }
+        
+        // Gestionnaire de fichiers
+        document.getElementById('csvFiles').addEventListener('change', function(event) {
+            const files = Array.from(event.target.files);
+            csvData = [];
+            fileNames = [];
+            
+            const fileList = document.getElementById('fileList');
+            fileList.innerHTML = '';
+            
+            let loadedFiles = 0;
+            
+            files.forEach((file, index) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const data = parseCSV(e.target.result);
+                    csvData.push(data);
+                    fileNames.push(file.name.replace('.csv', ''));
+                    
+                    // Afficher le nom du fichier
+                    const fileItem = document.createElement('div');
+                    fileItem.className = 'inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm mr-2 mb-2';
+                    fileItem.textContent = file.name;
+                    fileList.appendChild(fileItem);
+                    
+                    loadedFiles++;
+                    if (loadedFiles === files.length) {
+                        createBarChart();
+                        populateNChunkSelect();
+                        createRadarChart();
+                    }
+                };
+                reader.readAsText(file);
+            });
+        });
+        
+        // Fonction pour trouver le meilleur nChunk
+        function findBestNChunk() {
+            const allNChunks = [...new Set(csvData.flatMap(data => data.map(d => d.nChunks)))].sort((a, b) => a - b);
+            
+            let bestNChunk = null;
+            let bestScore = -1;
+            let bestDetails = {};
+            
+            allNChunks.forEach(nChunk => {
+                let totalScore = 0;
+                let methodCount = 0;
+                
+                csvData.forEach((data, methodIndex) => {
+                    const methodData = data.find(d => d.nChunks === nChunk);
+                    if (methodData) {
+                        const methodScore = metrics.reduce((sum, metric) => sum + methodData[metric], 0);
+                        totalScore += methodScore;
+                        methodCount++;
+                    }
+                });
+                
+                const avgScore = methodCount > 0 ? totalScore / methodCount : 0;
+                
+                if (avgScore > bestScore) {
+                    bestScore = avgScore;
+                    bestNChunk = nChunk;
+                    bestDetails = { score: avgScore, methodCount };
+                }
+            });
+            
+            return { nChunk: bestNChunk, score: bestScore, details: bestDetails };
+        }
+        
+        // Fonction pour trouver la barre la plus haute
+        function findHighestBar() {
+            const allNChunks = [...new Set(csvData.flatMap(data => data.map(d => d.nChunks)))].sort((a, b) => a - b);
+            
+            let highestValue = -1;
+            let highestBar = null;
+            
+            allNChunks.forEach(nChunk => {
+                csvData.forEach((data, methodIndex) => {
+                    const methodData = data.find(d => d.nChunks === nChunk);
+                    if (methodData) {
+                        const totalValue = metrics.reduce((sum, metric) => sum + methodData[metric], 0);
+                        if (totalValue > highestValue) {
+                            highestValue = totalValue;
+                            highestBar = { nChunk: nChunk, method: fileNames[methodIndex], methodIndex: methodIndex, value: totalValue };
+                        }
+                    }
+                });
+            });
+            
+            return highestBar;
+        }
+        
+        // Créer le graphique en barres empilées
+        function createBarChart() {
+            const container = document.getElementById('barChart');
+            container.innerHTML = '';
+            
+            // Trouver le meilleur nChunk
+            const bestResult = findBestNChunk();
+            
+            // Trouver la barre la plus haute
+            const highestBar = findHighestBar();
+            
+            // Afficher les informations du meilleur nChunk
+            if (bestResult.nChunk !== null) {
+                document.getElementById('bestNChunkInfo').style.display = 'block';
+                document.getElementById('bestNChunkIndicator').textContent = `🏆 Meilleur nChunk: ${bestResult.nChunk}`;
+                document.getElementById('bestNChunkDetails').textContent = 
+                    `Score moyen: ${bestResult.score.toFixed(4)} | Basé sur ${bestResult.details.methodCount} méthode(s)`;
+            }
+            
+            const margin = { top: 20, right: 30, bottom: 60, left: 60 };
+            const width = 1000 - margin.left - margin.right;
+            const height = 400 - margin.top - margin.bottom;
+            
+            const svg = d3.select('#barChart')
+                .append('svg')
+                .attr('width', width + margin.left + margin.right)
+                .attr('height', height + margin.top + margin.bottom);
+            
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+            
+            // Préparer les données
+            const allNChunks = [...new Set(csvData.flatMap(data => data.map(d => d.nChunks)))].sort((a, b) => a - b);
+            
+            // Préparer les données pour les barres empilées
+            const stackedData = [];
+            allNChunks.forEach(nChunk => {
+                csvData.forEach((data, methodIndex) => {
+                    const methodData = data.find(d => d.nChunks === nChunk);
+                    if (!methodData) return;
+                    
+                    let cumulativeValue = 0;
+                    const stackData = metrics.map(metric => {
+                        const value = methodData[metric];
+                        const segment = {
+                            nChunk: nChunk,
+                            method: fileNames[methodIndex],
+                            methodIndex: methodIndex,
+                            metric: metric,
+                            value: value,
+                            y0: cumulativeValue,
+                            y1: cumulativeValue + value,
+                            isBest: nChunk === bestResult.nChunk,
+                            isHighest: highestBar && nChunk === highestBar.nChunk && methodIndex === highestBar.methodIndex
+                        };
+                        cumulativeValue += value;
+                        return segment;
+                    });
+                    
+                    stackedData.push(...stackData);
+                });
+            });
+            
+            // Échelles
+            const x0 = d3.scaleBand()
+                .domain(allNChunks)
+                .range([0, width])
+                .padding(0.1);
+            
+            const x1 = d3.scaleBand()
+                .domain(fileNames)
+                .range([0, x0.bandwidth()])
+                .padding(0.1);
+            
+            const maxStackedValue = d3.max(stackedData, d => d.y1);
+            const y = d3.scaleLinear()
+                .domain([0, maxStackedValue])
+                .range([height, 0]);
+            
+            // Axes
+            g.append('g')
+                .attr('transform', `translate(0,${height})`)
+                .call(d3.axisBottom(x0))
+                .append('text')
+                .attr('x', width / 2)
+                .attr('y', 40)
+                .attr('fill', 'black')
+                .style('text-anchor', 'middle')
+                .text('nChunks');
+            
+            g.append('g')
+                .call(d3.axisLeft(y))
+                .append('text')
+                .attr('transform', 'rotate(-90)')
+                .attr('y', -40)
+                .attr('x', -height / 2)
+                .attr('fill', 'black')
+                .style('text-anchor', 'middle')
+                .text('Valeur cumulée');
+            
+            // Tooltip
+            const tooltip = d3.select('#tooltip');
+            
+            // Créer les barres empilées
+            stackedData.forEach(segment => {
+                const barX = x0(segment.nChunk) + x1(segment.method);
+                const barWidth = x1.bandwidth();
+                const barY = y(segment.y1);
+                const barHeight = y(segment.y0) - y(segment.y1);
+                
+                const metricIndex = metrics.indexOf(segment.metric);
+                
+                const rect = g.append('rect')
+                    .attr('x', barX)
+                    .attr('y', barY)
+                    .attr('width', barWidth)
+                    .attr('height', barHeight)
+                    .attr('fill', colors[metricIndex])
+                    .attr('opacity', segment.isBest ? 0.9 : 0.7)
+                    .attr('stroke', 'white')
+                    .attr('stroke-width', 0.5);
+                
+                // Mettre en valeur le meilleur nChunk
+                if (segment.isBest) {
+                    rect.attr('class', 'best-nchunk');
+                }
+                
+                // Mettre en valeur la barre la plus haute avec un contour noir
+                if (segment.isHighest) {
+                    rect.attr('class', (rect.attr('class') || '') + ' highest-bar');
+                }
+                
+                rect.on('mouseover', function(event) {
+                        let tooltipText = `Méthode: ${segment.method}<br>nChunk: ${segment.nChunk}`;
+                        if (segment.isBest) tooltipText += ' 🏆';
+                        if (segment.isHighest) tooltipText += ' 📊';
+                        tooltipText += `<br>${segment.metric}: ${segment.value.toFixed(4)}<br>Total cumulé: ${segment.y1.toFixed(4)}`;
+                        
+                        tooltip.style('display', 'block')
+                            .html(tooltipText)
+                            .style('left', (event.pageX + 10) + 'px')
+                            .style('top', (event.pageY - 10) + 'px');
+                    })
+                    .on('mouseout', function() {
+                        tooltip.style('display', 'none');
+                    });
+            });
+            
+            // Créer la légende
+            createBarLegend();
+        }
+        
+        // Créer la légende pour les barres
+        function createBarLegend() {
+            const legend = document.getElementById('barLegend');
+            legend.innerHTML = '';
+            
+            metrics.forEach((metric, index) => {
+                const legendItem = document.createElement('div');
+                legendItem.className = 'legend-item';
+                legendItem.innerHTML = `
+                    <div class="legend-color" style="background-color: ${colors[index]}"></div>
+                    <span class="text-sm">${metric}</span>
+                `;
+                legend.appendChild(legendItem);
+            });
+        }
+        
+        // Peupler le sélecteur de nChunk
+        function populateNChunkSelect() {
+            const select = document.getElementById('nChunkSelect');
+            select.innerHTML = '';
+            
+            const allNChunks = [...new Set(csvData.flatMap(data => data.map(d => d.nChunks)))].sort((a, b) => a - b);
+            
+            allNChunks.forEach(nChunk => {
+                const option = document.createElement('option');
+                option.value = nChunk;
+                option.textContent = nChunk;
+                select.appendChild(option);
+            });
+            
+            select.addEventListener('change', createRadarChart);
+        }
+        
+        // Fonction pour trouver la meilleure méthode pour un nChunk donné
+        function findBestMethod(selectedNChunk) {
+            let bestMethod = null;
+            let bestScore = -1;
+            let bestMethodData = null;
+            
+            csvData.forEach((data, methodIndex) => {
+                const methodData = data.find(d => d.nChunks === selectedNChunk);
+                if (methodData) {
+                    const methodScore = metrics.reduce((sum, metric) => sum + methodData[metric], 0);
+                    if (methodScore > bestScore) {
+                        bestScore = methodScore;
+                        bestMethod = fileNames[methodIndex];
+                        bestMethodData = { index: methodIndex, score: methodScore, data: methodData };
+                    }
+                }
+            });
+            
+            return bestMethodData;
+        }
+        
+        // Créer le graphique radar
+        function createRadarChart() {
+            const container = document.getElementById('radarChart');
+            container.innerHTML = '';
+            
+            const selectedNChunk = parseInt(document.getElementById('nChunkSelect').value);
+            if (isNaN(selectedNChunk)) return;
+            
+            // Trouver la meilleure méthode
+            const bestMethodResult = findBestMethod(selectedNChunk);
+            
+            // Afficher les informations de la meilleure méthode
+            if (bestMethodResult) {
+                document.getElementById('bestMethodInfo').style.display = 'block';
+                document.getElementById('bestMethodIndicator').textContent = `🏆 Meilleure méthode: ${bestMethodResult ? fileNames[bestMethodResult.index] : 'N/A'}`;
+                document.getElementById('bestMethodDetails').textContent = 
+                    `Score total: ${bestMethodResult.score.toFixed(4)} | nChunk: ${selectedNChunk}`;
+            }
+            
+            const width = 600;
+            const height = 600;
+            const radius = Math.min(width, height) / 2 - 80;
+            
+            const svg = d3.select('#radarChart')
+                .append('svg')
+                .attr('width', width)
+                .attr('height', height);
+            
+            const g = svg.append('g')
+                .attr('transform', `translate(${width/2},${height/2})`);
+            
+            // Préparer les données pour le radar
+            const radarData = csvData.map((data, index) => {
+                const methodData = data.find(d => d.nChunks === selectedNChunk);
+                if (!methodData) return null;
+                
+                return {
+                    method: fileNames[index],
+                    methodIndex: index,
+                    isBest: bestMethodResult && index === bestMethodResult.index,
+                    values: metrics.map(metric => ({
+                        metric: metric,
+                        value: methodData[metric]
+                    }))
+                };
+            }).filter(d => d !== null);
+            
+            // Échelles
+            const maxValue = d3.max(radarData.flatMap(d => d.values.map(v => v.value)));
+            const rScale = d3.scaleLinear()
+                .domain([0, maxValue])
+                .range([0, radius]);
+            
+            const angleSlice = (Math.PI * 2) / metrics.length;
+            
+            // Grille circulaire avec labels de valeurs
+            const levels = 5;
+            for (let i = 0; i < levels; i++) {
+                const levelRadius = radius * (i + 1) / levels;
+                g.append('circle')
+                    .attr('r', levelRadius)
+                    .attr('class', 'radar-grid');
+                
+                // Ajouter les labels de valeurs
+                const labelValue = (maxValue * (i + 1) / levels).toFixed(2);
+                g.append('text')
+                    .attr('x', 4)
+                    .attr('y', -levelRadius)
+                    .attr('dy', '0.4em')
+                    .style('font-size', '10px')
+                    .style('fill', '#666')
+                    .text(labelValue);
+            }
+            
+            // Axes avec labels améliorés
+            metrics.forEach((metric, i) => {
+                const angle = i * angleSlice - Math.PI / 2;
+                const x = Math.cos(angle) * radius;
+                const y = Math.sin(angle) * radius;
+                
+                g.append('line')
+                    .attr('x1', 0)
+                    .attr('y1', 0)
+                    .attr('x2', x)
+                    .attr('y2', y)
+                    .attr('class', 'radar-axis');
+                
+                // Labels des métriques avec positionnement amélioré
+                const labelX = Math.cos(angle) * (radius + 20);
+                const labelY = Math.sin(angle) * (radius + 20);
+                
+                g.append('text')
+                    .attr('x', labelX)
+                    .attr('y', labelY)
+                    .attr('text-anchor', 'middle')
+                    .attr('dominant-baseline', 'middle')
+                    .style('font-size', '13px')
+                    .style('font-weight', 'bold')
+                    .style('fill', '#333')
+                    .text(metric);
+            });
+            
+            // Tooltip
+            const tooltip = d3.select('#tooltip');
+            
+            // Créer les polygones pour chaque méthode (sans remplissage)
+            radarData.forEach((methodData, methodIndex) => {
+                const pathData = methodData.values.map((d, i) => {
+                    const angle = i * angleSlice - Math.PI / 2;
+                    const x = Math.cos(angle) * rScale(d.value);
+                    const y = Math.sin(angle) * rScale(d.value);
+                    return [x, y];
+                });
+                
+                const lineGenerator = d3.line()
+                    .x(d => d[0])
+                    .y(d => d[1])
+                    .curve(d3.curveLinearClosed);
+                
+                const path = g.append('path')
+                    .datum(pathData)
+                    .attr('d', lineGenerator)
+                    .attr('class', methodData.isBest ? 'radar-path best-method' : 'radar-path')
+                    .attr('stroke', methodColors[methodData.methodIndex])
+                    .style('opacity', methodData.isBest ? 1 : 0.8);
+                
+                // Points avec taille variable
+                methodData.values.forEach((d, i) => {
+                    const angle = i * angleSlice - Math.PI / 2;
+                    const x = Math.cos(angle) * rScale(d.value);
+                    const y = Math.sin(angle) * rScale(d.value);
+                    
+                    g.append('circle')
+                        .attr('cx', x)
+                        .attr('cy', y)
+                        .attr('r', methodData.isBest ? 6 : 4)
+                        .attr('class', 'radar-point')
+                        .attr('fill', methodColors[methodData.methodIndex])
+                        .attr('stroke', 'white')
+                        .attr('stroke-width', methodData.isBest ? 3 : 2)
+                        .style('opacity', methodData.isBest ? 1 : 0.8)
+                        .on('mouseover', function(event) {
+                            tooltip.style('display', 'block')
+                                .html(`Méthode: ${methodData.method}${methodData.isBest ? ' 🏆' : ''}<br>nChunk: ${selectedNChunk}<br>${d.metric}: ${d.value.toFixed(4)}`)
+                                .style('left', (event.pageX + 10) + 'px')
+                                .style('top', (event.pageY - 10) + 'px');
+                        })
+                        .on('mouseout', function() {
+                            tooltip.style('display', 'none');
+                        });
+                });
+            });
+            
+            // Créer la légende du radar
+            createRadarLegend(radarData);
+        }
+        
+        // Créer la légende pour le radar
+        function createRadarLegend(radarData) {
+            const legend = document.getElementById('radarLegend');
+            legend.innerHTML = '';
+            
+            radarData.forEach((methodData, index) => {
+                const legendItem = document.createElement('div');
+                legendItem.className = 'legend-item';
+                legendItem.innerHTML = `
+                    <div class="legend-color" style="background-color: ${methodColors[methodData.methodIndex]}"></div>
+                    <span class="text-sm">${methodData.method}${methodData.isBest ? ' 🏆' : ''}</span>
+                `;
+                legend.appendChild(legendItem);
+            });
+        }
+    </script>
+</body>
+</html>

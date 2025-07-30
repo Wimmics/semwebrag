@@ -7,9 +7,10 @@ import re
 import requests
 from spacy.tokens import Span
 from spacy.language import Language
-import wikidatautils # sert a faire le lien avec wikidata
+import wikidatautils 
 import entityLinker 
 from DAO import FaissDAO   
+from DAO_relations import FaissDAO_relations
 import time
 
 # embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
@@ -19,7 +20,6 @@ embeddings = HuggingFaceEmbeddings(model_name=local_model_path)
 
 nlp = spacy.load("en_core_web_md")
     
-# lire le document
 text = ""
 
 with open("medical/text.txt", "r", encoding="utf-8") as file:
@@ -28,7 +28,7 @@ with open("medical/text.txt", "r", encoding="utf-8") as file:
 REL = Namespace("http://relations.example.org/")
 WD = Namespace("http://www.wikidata.org/wiki/")
 
-# prendre les entités et labels de l'ontologie
+# take entities and labels from the ontology
 def extract_entities(ontology_file):
     g = Graph()
     g.parse(ontology_file, format="turtle")
@@ -36,7 +36,7 @@ def extract_entities(ontology_file):
     entities_list = []
     labels_list = []
     
-    # prendre les entités qui ont un skos:prefLabel
+    #entities with skos:prefLabel
     for s in g.subjects(RDF.type, None):
         pref_label = g.value(s, SKOS.prefLabel)
         if pref_label and isinstance(pref_label, Literal):
@@ -45,7 +45,7 @@ def extract_entities(ontology_file):
    
     return entities_list, labels_list
 
-# créer une liste d'embeddings pour chaque label d'entité
+# make a list of embeddings for each entity label
 def get_ontology_embeddings(embeddings, entityLabels):
     ontologyEmbeddings = []
     print("Extraction des embeddings pour l'ontologie ...")
@@ -53,7 +53,7 @@ def get_ontology_embeddings(embeddings, entityLabels):
         embedding = embeddings.embed_query(name)
         ontologyEmbeddings.append(embedding)
 
-    #le nombre d'embeddings doit correspondr au nombre de labels
+    # number of embeddings must match the number of labels
     if len(ontologyEmbeddings) != len(entityLabels):
         print("erreur nombre d'embeddings/labels")
     else:
@@ -62,11 +62,10 @@ def get_ontology_embeddings(embeddings, entityLabels):
     return ontologyEmbeddings
 
 
-# print("NER ...")
-# doc = nlp(text)
 
 
-def entityRetriever(embedding, ontologyEmbeddings,entities): # à partir d'un embedding, trouver l'entité de l'ontologie la plus proche
+# from an embedding, find the closest entity in the ontology
+def entityRetriever(embedding, ontologyEmbeddings,entities):
     best_similarity = -1
     best_entity = None
     for i, e in enumerate(ontologyEmbeddings):
@@ -77,7 +76,7 @@ def entityRetriever(embedding, ontologyEmbeddings,entities): # à partir d'un em
     return best_entity, best_similarity
 
 def chunk_text(text):
-    # 1 chunk = une phrase
+    # 1 chunk = 1 sentence
     doc = nlp(text)
     chunks = [sent.text for sent in doc.sents]
     return chunks
@@ -86,13 +85,13 @@ def extract_key_phrases(doc, nlp):
     # ner
     entities = list(doc.ents)
     
-    # prendre les chunk avec + de 1 mot
+    # take chunks with more than 1 word
     noun_chunks = [chunk for chunk in doc.noun_chunks if len(chunk.text.split()) > 1]
     
-    # ajouter les chunks aux entités
+    # add the chunks to the entities
     all_entities = entities + noun_chunks
     
-    # enlever les doublons
+    # remove duplicates
     unique_entities = []
     seen_texts = set()
     
@@ -129,7 +128,7 @@ def build_knowledge_graph_aligned_with_ontology(text,ontology_path, nlp, rdf_pat
     print("entityLabels (premiers 5):", list(entityLabels)[3001:3006] if len(entityLabels) >= 5 else list(entityLabels))
     print("entityLabels size:", len(entityLabels))
 
-    # vérifier que les deux listes ont la même taille
+    # check if the number of entities and labels match
     if len(ontologyEntities) != len(entityLabels):
         print("erreur nombre d'entités/nombre de labels")
     else:
@@ -149,20 +148,19 @@ def build_knowledge_graph_aligned_with_ontology(text,ontology_path, nlp, rdf_pat
     for ent in entities:
         print(f"- {ent.text} ({ent.label_ if hasattr(ent, 'label_') else 'PHRASE'})")
 
-    #remplacer les espaces dans les noms des entités par des _, retirer les caractères spéciaux et mettre en minuscule
+    #replace spaces with _, remove special characters and convert to lowercase
     entityForURIRef = [re.sub(r'[^a-zA-Z0-9]', '_', ent.text.lower()) for ent in entities]
     
     print("Construction du graphe ...")
-    # Créer un graphe RDF
     g = Graph()
     
-    # Définir les namespaces
     ATC = Namespace("http://purl.bioontology.org/ontology/ATC/")
     g.bind("rel", REL)
     g.bind("atc", ATC)
     g.bind("wd", WD)
     
-    # mettre  les chunks dans le graphe
+   
+    #put chunks in the graph
     chunk_uris = []
     for i, chunk in enumerate(chunks):
         chunk_uri = URIRef(f"http://example.org/chunk_{i}")
@@ -173,20 +171,18 @@ def build_knowledge_graph_aligned_with_ontology(text,ontology_path, nlp, rdf_pat
         chunk_uris.append(chunk_uri)
     
     # Ajouter les entités du texte et les relier aux chunks
+    #add entities from the text and link them to their chunks
     for i, ent in enumerate(entities):
         print("insertion des entités et leur embedding dans le DAO")
         DAO.insert(ent.text, embeddings.embed_query(ent.text))
-        # Créer URI pour l'entité extraite du texte
+        #make an uri
         entity_uri = URIRef(f"http://example.org/entity/{entityForURIRef[i]}")
         
-        #récupérer l'entité correspondante
         ontology_entity, similarity = entityRetriever(embeddings.embed_query(ent.text), ontologyEmbeddings,ontologyEntities)
 
-        
-        # Ajouter l'entité au graphe
         g.add((entity_uri, SKOS.prefLabel, Literal(ent.text)))
         
-        #si la similarité avec ATC est suffisante, lier à ATC, sinon wikidata
+        #if the similarity with the ontology is sufficient, link to the ontology
         if similarity >= 0.5:
             g.add((entity_uri, RDF.type, URIRef(ontology_entity)))
             g.add((entity_uri, REL.alignmentScore, Literal(similarity)))
@@ -201,7 +197,7 @@ def build_knowledge_graph_aligned_with_ontology(text,ontology_path, nlp, rdf_pat
             # wikidataLabelList.append(wikidatalabel)
             print(f"Entity '{ent.text}' not aligned with ATC")
         
-        # Trouver les chunks qui contiennent cette entité et les relier
+        # find the chunks that contain this entity and link them
         chunk_indices = find_entity_in_chunks(ent.text, chunks)
         for idx in chunk_indices:
             g.add((entity_uri, REL.mentionedIn, chunk_uris[idx]))
@@ -209,6 +205,7 @@ def build_knowledge_graph_aligned_with_ontology(text,ontology_path, nlp, rdf_pat
 
    
     g.serialize(destination=rdf_path, format="turtle")
+    #use entityLinker to link entities to wikidata
     entityLinker.add_entity_linked_to_graph(rdf_path, "medical/outputLinker.ttl", text)
     wiki_label_list = entityLinker.link_wikiData_entities_to_chunks("medical/outputLinker.ttl", "medical/outputLinkerLinked.ttl")
 
@@ -220,25 +217,29 @@ def build_knowledge_graph_aligned_with_ontology(text,ontology_path, nlp, rdf_pat
 
 
 
-    #prendre les entités wikidata, leur label, et s'ils ne sont pas déjà dans le DAO, les ajouter
-    print("Récupération des entités Wikidata et de leurs labels ...")
 
 
     
-    # _, neighborList = wikidatautils.add_wikidata_neighbors_to_graph("medical/outputLinkerLinked_tmp.ttl", output_path="medical/outputLinkerLinked.ttl" )  
-    # wikidatautils.make_property_stats("medical/outputLinkerLinked.ttl", "medical/property_stats.json")
-    # neighborLabelList = wikidatautils.filter_neigbor("medical/outputLinkerLinked.ttl", "medical/property_stats.json", "medical/outputLinkerLinked.ttl", wikidatautils.calculate_quantiles_on_property_stats("medical/property_stats.json"))
 
-    # for label in neighborLabelList:
-    #     DAO.insert(label, embeddings.embed_query(label))
-        
-
-
-    #g.serialize(destination=rdf_path, format="turtle")
     print(f"Graphe sauvegardé, {len(g)} triplets.")
 
     DAO.save_index("medical/embeddings.index")
     convert_wikidata_with_regex("medical/outputLinkerLinked.ttl", "medical/outputLinkerLinked.ttl")
+    #add neughbors to the graph
+    wikidatautils.add_wikidata_neighbors_to_graph("medical/outputLinkerLinked.ttl", output_path="medical/outputLinkerLinked.ttl" )  
+
+    relations_dictionary = wikidatautils.verbalize_rdf_relations("medical/outputLinkerLinked.ttl") # a refaire 
+
+    DAO_relations = FaissDAO_relations(384)
+    for relation in relations_dictionary:
+        source = relation['source']
+        destination = relation['destination']
+        verbalization = relation['verbalization']
+        DAO_relations.insert(verbalization, source, destination, embeddings.embed_query(verbalization))
+
+
+    DAO_relations.save_index("medical/relations.index")
+    print(f"Relations sauvegardées dans 'medical/relations.index' avec {len(relations_dictionary)} relations.")
     wikidatautils.align_unlinked_entities_to_wikidata("medical/outputLinkerLinked.ttl", "medical/outputLinkerLinked.ttl")
 
     return g
@@ -296,6 +297,8 @@ def process_query(query_text, rdf_graph_path, embedding_model=embeddings, output
     verbalisation_list = []
     DAO = FaissDAO(384)
     DAO.load_index("medical/embeddings.index")
+    DAI_relations = FaissDAO_relations(384)
+    DAI_relations.load_index("medical/relations.index")
     
     g = Graph()
     g.parse(rdf_graph_path, format="turtle")
@@ -311,11 +314,14 @@ def process_query(query_text, rdf_graph_path, embedding_model=embeddings, output
 
     enriched_results = ["question :","\n\n", query_text, "\n\n"]
     enriched_context = []
+    enriched_neighboor = []
     enriched_context.append("context : ")
     enriched_context.append("\n\n")
     enriched_verbalisation = []
     enriched_verbalisation.append("detail of entities detected in the query : \n\n")
     enriched_verbalisation.append("\n\n")
+    enriched_neighboor.append("relations with other entities : \n\n")
+    enriched_neighboor.append("\n\n")
 
 
     print("extraction des labels du graphe ...")
@@ -337,6 +343,15 @@ def process_query(query_text, rdf_graph_path, embedding_model=embeddings, output
     
     print("dernière partie ...")
     t5 = time.time()
+
+    #neighbor_relations, _ = DAI_relations.search(embeddings.embed_query(query_text), k=5)
+    #print("neighbor_relations : ", neighbor_relations)
+
+
+
+
+
+
     #pour chaque entité dans la requete
     for ent in query_entities:
         print (f"ent : {ent.text}")
@@ -348,15 +363,29 @@ def process_query(query_text, rdf_graph_path, embedding_model=embeddings, output
         print("verbalisation : ",verbalisation )
         verbalisation_list.append(verbalisation)
         enriched_verbalisation.append(verbalisation)
+        neighbor_relations_list = []
 
         l, chunkList = wikidatautils.retrieve_mentioned_chunks(rdf_graph_path, correspondingEnt[0], chunkList, neighborChunks)
+        neighbor_relations, _ = DAI_relations.search_specific(embeddings.embed_query(query_text),correspondingEnt[0], k=5)
+        for relation in neighbor_relations:
+            source = relation['source']
+            destination = relation['destination']
+            relation = relation['label']
+            # # if the entity corresponds or is contained in to the source or destination, add the verbalisation (no case sensistive)
+            # if correspondingEnt[0].lower() in source.lower()  or correspondingEnt[0].lower() in destination.lower():
+            # # if source.lower() == correspondingEnt[0].lower() or destination.lower() == correspondingEnt[0].lower():
+
+            neighbor_relations_list.append(f"{source} {relation} {destination}")
+            print("verbalisation de la relation : ", relation)        
+            enriched_neighboor.append(f"{source} {relation} {destination}")
 
         
         entity_data = {
             'entity': ent.text,
             'correspondingEnt': correspondingEnt,
             'chunkCount': l  ,
-            'verbalisation': verbalisation
+            'verbalisation': verbalisation,
+            'neighborRelations': neighbor_relations_list
         }
         wikidatautils.add_to_json_file("medical/logs.json", entity_data)
 
@@ -366,7 +395,10 @@ def process_query(query_text, rdf_graph_path, embedding_model=embeddings, output
 
     enriched_results.append("\n".join(enriched_verbalisation))
     enriched_results.append("\n")
+    enriched_results.append("\n".join(enriched_neighboor))
+    enriched_results.append("\n")
     enriched_results.append("\n".join(enriched_context))
+
     
 
     
@@ -377,6 +409,7 @@ def process_query(query_text, rdf_graph_path, embedding_model=embeddings, output
 
     print(f"Requête enrichie sauvegardée dans {output_file}")
     print("total des verbalisations : ", verbalisation_list)
+    print("5 meilleures realtions avec les voisins : ", neighbor_relations)
     return "\n".join(enriched_results)
 
 # à commenter pour pas reconstruire le graphe
@@ -387,6 +420,7 @@ print ("enrichissement de la requête ...")
 
 # process_query("cell-specific targeting", "medical/outputLinkerLinked.ttl", embeddings)
 # process_query("What is the amino acid similarity between IFITM5 and the other IFITM proteins? ","medical/outputLinkerLinked.ttl", embeddings) 
-# process_query("what is the main cause of AIDs infection on childs ?","medical/outputLinkerLinkedM.ttl", embeddings) 
-# wikidatautils.align_unlinked_entities_to_wikidata("medical/outputLinkerLinked_tmp.ttl", "medical/outputLinkerLinked.ttl")
-# print(wikidatautils.analyze_entity("medical/outputLinkerLinked.ttl", "people", "medical/ATC.ttl"))
+# process_query("What is the main cause of hiv infection on children? hiv hiv hiv hiv ","medical/outputLinkerLinked.ttl", embeddings) 
+# process_query("Which Human Coronavirus showed species specific clinical characteristics of its infection?","medical/outputLinkerLinked.ttl", embeddings) 
+
+

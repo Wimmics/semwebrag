@@ -5,3 +5,5 @@ key1.txt
 keyForgeron.txt
 sonar-project.properties
 .scannerwork/
+medical/outputLinkerLinked.ttl
+medical/relations.index

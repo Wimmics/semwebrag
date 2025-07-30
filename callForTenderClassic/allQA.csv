@@ -1,0 +1,16 @@
+Num,Question,Reponse,Réf. doc
+1,Quel est le mode de passation ?,Procédure adaptée ouverte (MAPA).,Règlement de consultation
+2,Combien de tranches et quels intitulés ?,"2 tranches : TF « Diagnostic et stratégie opérationnelle » ; TO001 « Élaboration de l’avenant au Pacte Territorial ».",Règlement de consultation
+3,Délai global de paiement ?,30 jours à réception de la facture.,MAPA2025-03 CCAP
+4,Date & heure limite de remise des offres ?,Vendredi 04 avril 2025 à 12 h 00.,Règlement de consultation
+5,Pondération du critère « Prix » ?,40 %.,Règlement de consultation
+6,Montant total HT de l’offre (AE),45 375 € HT (TF 36 925 € + TO001 8 450 €).,MAPA2025-03 AE
+7,Taux journalier des pénalités de retard ?,20 € par jour.,MAPA2025-03 CCAP
+8,Format & projection des livrables cartographiques ?,Fichiers .shp (Shapefile) en EPSG 3944 (Lambert-93).,MAPA2025-03 CCAP
+9,Mode obligatoire de transmission des offres ?,Dépôt électronique imposé ; dépôt papier non autorisé.,Règlement de consultation
+10,Tribunal administratif compétent pour les recours ?,TA de Marseille (31 rue Jean-François Leca, 13235 Marseille Cedex 2).,Règlement de consultation
+11,Ordre de priorité des pièces contractuelles,"1. Acte d’engagement (+ annexes financières) → 2. BPU → 3. DPGF → 4. CCAP → 5. CCTP (& annexes) → 6. Note méthodologique (par étape) → 7. CCAG-PI.",MAPA2025-03 CCAP
+12,Délai maximum entre la fin de la TF et l’affermissement de la TO001,"L’ordre de service affermissant la TO001 doit être notifié au plus tard 12 mois après la fin d’exécution de la tranche ferme.",MAPA2025-03 CCAP
+13,Liste des 6 dérogations explicites au CCAG-PI,"Articles : 5.2 (garantie), 16.2 (avance), 35 (propriété intellectuelle), 14.1.1, 14.1.2 & 14.1.3 (pénalités).",MAPA2025-03 CCAP
+14,Trois mentions supplémentaires obligatoires sur la facture Chorus Pro,"SIRET du pouvoir adjudicateur ; code service facturateur ; numéro d’engagement (ex-DA/BC).",MAPA2025-03 CCAP
+15,Pénalités & indemnité de recouvrement,"• Pénalité retard : 20 €/jour (non plafonnée, sans exonération) ; • Indemnité forfaitaire de recouvrement : 40 € par facture.",MAPA2025-03 CCAP

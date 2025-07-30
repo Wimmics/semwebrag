@@ -266,15 +266,15 @@ def build_knowledge_graph_aligned_with_ontology(text,ontology_path, nlp, rdf_pat
    
     g.serialize(destination=rdf_path, format="turtle")
     entityLinker.add_entity_linked_to_graph(rdf_path, "callForTender/outputLinker.ttl", text)
-    entityLinker.link_wikiData_entities_to_chunks("callForTender/outputLinker.ttl", "callForTender/outputLinkerLinked_tmp.ttl")
+    entityLinker.link_wikiData_entities_to_chunks("callForTender/outputLinker.ttl", "callForTender/outputLinkerLinked.ttl")
 
     #ajouter les voisins direct sur wikidata des entités et les lier à l'entité de base
-    _, neighborList = wikidatautils.add_wikidata_neighbors_to_graph("callForTender/outputLinkerLinked_tmp.ttl", output_path="callForTender/outputLinkerLinked.ttl" )  
+    # _, neighborList = wikidatautils.add_wikidata_neighbors_to_graph("callForTender/outputLinkerLinked_tmp.ttl", output_path="callForTender/outputLinkerLinked.ttl" )  
     # owlThingList = remove_useless_owl_things("finance/outputLinkerLinked.ttl", "finance/outputLinkerLinked.ttl")
 
     #ajouter les labels de owl:Thing restants dans via le dao
-    for label in neighborList:
-        DAO.insert(label, embeddings.embed_query(label))
+    # for label in neighborList:
+    #     DAO.insert(label, embeddings.embed_query(label))
 
 
     #g.serialize(destination=rdf_path, format="turtle")

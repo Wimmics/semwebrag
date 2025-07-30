@@ -94,10 +94,7 @@ def generer_transformations(entite): # not used
 import requests
 
 def get_description_from_entity(entity_url):
-    # Extraire l'ID de l'entité depuis l'URL
-    entity_id = entity_url.split('/')[-1]  # Récupère la partie après le dernier '/'
-    
-    # URL pour l'API de Wikidata
+    entity_id = entity_url.split('/')[-1]  
     url = f"https://www.wikidata.org/wiki/Special:EntityData/{entity_id}.json"
     
     response = requests.get(url)
@@ -199,8 +196,9 @@ def retrieve_mentioned_chunks(graph_path, entity, chunk_already_Mentionned, neig
                             mentioned_chunks.add(neighbor_uri)
 
     # Ajouter les voisins à la liste si leur label n'est pas déjà dedans
+    # add neighbor to the list if their label is not already in it
     for uri in mentioned_chunks:
-        # Récupérer le label du chunk voisin depuis le graphe
+        # get label of the neighbor chunk from the graph
         query_label = """
         SELECT ?label WHERE {
             <""" + uri + """> skos:prefLabel ?label .
@@ -221,7 +219,7 @@ def retrieve_mentioned_chunks(graph_path, entity, chunk_already_Mentionned, neig
 
 
 
-def add_text_to_file(filepath, text) : # ajouter un texte à un fichier txt sans écraser le contenu
+def add_text_to_file(filepath, text) : # add text to a file without overwriting it
     with open(filepath, 'a') as file:
         file.write(text)
 
@@ -230,7 +228,7 @@ def add_text_to_file(filepath, text) : # ajouter un texte à un fichier txt sans
 def initialize_json_file(file_path):
     if os.path.exists(file_path):
         with open(file_path, 'w') as json_file:
-            json.dump([], json_file)  # liste vide
+            json.dump([], json_file)  # empty list
     else:
         with open(file_path, 'w') as json_file:
             json.dump([], json_file) 
@@ -275,6 +273,7 @@ def get_entity_label(entity_id, lang="fr,en"):
     }}
     LIMIT 1
     """
+                        
     url = "https://query.wikidata.org/sparql"
     headers = {"Accept": "application/sparql-results+json",
                "User-Agent": "WikidataAgent/0.1 (krysto.dagues-de-la-hellerie@etu.univ-cotedazur.fr)"}
@@ -296,7 +295,7 @@ def get_entity_labels_for_uris(uris):
         if uri.startswith("http://www.wikidata.org/entity/"):
             print(f"Récupération du label pour l'URI : {uri}")
             entity_id = uri.split("/")[-1]
-            time.sleep(1)  #pause pour éviter erreur 429
+            time.sleep(1)  #to avoid error 429
             label = get_entity_label(entity_id)
             if label:
                 labels[uri] = label
@@ -334,11 +333,28 @@ def add_labels_to_entities(graph, entity_uris):
     
     print(f"Ajouté {len(labels)} labels aux entités")
 
+# PREFIX wd: <http://www.wikidata.org/entity/>
+# PREFIX bd: <http://www.bigdata.com/rdf#>
+# PREFIX wikibase: <http://wikiba.se/ontology#>
 
+# SELECT ?predicate ?proplabel ?object ?objectLabel
+# WHERE {
+# SERVICE <https://query.wikidata.org/sparql> {
 
+#     SELECT ?predicate ?proplabel ?object ?objectLabel {
+#         wd:Q93183876 ?predicate ?object .
+#         FILTER(STRSTARTS(STR(?predicate), "http://www.wikidata.org/prop/"))
+#         ?object rdfs:label ?objectLabel .
+#         FILTER(LANG(?objectLabel) = "en" || LANG(?objectLabel) = "fr")
 
-
-
+#         SERVICE wikibase:label { bd:serviceParam wikibase:language "en". bd:serviceParam wikibase:language "fr". } 
+#         ?prop wikibase:directClaim ?predicate . 
+#         ?prop rdfs:label ?proplabel .
+#         FILTER(LANG(?proplabel) = "en" || LANG(?proplabel) = "fr" )
+#     }
+# }
+# }
+# LIMIT 500
 
 def add_wikidata_neighbors_to_graph(graph_path, output_path="enriched_graph.ttl", limit_per_entity=100):
 
@@ -391,16 +407,18 @@ def add_wikidata_neighbors_to_graph(graph_path, output_path="enriched_graph.ttl"
         # outgoing relations
         sparql_query_out = f"""
         PREFIX wd: <http://www.wikidata.org/entity/>
-            SELECT ?predicate ?object ?objectLabel
+            SELECT ?predicate ?predicateLabel ?object ?objectLabel
                 WHERE {{
                 SERVICE <https://query.wikidata.org/sparql> {{
                     wd:{wikidata_id} ?predicate ?object .
                     FILTER(STRSTARTS(STR(?predicate), "http://www.wikidata.org/prop/"))
                     ?object rdfs:label ?objectLabel .
                     FILTER(LANG(?objectLabel) = "fr" || LANG(?objectLabel) = "en")
+                    ?predicate rdfs:label ?predicateLabel .
+                    FILTER(LANG(?objectLabel) = "fr" || LANG(?objectLabel) = "en")
                 }}
                 }}
-                #LIMIT 1000
+                LIMIT 500
         """
         
         # incoming relations
@@ -415,7 +433,7 @@ def add_wikidata_neighbors_to_graph(graph_path, output_path="enriched_graph.ttl"
             FILTER(LANG(?subjectLabel) = "fr" || LANG(?subjectLabel) = "en")
           }}
         }}
-        LIMIT 1000
+        LIMIT 500
         """
         
         try:
@@ -546,7 +564,7 @@ def make_property_stats(graph_path, output_path="property_stats.json"):
     
     return property_stats
 
-def filter_neigbor(graph_path, property_stats_path, output_path="filtered_graph.ttl", threshold=20):
+def filter_neigbor(graph_path, property_stats_path, output_path="filtered_graph.ttl", threshold=20): # do not use
     # for each entity in the graph that as the iswikidataneighborof relation, see if it as a relation wich occurs less than threshold times
     # if it is NOT the case, we remove the relation from the graph
     import rdflib
@@ -584,7 +602,6 @@ def filter_neigbor(graph_path, property_stats_path, output_path="filtered_graph.
     graph.serialize(output_path, format='turtle')
     print(f"Graphe filtré enregistré dans {output_path}")
 
-    #prendre les labels des entités de resList
     labelList = []
     for entity in reslist:
         query = """
@@ -621,14 +638,14 @@ def calculate_quantiles_on_property_stats(property_stats_path):
 
 
 def get_wikidata_info(wikidata_uri):
-    # Extraire l'ID Qxxxx
+    # exctract 'ID Qxxxx
     match = re.search(r'Q\d+', str(wikidata_uri))
     if not match:
         return {"label": None, "description": None, "aliases": []}
 
     qid = match.group(0)
 
-    # SPARQL vers Wikidata
+   
     url = "https://query.wikidata.org/sparql"
     query = f"""
     SELECT ?label ?description ?alias WHERE {{
@@ -663,7 +680,7 @@ def get_wikidata_info(wikidata_uri):
         if 'alias' in result:
             aliases.append(result['alias']['value'])
 
-    # Coupe la description si trop longue
+    # max 200 characters for description
     if description and len(description) > 200:
         description = description[:200] + "..."
 
@@ -697,6 +714,7 @@ def get_entity_info(graph_path, label):
 
     return f"No entity found with label '{label}'"
 
+
 def analyze_entity(graph_path: str, label: str, ontology_path: str) -> str:
     # Load the main graph
     g = Graph()
@@ -712,7 +730,7 @@ def analyze_entity(graph_path: str, label: str, ontology_path: str) -> str:
     except Exception as e:
         print(f"Warning: Error loading ontology: {e}")
     
-    # Find entity URI by label
+    # Find entity URI by label (case-sensitive first, then case-insensitive)
     entity_uri = None
     for s, p, o in g.triples((None, SKOS.prefLabel, Literal(label))):
         entity_uri = s
@@ -722,44 +740,73 @@ def analyze_entity(graph_path: str, label: str, ontology_path: str) -> str:
             entity_uri = s
             break
     
+    # If not found, try case-insensitive search
     if not entity_uri:
+        for s, p, o in g.triples((None, SKOS.prefLabel, None)):
+            if str(o).lower() == label.lower():
+                entity_uri = s
+                break
+    if not entity_uri:
+        for s, p, o in g.triples((None, RDFS.label, None)):
+            if str(o).lower() == label.lower():
+                entity_uri = s
+                break
+    
+    if not entity_uri:
+        # Debug: voir toutes les entités avec leurs labels
+        print(f"Debug: Searching for label '{label}'")
+        print("Available entities:")
+        for s, p, o in g.triples((None, SKOS.prefLabel, None)):
+            print(f"  {s} -> {o}")
+        for s, p, o in g.triples((None, RDFS.label, None)):
+            print(f"  {s} -> {o}")
         return f"Entity '{label}' has no complementary information."
     
-    # Get entity type
+    print(f"Debug: Found entity URI: {entity_uri}")
+    
+    # Check if the entity URI itself is a Wikidata entity
+    wikidata_id = None
     entity_type = None
-    for s, p, o in g.triples((entity_uri, RDF.type, None)):
-        entity_type = o
-        break
-    
-    if not entity_type:
-        return f"Entity '{label}' has no complementary information."
-    
-    # Check if it's a Wikidata entity
-    if str(entity_type).startswith("https://www.wikidata.org/wiki/Q"):
-        wikidata_id = str(entity_type).split("/")[-1]
+    if str(entity_uri).startswith("http://www.wikidata.org/entity/Q"):
+        wikidata_id = str(entity_uri).split("/")[-1]
+        print(f"Debug: Entity URI is directly Wikidata: {wikidata_id}")
+    else:
+        # Get entity type
+        entity_type = None
+        for s, p, o in g.triples((entity_uri, RDF.type, None)):
+            entity_type = o
+            print(f"Debug: Found entity type: {entity_type}")
+            break
         
-        # with P31
-        sparql_query_with_type = f"""
+        # Check if it's a Wikidata entity (via rdf:type)
+        if entity_type and str(entity_type).startswith("https://www.wikidata.org/wiki/Q"):
+            wikidata_id = str(entity_type).split("/")[-1]
+            print(f"Debug: Found Wikidata ID from type: {wikidata_id}")
+        else:
+            print("Debug: No Wikidata type found, checking for direct links...")
+            # Check for direct Wikidata links via owl:sameAs or other properties
+            for s, p, o in g.triples((entity_uri, None, None)):
+                if str(o).startswith("https://www.wikidata.org/wiki/Q"):
+                    wikidata_id = str(o).split("/")[-1]
+                    print(f"Debug: Found Wikidata ID from property {p}: {wikidata_id}")
+                    break
+    
+    print(f"Debug: Final Wikidata ID: {wikidata_id}")
+    
+    # query Wikidata
+    if wikidata_id:
+        
+        
+        sparql_query = f"""
         SELECT ?typeLabel ?description ?altLabel WHERE {{
-          wd:{wikidata_id} wdt:P31 ?type .
           wd:{wikidata_id} schema:description ?description .
-          OPTIONAL {{ wd:{wikidata_id} skos:altLabel ?altLabel . }}
-          
-          SERVICE wikibase:label {{ 
-            bd:serviceParam wikibase:language "en" .
-            ?type rdfs:label ?typeLabel .
+          OPTIONAL {{ 
+            wd:{wikidata_id} wdt:P31 ?type .
+            SERVICE wikibase:label {{ 
+              bd:serviceParam wikibase:language "en" .
+              ?type rdfs:label ?typeLabel .
+            }}
           }}
-          
-          FILTER(LANG(?description) = "en")
-          FILTER(LANG(?altLabel) = "en" || !BOUND(?altLabel))
-        }}
-        LIMIT 10
-        """
-        
-        #Only description and aliases without type
-        sparql_query_without_type = f"""
-        SELECT ?description ?altLabel WHERE {{
-          wd:{wikidata_id} schema:description ?description .
           OPTIONAL {{ wd:{wikidata_id} skos:altLabel ?altLabel . }}
           
           FILTER(LANG(?description) = "en")
@@ -775,10 +822,10 @@ def analyze_entity(graph_path: str, label: str, ontology_path: str) -> str:
                 'Accept': 'application/json'
             }
             
-            # Try with type first
+            
             response = requests.get(
                 endpoint,
-                params={'query': sparql_query_with_type, 'format': 'json'},
+                params={'query': sparql_query, 'format': 'json'},
                 headers=headers,
                 timeout=10
             )
@@ -790,7 +837,8 @@ def analyze_entity(graph_path: str, label: str, ontology_path: str) -> str:
                 if bindings:
                     result = bindings[0]
                     
-                    type_label = result.get('typeLabel', {}).get('value', 'Unknown')
+                    
+                    type_label = result.get('typeLabel', {}).get('value', None)
                     description = result.get('description', {}).get('value', '')
                     alt_labels = [b.get('altLabel', {}).get('value', '') 
                                  for b in bindings if b.get('altLabel')]
@@ -804,55 +852,27 @@ def analyze_entity(graph_path: str, label: str, ontology_path: str) -> str:
                     if len(alt_labels_str) > 200:
                         alt_labels_str = alt_labels_str[:199] + "..."
                     
-                    return f"{label} is of type {type_label}, as description: {description}, is also known as: {alt_labels_str}"
-                
-                # of no P31 found, try without type
-                else:
-                    response = requests.get(
-                        endpoint,
-                        params={'query': sparql_query_without_type, 'format': 'json'},
-                        headers=headers,
-                        timeout=10
-                    )
                     
-                    if response.status_code == 200:
-                        data = response.json()
-                        bindings = data.get('results', {}).get('bindings', [])
-                        
-                        if bindings:
-                            result = bindings[0]
-                            
-                            description = result.get('description', {}).get('value', '')
-                            alt_labels = [b.get('altLabel', {}).get('value', '') 
-                                         for b in bindings if b.get('altLabel')]
-                            
-                            # Limit description to 200 characters
-                            if len(description) > 200:
-                                description = description[:199] + "..."
-                            
-                            # Limit aliases to 200 characters total
-                            alt_labels_str = ", ".join(alt_labels) if alt_labels else "No alternative names"
-                            if len(alt_labels_str) > 200:
-                                alt_labels_str = alt_labels_str[:199] + "..."
-                            
-                            return f"{label} (type unknown), as description: {description}, is also known as: {alt_labels_str}"
+                    if type_label:
+                        return f"{label} is of type {type_label}, has description: {description}, is also known as: {alt_labels_str}"
+                    else:
+                        return f"{label} (type unknown), has description: {description}, is also known as: {alt_labels_str}"
                     
         except Exception as e:
             pass
     
-    # Check if it's an ontology entity
-    for s, p, o in ontology.triples((entity_type, None, None)):
-        # Found in ontology, get label
-        for s2, p2, o2 in ontology.triples((entity_type, SKOS.prefLabel, None)):
-            return f"{label} is of type {o2}"
-        for s2, p2, o2 in ontology.triples((entity_type, RDFS.label, None)):
-            return f"{label} is of type {o2}"
-        # If no label found, use URI
-        return f"{label} is of type {str(entity_type)}"
+    # Check if it's an ontology entity (if we have an entity_type)
+    if entity_type:
+        for s, p, o in ontology.triples((entity_type, None, None)):
+            # Found in ontology, get label
+            for s2, p2, o2 in ontology.triples((entity_type, SKOS.prefLabel, None)):
+                return f"{label} is of type {o2}"
+            for s2, p2, o2 in ontology.triples((entity_type, RDFS.label, None)):
+                return f"{label} is of type {o2}"
+            # If no label found, use URI
+            return f"{label} is of type {str(entity_type)}"
     
-    # Default case
     return f"Entity '{label}' has no complementary information."
-
 
 
 import requests
@@ -862,7 +882,7 @@ from rdflib.namespace import RDF, RDFS, SKOS
 import difflib
 
 def align_unlinked_entities_to_wikidata(ttl_file_path: str, output_path: str = None):
-    #try to align with wikidata entities with rel:mentioned in not aligned with either ontology or wikidata
+    #try to align with wikidata entities with rel:mentioned if not aligned with either ontology or wikidata
 
     g = Graph()
     g.parse(ttl_file_path, format='turtle')
@@ -937,7 +957,6 @@ def align_unlinked_entities_to_wikidata(ttl_file_path: str, output_path: str = N
                     wikidata_uri = URIRef(f"https://www.wikidata.org/wiki/{wikidata_id}")
                     description = best_match.get('description', '')
                     
-                    # add triplet
                     g.add((entity_uri, RDF.type, wikidata_uri))
                     g.add((entity_uri, REL.alignedWith, wikidata_uri))
                     g.add((entity_uri, REL.alignmentScore, Literal(best_score)))
@@ -955,10 +974,9 @@ def align_unlinked_entities_to_wikidata(ttl_file_path: str, output_path: str = N
         except requests.RequestException as e:
             print(f"  -> Error API: {e}")
         
-        # Délai pour éviter de surcharger l'API
+       
         time.sleep(0.1)
     
-    # Sauvegarder le graphe modifié
     if output_path is None:
         base_name = ttl_file_path.rsplit('.', 1)[0]
         output_path = f"{base_name}_aligned.ttl"
@@ -968,3 +986,592 @@ def align_unlinked_entities_to_wikidata(ttl_file_path: str, output_path: str = N
     print(f"Fichier sauvegardé: {output_path}")
     
     return output_path
+
+
+import rdflib
+from rdflib import Graph, Namespace, URIRef
+import requests
+import time
+from typing import Dict, List
+
+
+import time
+import requests
+from rdflib import Graph, Namespace
+from typing import List, Dict, Set
+import pickle
+import os
+from concurrent.futures import ThreadPoolExecutor, as_completed
+import threading
+
+_property_labels_cache = {}
+_cache_lock = threading.Lock()
+_cache_file = 'property_cache.pkl'
+
+def load_cache():
+    global _property_labels_cache
+    try:
+        if os.path.exists(_cache_file):
+            with open(_cache_file, 'rb') as f:
+                _property_labels_cache = pickle.load(f)
+            print(f"Cache loaded: {len(_property_labels_cache)} properties")
+        else:
+            _property_labels_cache = {}
+    except Exception as e:
+        print(f"Error loading cache: {e}")
+        _property_labels_cache = {}
+
+def save_cache():
+    try:
+        with open(_cache_file, 'wb') as f:
+            pickle.dump(_property_labels_cache, f)
+        print(f"Cache saved: {len(_property_labels_cache)} properties")
+    except Exception as e:
+        print(f"Error saving cache: {e}")
+
+def preload_common_properties():
+    common_properties = [
+        'P31',   # instance of
+        'P279',  # subclass of
+        'P106',  # occupation
+        'P19',   # place of birth
+        'P20',   # place of death
+        'P27',   # country of citizenship
+        'P21',   # sex or gender
+        'P569',  # date of birth
+        'P570',  # date of death
+        'P17',   # country
+        'P131',  # located in
+        'P159',  # headquarters location
+        'P36',   # capital
+        'P1376', # capital of
+        'P150',  # contains
+        'P361',  # part of
+        'P527',  # has part
+        'P276',  # location
+        'P138',  # named after
+        'P1435', # heritage designation
+        'P625',  # coordinate location
+        'P580',  # start time
+        'P582',  # end time
+        'P585',  # point in time
+        'P571',  # inception
+        'P577',  # publication date
+        'P1001', # applies to jurisdiction
+        'P1269', # facet of
+        'P910',  # topic's main category
+        'P373',  # Commons category
+        'P856',  # official website
+        'P1448', # official name
+        'P1705', # native label
+        'P18',   # image
+        'P154',  # logo image
+        'P94',   # coat of arms
+        'P41',   # flag image
+        'P242',  # locator map image
+        'P2633', # geoshape
+        'P1313', # office held by head of government
+        'P1906', # office held by head of state
+        'P6',    # head of government
+        'P35',   # head of state
+        'P123',  # publisher
+        'P50',   # author
+        'P2860', # cites
+        'P921',  # main subject
+        'P3373', # sibling
+        'P22',   # father
+        'P25',   # mother
+        'P26',   # spouse
+        'P40',   # child
+        'P39',   # position held
+        'P69',   # educated at
+        'P108',  # employer
+        'P463',  # member of
+        'P1344', # participant in
+        'P1066', # student of
+        'P802',  # student
+        'P937',  # work location
+        'P551',  # residence
+        'P800',  # notable work
+        'P1412', # languages spoken
+        'P103',  # native language
+        'P1303', # instrument
+        'P101',  # field of work
+        'P136',  # genre
+        'P641',  # sport
+        'P413',  # position played
+        'P54',   # member of sports team
+        'P1532', # country for sport
+        'P495',  # country of origin
+        'P364',  # original language
+        'P407',  # language of work
+        'P710',  # participant
+        'P1923', # participating team
+        'P179',  # part of the series
+        'P155',  # follows
+        'P156',  # followed by
+        'P144',  # based on
+        'P1889', # different from
+        'P460',  # said to be the same as
+        'P1830', # owner of
+        'P127',  # owned by
+        'P112',  # founded by
+        'P170',  # creator
+        'P287',  # designed by
+        'P84',   # architect
+        'P176',  # manufacturer
+        'P1056', # product or material produced
+        'P180',  # depicts
+        'P921',  # main subject
+        'P2047', # duration
+        'P2048', # height
+        'P2049', # width
+        'P2046', # area
+        'P2043', # length
+        'P2067', # mass
+        'P2386', # diameter
+        'P2044', # elevation above sea level
+        'P1082', # population
+        'P2046', # area
+        'P2048', # height
+        'P2067', # mass
+        'P1120', # number of deaths
+        'P1339', # number of injured
+        'P1590', # unemployment rate
+        'P2131', # nominal GDP
+        'P2132', # nominal GDP per capita
+        'P2133', # nominal GDP in purchasing power parity
+        'P2134', # nominal GDP per capita in purchasing power parity
+        'P2135', # GDP growth rate
+        'P2136', # inflation rate
+        'P2137', # industrial production growth rate
+        'P2138', # labor force
+        'P2139', # labor force participation rate
+        'P2140', # Human Development Index
+        'P2141', # Gini coefficient
+        'P2142', # literacy rate
+        'P2143', # life expectancy
+        'P2144', # maternal mortality rate
+        'P2145', # infant mortality rate
+        'P2146', # birth rate
+        'P2147', # death rate
+        'P2148', # net migration rate
+        'P2149', # urbanization rate
+        'P2150', # total fertility rate
+        'P2151', # Internet users
+        'P2152', # telephone users
+        'P2153', # mobile phone users
+        'P2154', # electricity production
+        'P2155', # electricity consumption
+        'P2156', # oil production
+        'P2157', # oil consumption
+        'P2158', # natural gas production
+        'P2159', # natural gas consumption
+        'P2160', # carbon dioxide emissions
+        'P2161', # military expenditure
+        'P2162', # defense budget
+        'P2163', # armed forces size
+        'P2164', # number of households
+        'P2165', # household size
+        'P2166', # housing units
+        'P2167', # occupied housing units
+        'P2168', # vacant housing units
+        'P2169', # home ownership rate
+        'P2170', # median household income
+        'P2171', # median family income
+        'P2172', # per capita income
+        'P2173', # poverty rate
+        'P2174', # unemployment rate
+        'P2175', # crime rate
+        'P2176', # murder rate
+        'P2177', # suicide rate
+        'P2178', # traffic accident rate
+        'P2179', # fire incident rate
+        'P2180'  # natural disaster rate
+    ]
+    
+    print("Preloading common properties...")
+    fetch_properties_batch(common_properties)
+
+def fetch_properties_batch(property_ids: List[str], batch_size: int = 50):# retrive multiples properties in one request
+    global _property_labels_cache
+    
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+    }
+    
+   
+    uncached_properties = [pid for pid in property_ids if pid not in _property_labels_cache]
+    
+    if not uncached_properties:
+        return
+    
+    for i in range(0, len(uncached_properties), batch_size):
+        batch = uncached_properties[i:i+batch_size]
+        batch_ids = '|'.join(batch)
+        
+        try:
+            url = "https://www.wikidata.org/w/api.php"
+            params = {
+                'action': 'wbgetentities',
+                'ids': batch_ids,
+                'props': 'labels',
+                'languages': 'en',
+                'format': 'json'
+            }
+            
+            response = requests.get(url, params=params, headers=headers, timeout=30)
+            response.raise_for_status()
+            data = response.json()
+            
+            if 'entities' in data:
+                with _cache_lock:
+                    for property_id in batch:
+                        if property_id in data['entities']:
+                            entity_data = data['entities'][property_id]
+                            if 'labels' in entity_data and 'en' in entity_data['labels']:
+                                _property_labels_cache[property_id] = entity_data['labels']['en']['value']
+                            else:
+                                _property_labels_cache[property_id] = property_id
+                        else:
+                            _property_labels_cache[property_id] = property_id
+            
+            print(f"Fetched batch {i//batch_size + 1}: {len(batch)} properties")
+            time.sleep(0.1)  
+            
+        except Exception as e:
+            print(f"Error fetching batch {batch_ids}: {e}")
+            with _cache_lock:
+                for property_id in batch:
+                    if property_id not in _property_labels_cache:
+                        _property_labels_cache[property_id] = property_id
+
+def get_property_label(property_id: str) -> str: #gets the label of a property from the cache
+    with _cache_lock:
+        return _property_labels_cache.get(property_id, property_id)
+
+def collect_all_properties(g: Graph) -> Set[str]:# collect all properties wdt: used in the graph for entities with isWikidataNeighborOf
+    properties = set()
+    
+    ex = Namespace("http://example.org/")
+    entities_with_neighbor_relation = set()
+    for subj, pred, obj in g.triples((None, ex.isWikidataNeighborOf, None)):
+        entities_with_neighbor_relation.add(subj)
+    
+    for entity in entities_with_neighbor_relation:
+        for subj, pred, obj in g.triples((entity, None, None)):
+            pred_str = str(pred)
+            if pred_str.startswith("http://www.wikidata.org/prop/direct/"):
+                property_id = pred_str.split('/')[-1]
+                properties.add(property_id)
+    
+    return properties
+
+
+import time
+import requests
+from rdflib import Graph, Namespace
+from typing import List, Dict, Set, Tuple
+import pickle
+import os
+from concurrent.futures import ThreadPoolExecutor, as_completed
+import threading
+from collections import defaultdict
+
+_property_labels_cache = {}
+_cache_lock = threading.Lock()
+_cache_file = 'property_cache.pkl'
+
+def load_cache():
+    global _property_labels_cache
+    try:
+        if os.path.exists(_cache_file):
+            with open(_cache_file, 'rb') as f:
+                _property_labels_cache = pickle.load(f)
+            print(f"Cache loaded: {len(_property_labels_cache)} properties")
+        else:
+            _property_labels_cache = {}
+    except Exception as e:
+        print(f"Error loading cache: {e}")
+        _property_labels_cache = {}
+
+def save_cache():
+    try:
+        with open(_cache_file, 'wb') as f:
+            pickle.dump(_property_labels_cache, f)
+        print(f"Cache saved: {len(_property_labels_cache)} properties")
+    except Exception as e:
+        print(f"Error saving cache: {e}")
+
+def fetch_properties_batch(property_ids: List[str], batch_size: int = 50):
+    global _property_labels_cache
+    
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+    }
+    
+    # Filtrer les propriétés non cachées
+    uncached_properties = [pid for pid in property_ids if pid not in _property_labels_cache]
+    
+    if not uncached_properties:
+        return
+    
+    # Traiter par batch avec multithreading
+    def fetch_batch(batch):
+        batch_ids = '|'.join(batch)
+        try:
+            url = "https://www.wikidata.org/w/api.php"
+            params = {
+                'action': 'wbgetentities',
+                'ids': batch_ids,
+                'props': 'labels',
+                'languages': 'en',
+                'format': 'json'
+            }
+            
+            response = requests.get(url, params=params, headers=headers, timeout=30)
+            response.raise_for_status()
+            data = response.json()
+            
+            batch_results = {}
+            if 'entities' in data:
+                for property_id in batch:
+                    if property_id in data['entities']:
+                        entity_data = data['entities'][property_id]
+                        if 'labels' in entity_data and 'en' in entity_data['labels']:
+                            batch_results[property_id] = entity_data['labels']['en']['value']
+                        else:
+                            batch_results[property_id] = property_id
+                    else:
+                        batch_results[property_id] = property_id
+            
+            return batch_results
+            
+        except Exception as e:
+            print(f"Error fetching batch {batch_ids}: {e}")
+            return {pid: pid for pid in batch}
+    
+    # Traiter les batches en parallèle
+    batches = [uncached_properties[i:i+batch_size] for i in range(0, len(uncached_properties), batch_size)]
+    
+    with ThreadPoolExecutor(max_workers=5) as executor:
+        future_to_batch = {executor.submit(fetch_batch, batch): batch for batch in batches}
+        
+        for future in as_completed(future_to_batch):
+            batch_results = future.result()
+            with _cache_lock:
+                _property_labels_cache.update(batch_results)
+            print(f"Fetched batch: {len(batch_results)} properties")
+
+# def get_property_label(property_id: str) -> str:
+#     """Récupère le label d'une propriété depuis le cache"""
+#     return _property_labels_cache.get(property_id, property_id)
+
+def collect_all_data(g: Graph) -> Tuple[Set[str], Dict, List[Tuple]]:
+    """Collecte toutes les données nécessaires en une seule passe"""
+    properties = set()
+    entity_labels = {}
+    relations_data = []
+    
+    # Définir les namespaces
+    ex = Namespace("http://example.org/")
+    skos = Namespace("http://www.w3.org/2004/02/skos/core#")
+    
+    # Collecter les labels des entités
+    print("Collecting entity labels...")
+    start_time = time.time()
+    for s, p, o in g.triples((None, skos.prefLabel, None)):
+        entity_labels[s] = str(o)
+    print(f"Found {len(entity_labels)} entity labels in {time.time() - start_time:.2f}s")
+    
+    # Trouver les entités avec la relation isWikidataNeighborOf
+    print("Finding entities with neighbor relation...")
+    start_time = time.time()
+    entities_with_neighbor_relation = set()
+    for subj, pred, obj in g.triples((None, ex.isWikidataNeighborOf, None)):
+        entities_with_neighbor_relation.add(subj)
+    print(f"Found {len(entities_with_neighbor_relation)} entities with neighbor relation in {time.time() - start_time:.2f}s")
+    
+    # Collecter toutes les relations wdt: en une seule passe
+    print("Collecting all wdt relations...")
+    start_time = time.time()
+    processed_entities = 0
+    
+    for entity in entities_with_neighbor_relation:
+        processed_entities += 1
+        if processed_entities % 1000 == 0:
+            elapsed = time.time() - start_time
+            rate = processed_entities / elapsed if elapsed > 0 else 0
+            print(f"  Processed {processed_entities}/{len(entities_with_neighbor_relation)} entities ({rate:.0f} entities/s)")
+        
+        if entity not in entity_labels:
+            continue
+            
+        for subj, pred, obj in g.triples((entity, None, None)):
+            pred_str = str(pred)
+            if pred_str.startswith("http://www.wikidata.org/prop/direct/"):
+                property_id = pred_str.split('/')[-1]
+                properties.add(property_id)
+                
+                # Stocker les données de la relation
+                relations_data.append((entity, property_id, obj))
+    
+    collection_time = time.time() - start_time
+    print(f"Found {len(relations_data)} wdt relations with {len(properties)} unique properties in {collection_time:.2f}s")
+    print(f"Average rate: {len(relations_data) / collection_time:.0f} relations/s collected")
+    
+    return properties, entity_labels, relations_data
+
+def process_relations_batch(relations_batch: List[Tuple], entity_labels: Dict, g: Graph) -> List[Dict[str, str]]:
+    batch_start = time.time()
+    results = []
+    skos = Namespace("http://www.w3.org/2004/02/skos/core#")
+    api_calls = 0
+    
+    print(f"  Processing batch of {len(relations_batch)} relations...")
+    
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+    }
+    
+    for i, (entity, property_id, destination_uri) in enumerate(relations_batch):
+        if i % 100 == 0 and i > 0:
+            elapsed = time.time() - batch_start
+            rate = i / elapsed if elapsed > 0 else 0
+            print(f"    Batch progress: {i}/{len(relations_batch)} ({rate:.0f} relations/s in this batch)")
+        
+        source_label = entity_labels.get(entity)
+        if not source_label:
+            continue
+        
+        # Get property label from cache
+        property_label = get_property_label(property_id)
+        
+        # Get destination entity label
+        destination_label = entity_labels.get(destination_uri)
+        
+        # if  not found in cache, search in the graph
+        if not destination_label:
+            for s, p, o in g.triples((destination_uri, skos.prefLabel, None)):
+                destination_label = str(o)
+                break
+        
+        # Fallback vers Wikidata API (rare)
+        if not destination_label:
+            api_calls += 1
+            uri_str = str(destination_uri)
+            if 'wikidata.org' in uri_str:
+                entity_id = uri_str.split('/')[-1]
+                if entity_id.startswith('Q'):
+                    try:
+                        url = "https://www.wikidata.org/w/api.php"
+                        params = {
+                            'action': 'wbgetentities',
+                            'ids': entity_id,
+                            'props': 'labels',
+                            'languages': 'en',
+                            'format': 'json'
+                        }
+                        
+                        response = requests.get(url, params=params, headers=headers, timeout=5)
+                        response.raise_for_status()
+                        data = response.json()
+                        
+                        if 'entities' in data and entity_id in data['entities']:
+                            entity_data = data['entities'][entity_id]
+                            if 'labels' in entity_data and 'en' in entity_data['labels']:
+                                destination_label = entity_data['labels']['en']['value']
+                            else:
+                                destination_label = entity_id
+                        else:
+                            destination_label = entity_id
+                            
+                    except Exception:
+                        destination_label = entity_id
+                else:
+                    destination_label = uri_str
+            else:
+                destination_label = uri_str
+        
+        if destination_label:
+            results.append({
+                'source': source_label,
+                'destination': destination_label,
+                'verbalization': property_label
+            })
+    
+    batch_time = time.time() - batch_start
+    print(f"  Batch completed: {len(results)} results in {batch_time:.2f}s ({len(results)/batch_time:.0f} relations/s), {api_calls} API calls")
+    
+    return results
+
+def verbalize_rdf_relations(graph_path: str, max_workers: int = 8, batch_size: int = 1000) -> List[Dict[str, str]]:
+    print("Starting ultra-optimized RDF verbalization...")
+    start_time = time.time()
+    
+    load_cache()
+    
+    print("Loading RDF graph...")
+    g = Graph()
+    g.parse(graph_path, format="turtle")
+    
+    all_properties, entity_labels, relations_data = collect_all_data(g)
+    
+    print("Pre-fetching all property labels...")
+    fetch_properties_batch(list(all_properties))
+    
+    save_cache()
+    
+    print(f"Data collection completed in {time.time() - start_time:.2f}s")
+    print(f"Processing {len(relations_data)} relations...")
+    
+    relation_batches = [relations_data[i:i+batch_size] for i in range(0, len(relations_data), batch_size)]
+    
+    results = []
+    processed_count = 0
+    
+    print(f"Starting parallel processing with {max_workers} workers, {len(relation_batches)} batches...")
+    
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        future_to_batch = {
+            executor.submit(process_relations_batch, batch, entity_labels, g): i 
+            for i, batch in enumerate(relation_batches)
+        }
+        
+        print(f"Submitted {len(future_to_batch)} batch jobs to executor")
+        
+        for i, future in enumerate(as_completed(future_to_batch)):
+            batch_results = future.result()
+            results.extend(batch_results)
+            processed_count += len(batch_results)
+            
+            elapsed = time.time() - start_time
+            rate = processed_count / elapsed if elapsed > 0 else 0
+            
+           
+            if i % 10 == 0 or processed_count % 5000 == 0:
+                print(f"Batch {i+1}/{len(relation_batches)} completed - Processed {processed_count}/{len(relations_data)} relations ({rate:.0f} relations/s) - Elapsed: {elapsed:.1f}s")
+                
+          
+            if i % 5 == 0:
+                print(f"  -> Batch {i+1} done: +{len(batch_results)} relations")
+    
+    total_time = time.time() - start_time
+    print(f"Completed! Generated {len(results)} verbalizations in {total_time:.2f}s")
+    print(f"Average rate: {len(results) / total_time:.0f} relations/s")
+    
+
+    save_cache()
+    
+    return results
+
+# to see cache size
+def get_cache_stats():
+    return f"Cache contains {len(_property_labels_cache)} properties"
+
+def clear_cache():
+    global _property_labels_cache
+    _property_labels_cache.clear()
+    if os.path.exists(_cache_file):
+        os.remove(_cache_file)
+    print("Cache cleared")

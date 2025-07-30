@@ -2,7 +2,7 @@ question :
 
 
 
-What may be a likely cause of sink-to-sink spreading of pathogens in the hospital setting?
+Pénalités & indemnité de recouvrement
 
 
 
@@ -10,44 +10,87 @@ context :
 
 
 
-In summary, this work for the first time better models the mechanisms of spread of multidrug-resistant pathogens arising from the sink drain and infecting patients.
+OBJECTIVES:
 
-This would require additional testing and is planned as future work.
+Limited data are available in China to describe the epidemiology of viral respiratory infections, especially in small–medium cities and rural areas.
+
+To determine the viral etiology and seasonality of acute respiratory infections in hospitalized children, a 3-year study was conducted in Shenzhen, China.
+
+The epidemiology of local viral etiologies is essential for the management of viral respiratory tract infections.
+
+METHODS:
+
+He, Ying; Lin, Guang-Yu; Wang, Qiong; Cai, Xiao-Ying; Zhang, Yin-Hui; Lin, Chuang-Xing; Lu, Chang-Dong; Lu, Xue-Dong
+Date: 2014-05-14
+DOI: 10.1111/irv.12257
+License: cc-by
+
+Abstract: BACKGROUND:
+
+Nasopharyngeal aspirates from eligible children were collected.
+
+Terms of Use| Privacy Policy| Accessibility Statement
+
+Silverchair Logo
 
 
+A 3-year prospective study of the epidemiology of acute respiratory viral infections in hospitalized children in Shenzhen, China
 
-Droplet dispersion from the P-trap does not happen directly.
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4181804/
 
-We also did not completely characterize the droplet sizes, nor do we demonstrate air sampling to understand if the dispersion is only droplet or if there are also aerosols that contain GFP-expressing E. coli.
+SHA: ef5fe7296ec8baf90d974cf5737af0da3ed403ea
 
-Rather it is a multistage process: dispersal originates from the strainer and/or the bowl after growth of the biofilm up from the microbial reservoir of the P-trap.
+Authors:
 
-We are not clear how widespread the practice of disposing of dextrose-containing intravenous fluids or leftover beverages in the hand-wash sinks is; however, we have observed this practice, and anecdotally it appears to be relatively common in the United States.
+Influenza and other respiratory viruses were tested by molecular assays simultaneously.
 
-We also demonstrate sink-to-sink transmission via a common sanitary pipe.
-
-Another limitation was the need to add nutrients to the drain to ensure rapid and robust colonization.
-
-This work could have implications for patient safety, infection control, and interventions as well as the design of future hospital plumbing systems to eliminate this mode of transmission to vulnerable hospitalized patients.
+All Rights Reserved.
 
 
+Data were analyzed to describe the frequency and seasonality.
 
-However, to address the monomicrobial dominance of the GFP-expressing E. coli added to the system, we kept the system open, and other environmental organisms were able to cocolonize in an attempt to mimic the hospital system.
+© 2020 American Medical Association.
 
-Sink gallery design.
+RESULTS:
 
-GFP-expressing E. coli is a laboratory surrogate, and the putative biofilms established in the short time frame of our experiments are unlikely to be as complex or stable as biofilms developed in a hospital wastewater system over many years.
+| Terms of Use
+Jama Network Logo
 
-A dedicated sink gallery was set up to simulate hospital hand-washing sinks.
 
-However, we speculate that transmission could occur on larger systems over greater time scales, especially if heavy nutrient and contamination loads were also included.
+Of the 2025 children enrolled in the study, 971 (48·0%) were positive for at least one viral pathogen, in which 890 (91·7%) were <4 years of age.
 
-The gallery was comprised of five sink modules assembled next to each other (Fig. 4) .
+Home CME Quizzes State CME Audio / Podcast Courses Clinical Challenge CME Atrial Fibrillation Course Marijuana Course Penicillin Allergy Course Cervical Cancer Screening Course CME / MOC Reporting Preferences About CME & MOC
+Help
+Subscriptions & Renewals Email Subscriptions Update Your Address Contact Us Frequently Asked Questions
+JAMA CAREER CENTER
+Physician Job Listings
 
-Similarly the sink-to-sink transmission may not be applicable to all wastewater plumbing systems as the fixtures on the pipe are very close together, unlike most layouts in health care settings.
+Get the latest from JAMA
+Email address
+Sign Up
+Privacy Policy
 
-The five hand-wash sink stations were identical in bowl designs and dimensions and were modeled from the most common intensive care unit hand-washing sink type in the acute care hospital at the University of Virginia Medical Center.
+The three most prevalent viruses were influenza A (IAV; 35·8%), respiratory syncytial virus (RSV; 30·5%) and human rhinovirus (HRV; 21·5%).
 
-First the use of similar sink bowls across these sinks only examines the dispersion pattern of this particular sink design.
+RSS Contact Us
+JN Learning / CME Store Apps Jobs Institutions Reprints & Permissions
+Journal Cover
+Subscribe
+Go
+JAMA Network
+PUBLICATIONS
+JAMA JAMA Network Open JAMA Cardiology JAMA Dermatology JAMA Facial Plastic Surgery JAMA Health Forum JAMA Internal Medicine JAMA Neurology JAMA Oncology JAMA Ophthalmology JAMA Otolaryngology–Head & Neck Surgery JAMA Pediatrics JAMA Psychiatry JAMA Surgery Archives of Neurology & Psychiatry (1919-1959)
+SITES
+AMA Manual of Style Art and Images in Psychiatry Breast Cancer Screening Guidelines Colorectal Screening Guidelines Declaration of Helsinki Depression Screening Guidelines Evidence-Based Medicine: An Oral History Fishbein Fellowship Genomics and Precision Health Health Disparities Hypertension Guidelines JAMA Network Audio JAMA Network Conferences Machine Learning Med Men Medical Education Opioid Management Guidelines Peer Review Congress Research Ethics Sepsis and Septic Shock Statins and Dyslipidemia Topics and Collections
+FEATURED ARTICLES
+ACS Breast Cancer Screening Guideline CDC Guideline for Prescribing Opioids CDC Guideline for Prevention of Surgical Site Infections Consensus Definitions for Sepsis and Septic Shock Global Burden of Cancer, 1990-2016 Global Burden of Disease in Children, 1990-2013 Global Burden of Hypertension, 1990-2015 Global Firearm Mortality, 1990-2016 Health Care Spending in the US and Other High-Income Countries Income and Life Expectancy in the US JNC 8 Guideline for Management of High Blood Pressure President Obama on US Health Care Reform Screening for Colorectal Cancer Screening for Depression in Adults Screening for Prostate Cancer Statins for Primary Prevention of Cardiovascular Disease The State of US Health, 1990-2016 US Burden of Cardiovascular Disease, 1990-2016 WMA Declaration of Helsinki, 7th Revision
+BLOGS
+JAMA Health Forum AMA Style Insider
+INFORMATION FOR
+Authors Institutions & Librarians Advertisers Subscription Agents Employers & Job Seekers Media
+JAMA NETWORK PRODUCTS
+AMA Manual of Style JAMAevidence JN Listen Peer Review Congress
+JN LEARNING
 
-Partitions made of 24-in.-high Plexiglas sheet were installed between the sinks to prevent splatter and cross contamination.
+
+Co-infections were found in 302 cases (31·1%), and dual viral infection was dominant.
