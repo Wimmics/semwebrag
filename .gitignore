@@ -7,3 +7,7 @@ sonar-project.properties
 .scannerwork/
 medical/outputLinkerLinked.ttl
 medical/relations.index
+
+**/__pycache__/
+
+uv.lock

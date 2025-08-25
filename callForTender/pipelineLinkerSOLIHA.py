@@ -1,6 +1,6 @@
 from rdflib import Graph, RDF, RDFS, Literal, URIRef, Namespace
 import time
-from langchain.embeddings import HuggingFaceEmbeddings
+from langchain_community.embeddings import HuggingFaceEmbeddings
 from rdflib.namespace import SKOS
 from rdflib.namespace import OWL 
 import spacy
