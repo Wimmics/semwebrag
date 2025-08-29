@@ -1,0 +1,2772 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix rel: <http://relations.example.org/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://example.org/chunk_33> a <http://example.org/Chunk> ;
+    rel:id 33 ;
+    rel:mentions <http://example.org/entity/the_leading_autonomous_vehicle_platform> ;
+    skos:prefLabel "Advancing the leading autonomous vehicle platform." .
+
+<http://example.org/chunk_50> a <http://example.org/Chunk> ;
+    rel:id 50 ;
+    rel:mentions <http://example.org/entity/our_products> ;
+    skos:prefLabel "We do not manufacture semiconductors used for our products." .
+
+<http://example.org/chunk_69> a <http://example.org/Chunk> ;
+    rel:id 69 ;
+    rel:mentions <http://example.org/entity/human_capital_management> ;
+    skos:prefLabel "Human Capital Management" .
+
+<http://example.org/chunk_77> a <http://example.org/Chunk> ;
+    rel:id 77 ;
+    rel:mentions <http://example.org/entity/our_employees> ;
+    skos:prefLabel "Our employees tend to come and stay." .
+
+<http://example.org/entity/100_> a <https://www.omg.org/spec/Commons/QuantitiesAndUnits/Percentage> ;
+    rel:alignedWith <https://www.omg.org/spec/Commons/QuantitiesAndUnits/Percentage> ;
+    rel:alignmentScore 5.398146e-01 ;
+    rel:mentionedIn <http://example.org/chunk_66> ;
+    skos:prefLabel "100%" .
+
+<http://example.org/entity/1999> a <https://spec.edmcouncil.org/fibo/ontology/IND/InterestRates/InterestRates/TenYears> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/IND/InterestRates/InterestRates/TenYears> ;
+    rel:alignmentScore 5.34242e-01 ;
+    rel:mentionedIn <http://example.org/chunk_2> ;
+    skos:prefLabel "1999" .
+
+<http://example.org/entity/19_532> rel:mentionedIn <http://example.org/chunk_71> ;
+    skos:prefLabel "19,532" .
+
+<http://example.org/entity/2006> a <https://www.omg.org/spec/Commons/DatesAndTimes/Date> ;
+    rel:alignedWith <https://www.omg.org/spec/Commons/DatesAndTimes/Date> ;
+    rel:alignmentScore 5.776892e-01 ;
+    rel:mentionedIn <http://example.org/chunk_4> ;
+    skos:prefLabel "2006" .
+
+<http://example.org/entity/26_196> rel:mentionedIn <http://example.org/chunk_71> ;
+    skos:prefLabel "26,196" .
+
+<http://example.org/entity/26_196_employees> rel:mentionedIn <http://example.org/chunk_71> ;
+    skos:prefLabel "26,196 employees" .
+
+<http://example.org/entity/35_countries> a <https://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/Country> ;
+    rel:alignedWith <https://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/Country> ;
+    rel:alignmentScore 5.513028e-01 ;
+    rel:mentionedIn <http://example.org/chunk_71> ;
+    skos:prefLabel "35 countries" .
+
+<http://example.org/entity/5_3_> a <https://www.omg.org/spec/Commons/QuantitiesAndUnits/Percentage> ;
+    rel:alignedWith <https://www.omg.org/spec/Commons/QuantitiesAndUnits/Percentage> ;
+    rel:alignmentScore 7.368686e-01 ;
+    rel:mentionedIn <http://example.org/chunk_78> ;
+    skos:prefLabel "5.3%" .
+
+<http://example.org/entity/6_664> rel:mentionedIn <http://example.org/chunk_71> ;
+    skos:prefLabel "6,664" .
+
+<http://example.org/entity/__ai_developers> a <https://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/AI> ;
+    rel:alignedWith <https://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/AI> ;
+    rel:alignmentScore 6.942119e-01 ;
+    rel:mentionedIn <http://example.org/chunk_20> ;
+    skos:prefLabel ", AI developers" .
+
+<http://example.org/entity/a_broad_range> a <https://spec.edmcouncil.org/fibo/ontology/IND/MarketIndices/BasketIndices/hasSpreadRange> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/IND/MarketIndices/BasketIndices/hasSpreadRange> ;
+    rel:alignmentScore 5.379692e-01 ;
+    rel:mentionedIn <http://example.org/chunk_5> ;
+    skos:prefLabel "a broad range" .
+
+<http://example.org/entity/a_combination> a <https://www.omg.org/spec/Commons/Collections/Arrangement> ;
+    rel:alignedWith <https://www.omg.org/spec/Commons/Collections/Arrangement> ;
+    rel:alignmentScore 5.771128e-01 ;
+    rel:mentionedIn <http://example.org/chunk_60> ;
+    skos:prefLabel "a combination" .
+
+<http://example.org/entity/a_comprehensive_catalog> a <https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/Catalog> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/Catalog> ;
+    rel:alignmentScore 8.773626e-01 ;
+    rel:mentionedIn <http://example.org/chunk_19> ;
+    skos:prefLabel "a comprehensive catalog" .
+
+<http://example.org/entity/a_fabless_manufacturing_strategy> a <https://spec.edmcouncil.org/fibo/ontology/FND/GoalsAndObjectives/Objectives/BusinessStrategy> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/GoalsAndObjectives/Objectives/BusinessStrategy> ;
+    rel:alignmentScore 5.039457e-01 ;
+    rel:mentionedIn <http://example.org/chunk_51> ;
+    skos:prefLabel "a fabless manufacturing strategy" .
+
+<http://example.org/entity/a_full_functionally_safe_ai_based_hardware_and_software_solution> rel:mentionedIn <http://example.org/chunk_36> ;
+    skos:prefLabel "a full functionally safe AI-based hardware and software solution" .
+
+<http://example.org/entity/a_growing_number> a <https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Analytics/hasPopulationSize> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Analytics/hasPopulationSize> ;
+    rel:alignmentScore 5.15813e-01 ;
+    rel:mentionedIn <http://example.org/chunk_27> ;
+    skos:prefLabel "a growing number" .
+
+<http://example.org/entity/a_key_role> a <https://www.omg.org/spec/Commons/RolesAndCompositions/Role> ;
+    rel:alignedWith <https://www.omg.org/spec/Commons/RolesAndCompositions/Role> ;
+    rel:alignmentScore 7.975988e-01 ;
+    rel:mentionedIn <http://example.org/chunk_70> ;
+    skos:prefLabel "a key role" .
+
+<http://example.org/entity/a_number> a <https://www.omg.org/spec/Commons/QuantitiesAndUnits/hasNumericValue> ;
+    rel:alignedWith <https://www.omg.org/spec/Commons/QuantitiesAndUnits/hasNumericValue> ;
+    rel:alignmentScore 6.618339e-01 ;
+    rel:mentionedIn <http://example.org/chunk_40> ;
+    skos:prefLabel "a number" .
+
+<http://example.org/entity/a_place> a <https://spec.edmcouncil.org/fibo/ontology/FND/Places/NorthAmerica/USPostalServiceAddressesIndividuals/Place> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/Places/NorthAmerica/USPostalServiceAddressesIndividuals/Place> ;
+    rel:alignmentScore 8.811389e-01 ;
+    rel:mentionedIn <http://example.org/chunk_76> ;
+    skos:prefLabel "a place" .
+
+<http://example.org/entity/a_platform_strategy> a <https://spec.edmcouncil.org/fibo/ontology/SEC/Funds/CollectiveInvestmentVehicles/hasInvestmentStrategy> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/SEC/Funds/CollectiveInvestmentVehicles/hasInvestmentStrategy> ;
+    rel:alignmentScore 5.374163e-01 ;
+    rel:mentionedIn <http://example.org/chunk_3> ;
+    skos:prefLabel "a platform strategy" .
+
+<http://example.org/entity/a_range> a <https://spec.edmcouncil.org/fibo/ontology/IND/MarketIndices/BasketIndices/hasSpreadRange> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/IND/MarketIndices/BasketIndices/hasSpreadRange> ;
+    rel:alignmentScore 5.759156e-01 ;
+    rel:mentionedIn <http://example.org/chunk_19> ;
+    skos:prefLabel "a range" .
+
+<http://example.org/entity/a_rapidly_growing_number> rel:mentionedIn <http://example.org/chunk_5> ;
+    skos:prefLabel "A rapidly growing number" .
+
+<http://example.org/entity/a_significant_source> a dcterms:source ;
+    rel:alignedWith dcterms:source ;
+    rel:alignmentScore 5.498204e-01 ;
+    rel:mentionedIn <http://example.org/chunk_59> ;
+    skos:prefLabel "A significant source" .
+
+<http://example.org/entity/a_variety> rel:mentionedIn <http://example.org/chunk_29> ;
+    skos:prefLabel "a variety" .
+
+<http://example.org/entity/about_50_> a <https://www.omg.org/spec/Commons/QuantitiesAndUnits/Percentage> ;
+    rel:alignedWith <https://www.omg.org/spec/Commons/QuantitiesAndUnits/Percentage> ;
+    rel:alignmentScore 7.157268e-01 ;
+    rel:mentionedIn <http://example.org/chunk_75> ;
+    skos:prefLabel "about 50%" .
+
+<http://example.org/entity/about_80_> a <https://www.omg.org/spec/Commons/QuantitiesAndUnits/Percentage> ;
+    rel:alignedWith <https://www.omg.org/spec/Commons/QuantitiesAndUnits/Percentage> ;
+    rel:alignmentScore 7.442654e-01 ;
+    rel:mentionedIn <http://example.org/chunk_75> ;
+    skos:prefLabel "about 80%" .
+
+<http://example.org/entity/acceptable_levels> a <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/MarketsIndividuals/Facility-LEVL> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/MarketsIndividuals/Facility-LEVL> ;
+    rel:alignmentScore 5.12521e-01 ;
+    rel:mentionedIn <http://example.org/chunk_56> ;
+    skos:prefLabel "acceptable levels" .
+
+<http://example.org/entity/ada_lovelace> rel:mentionedIn <http://example.org/chunk_21> ;
+    skos:prefLabel "Ada Lovelace" .
+
+<http://example.org/entity/add_in_board_manufacturers> rel:mentionedIn <http://example.org/chunk_44> ;
+    skos:prefLabel "add-in board manufacturers" .
+
+<http://example.org/entity/additional_features> a <https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtInstruments/MakeWholeFeature> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtInstruments/MakeWholeFeature> ;
+    rel:alignmentScore 5.492224e-01 ;
+    rel:mentionedIn <http://example.org/chunk_57> ;
+    skos:prefLabel "additional features" .
+
+<http://example.org/entity/administrative_positions> a <https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DistributedLoans/AdministrativeAgent> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DistributedLoans/AdministrativeAgent> ;
+    rel:alignmentScore 7.046472e-01 ;
+    rel:mentionedIn <http://example.org/chunk_71> ;
+    skos:prefLabel "administrative positions" .
+
+<http://example.org/entity/advanced_degrees> rel:mentionedIn <http://example.org/chunk_75> ;
+    skos:prefLabel "advanced degrees" .
+
+<http://example.org/entity/ai_algorithms> a <https://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/AI> ;
+    rel:alignedWith <https://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/AI> ;
+    rel:alignmentScore 7.501219e-01 ;
+    rel:mentionedIn <http://example.org/chunk_1> ;
+    skos:prefLabel "AI algorithms" .
+
+<http://example.org/entity/ai_and_hpc_applications> a <https://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/AI> ;
+    rel:alignedWith <https://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/AI> ;
+    rel:alignmentScore 5.299413e-01 ;
+    rel:mentionedIn <http://example.org/chunk_20> ;
+    skos:prefLabel "AI and HPC applications" .
+
+<http://example.org/entity/ai_computing_processor_produits> a <https://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/AI> ;
+    rel:alignedWith <https://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/AI> ;
+    rel:alignmentScore 6.175755e-01 ;
+    rel:mentionedIn <http://example.org/chunk_59> ;
+    skos:prefLabel "AI computing processor produits" .
+
+<http://example.org/entity/ai_frameworks> a <https://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/AI> ;
+    rel:alignedWith <https://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/AI> ;
+    rel:alignmentScore 6.699453e-01 ;
+    rel:mentionedIn <http://example.org/chunk_46> ;
+    skos:prefLabel "AI frameworks" .
+
+<http://example.org/entity/ai_models> a <https://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/AI> ;
+    rel:alignedWith <https://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/AI> ;
+    rel:alignmentScore 7.534364e-01 ;
+    rel:mentionedIn <http://example.org/chunk_17> ;
+    skos:prefLabel "AI models" .
+
+<http://example.org/entity/all_phases> a <https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansGeneral/LoanApplications/hasApplicationPhase> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansGeneral/LoanApplications/hasApplicationPhase> ;
+    rel:alignmentScore 5.848549e-01 ;
+    rel:mentionedIn <http://example.org/chunk_51> ;
+    skos:prefLabel "all phases" .
+
+<http://example.org/entity/also_optimized_software_stacks> rel:mentionedIn <http://example.org/chunk_38> ;
+    skos:prefLabel "also optimized software stacks" .
+
+<http://example.org/entity/an_optimized_gaming_experience> rel:mentionedIn <http://example.org/chunk_37> ;
+    skos:prefLabel "an optimized gaming experience" .
+
+<http://example.org/entity/architectural_walkthroughs> rel:mentionedIn <http://example.org/chunk_28> ;
+    skos:prefLabel "architectural walkthroughs" .
+
+<http://example.org/entity/arm_limited> a <https://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/ARM> ;
+    rel:alignedWith <https://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/ARM> ;
+    rel:alignmentScore 7.730394e-01 ;
+    rel:mentionedIn <http://example.org/chunk_8> ;
+    skos:prefLabel "Arm Limited" .
+
+<http://example.org/entity/automotive_manufacturers> a <https://spec.edmcouncil.org/fibo/ontology/FND/Places/NorthAmerica/USPostalServiceAddressesIndividuals/Ford> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/Places/NorthAmerica/USPostalServiceAddressesIndividuals/Ford> ;
+    rel:alignmentScore 6.750809e-01 ;
+    rel:mentionedIn <http://example.org/chunk_44> ;
+    skos:prefLabel "automotive manufacturers" .
+
+<http://example.org/entity/automotive_original_equipment_manufacturers> a <https://spec.edmcouncil.org/fibo/ontology/IND/InterestRates/MarketDataProviders/ReferenceDealers> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/IND/InterestRates/MarketDataProviders/ReferenceDealers> ;
+    rel:alignmentScore 5.721115e-01 ;
+    rel:mentionedIn <http://example.org/chunk_36> ;
+    skos:prefLabel "automotive original equipment manufacturers" .
+
+<http://example.org/entity/better_performance> a <https://spec.edmcouncil.org/fibo/ontology/MD/CIVTemporal/FundsTemporal/hasPerformance> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/MD/CIVTemporal/FundsTemporal/hasPerformance> ;
+    rel:alignmentScore 7.221514e-01 ;
+    rel:mentionedIn <http://example.org/chunk_57> ;
+    skos:prefLabel "better performance" .
+
+<http://example.org/entity/bluefield> a <https://spec.edmcouncil.org/fibo/ontology/FND/Places/NorthAmerica/USPostalServiceAddressesIndividuals/Field> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/Places/NorthAmerica/USPostalServiceAddressesIndividuals/Field> ;
+    rel:alignmentScore 5.734761e-01 ;
+    rel:mentionedIn <http://example.org/chunk_18> ;
+    skos:prefLabel "BlueField" .
+
+<http://example.org/entity/bluefield_dpu> rel:mentionedIn <http://example.org/chunk_18> ;
+    skos:prefLabel "Bluefield DPU" .
+
+<http://example.org/entity/bluefield_dpus> rel:mentionedIn <http://example.org/chunk_18> ;
+    skos:prefLabel "BlueField DPUs" .
+
+<http://example.org/entity/board_of_directors> a <https://spec.edmcouncil.org/fibo/ontology/BE/OwnershipAndControl/Executives/BoardOfDirectors> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/BE/OwnershipAndControl/Executives/BoardOfDirectors> ;
+    rel:alignmentScore 1e+00 ;
+    rel:mentionedIn <http://example.org/chunk_68> ;
+    skos:prefLabel "Board of Directors" .
+
+<http://example.org/entity/both_existing_competitors> a <https://spec.edmcouncil.org/fibo/ontology/BP/SecuritiesIssuance/IssuanceProcess/CompetitiveSaleMethod> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/BP/SecuritiesIssuance/IssuanceProcess/CompetitiveSaleMethod> ;
+    rel:alignmentScore 5.19538e-01 ;
+    rel:mentionedIn <http://example.org/chunk_57> ;
+    skos:prefLabel "both existing competitors" .
+
+<http://example.org/entity/both_training> rel:mentionedIn <http://example.org/chunk_31> ;
+    skos:prefLabel "both training" .
+
+<http://example.org/entity/cell_phones> a <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/BusinessCentersIndividuals/Mobile> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/BusinessCentersIndividuals/Mobile> ;
+    rel:alignmentScore 6.25544e-01 ;
+    rel:mentionedIn <http://example.org/chunk_7> ;
+    skos:prefLabel "cell phones" .
+
+<http://example.org/entity/chauffeur> rel:mentionedIn <http://example.org/chunk_29> ;
+    skos:prefLabel "Chauffeur" .
+
+<http://example.org/entity/cloud_based_infrastructure> rel:mentionedIn <http://example.org/chunk_17> ;
+    skos:prefLabel "cloud-based infrastructure" .
+
+<http://example.org/entity/commercial_aircraft> rel:mentionedIn <http://example.org/chunk_7> ;
+    skos:prefLabel "commercial aircraft" .
+
+<http://example.org/entity/competitive_prices> a <https://spec.edmcouncil.org/fibo/ontology/IND/Indicators/Indicators/PriceStructure> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/IND/Indicators/Indicators/PriceStructure> ;
+    rel:alignmentScore 6.990661e-01 ;
+    rel:mentionedIn <http://example.org/chunk_56> ;
+    skos:prefLabel "competitive prices" .
+
+<http://example.org/entity/complex_digital_twins> rel:mentionedIn <http://example.org/chunk_15> ;
+    skos:prefLabel "complex digital twins" .
+
+<http://example.org/entity/computing_applications> rel:mentionedIn <http://example.org/chunk_47> ;
+    skos:prefLabel "computing applications" .
+
+<http://example.org/entity/consistent_volumes> rel:mentionedIn <http://example.org/chunk_56> ;
+    skos:prefLabel "consistent volumes" .
+
+<http://example.org/entity/content_creation_applications> rel:mentionedIn <http://example.org/chunk_26> ;
+    skos:prefLabel "content creation applications" .
+
+<http://example.org/entity/critical_workflows> rel:mentionedIn <http://example.org/chunk_25> ;
+    skos:prefLabel "critical workflows" .
+
+<http://example.org/entity/data_scientists> a <https://www.omg.org/spec/Commons/Documents/hasDataSource> ;
+    rel:alignedWith <https://www.omg.org/spec/Commons/Documents/hasDataSource> ;
+    rel:alignmentScore 5.398809e-01 ;
+    rel:mentionedIn <http://example.org/chunk_20> ;
+    skos:prefLabel "data scientists" .
+
+<http://example.org/entity/deep_learning_institute> rel:mentionedIn <http://example.org/chunk_47> ;
+    skos:prefLabel "Deep Learning Institute" .
+
+<http://example.org/entity/deep_recommender_systems> rel:mentionedIn <http://example.org/chunk_15> ;
+    skos:prefLabel "deep recommender systems" .
+
+<http://example.org/entity/dgx_systems> a <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/UGX> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/UGX> ;
+    rel:alignmentScore 5.760559e-01 ;
+    rel:mentionedIn <http://example.org/chunk_20> ;
+    skos:prefLabel "DGX systems" .
+
+<http://example.org/entity/digital_content_creation> a <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/MarketsIndividuals/Facility-ARDA> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/MarketsIndividuals/Facility-ARDA> ;
+    rel:alignmentScore 5.12926e-01 ;
+    rel:mentionedIn <http://example.org/chunk_25> ;
+    skos:prefLabel "digital content creation" .
+
+<http://example.org/entity/discovery> a <https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansSpecific/CardAccounts/DiscoverNetwork> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansSpecific/CardAccounts/DiscoverNetwork> ;
+    rel:alignmentScore 5.780556e-01 ;
+    rel:mentionedIn <http://example.org/chunk_6> ;
+    skos:prefLabel "discovery" .
+
+<http://example.org/entity/doca> a <https://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/MDA> ;
+    rel:alignedWith <https://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/MDA> ;
+    rel:alignmentScore 6.118519e-01 ;
+    rel:mentionedIn <http://example.org/chunk_18> ;
+    skos:prefLabel "DOCA" .
+
+<http://example.org/entity/drive_concierge> a <https://spec.edmcouncil.org/fibo/ontology/FND/Places/NorthAmerica/USPostalServiceAddressesIndividuals/Drive> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/Places/NorthAmerica/USPostalServiceAddressesIndividuals/Drive> ;
+    rel:alignmentScore 6.306728e-01 ;
+    rel:mentionedIn <http://example.org/chunk_29> ;
+    skos:prefLabel "Drive Concierge" .
+
+<http://example.org/entity/drive_software> a <https://spec.edmcouncil.org/fibo/ontology/FND/Places/NorthAmerica/USPostalServiceAddressesIndividuals/Drives> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/Places/NorthAmerica/USPostalServiceAddressesIndividuals/Drives> ;
+    rel:alignmentScore 6.606265e-01 ;
+    rel:mentionedIn <http://example.org/chunk_29> ;
+    skos:prefLabel "DRIVE Software" .
+
+<http://example.org/entity/drug_discovery> rel:mentionedIn <http://example.org/chunk_6> ;
+    skos:prefLabel "drug discovery" .
+
+<http://example.org/entity/each_gamer_s_experience> a <https://www.omg.org/spec/Commons/PartiesAndSituations/experiencesDirectly> ;
+    rel:alignedWith <https://www.omg.org/spec/Commons/PartiesAndSituations/experiencesDirectly> ;
+    rel:alignmentScore 5.944176e-01 ;
+    rel:mentionedIn <http://example.org/chunk_39> ;
+    skos:prefLabel "each gamer’s experience" .
+
+<http://example.org/entity/each_industry_s_respective_oems> rel:mentionedIn <http://example.org/chunk_44> ;
+    skos:prefLabel "each industry's respective OEMs" .
+
+<http://example.org/entity/easy_to_use__optimized_software_stacks> rel:mentionedIn <http://example.org/chunk_19> ;
+    skos:prefLabel "easy-to-use, optimized software stacks" .
+
+<http://example.org/entity/efficient_computing_platforms> rel:mentionedIn <http://example.org/chunk_42> ;
+    skos:prefLabel "efficient computing platforms" .
+
+<http://example.org/entity/embedded_socs> rel:mentionedIn <http://example.org/chunk_59> ;
+    skos:prefLabel "embedded SoCs" .
+
+<http://example.org/entity/end_customers> a <https://spec.edmcouncil.org/fibo/ontology/FND/ProductsAndServices/ProductsAndServices/Customer> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/ProductsAndServices/ProductsAndServices/Customer> ;
+    rel:alignmentScore 6.711362e-01 ;
+    rel:mentionedIn <http://example.org/chunk_43> ;
+    skos:prefLabel "end customers" .
+
+<http://example.org/entity/enhanced_medical_imaging> rel:mentionedIn <http://example.org/chunk_6> ;
+    skos:prefLabel "enhanced medical imaging" .
+
+<http://example.org/entity/enough_renewable_energy> a <https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/CommoditiesContracts/EnergyResource> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/CommoditiesContracts/EnergyResource> ;
+    rel:alignmentScore 6.145707e-01 ;
+    rel:mentionedIn <http://example.org/chunk_66> ;
+    skos:prefLabel "enough renewable energy" .
+
+<http://example.org/entity/enterprise_applications> a <https://spec.edmcouncil.org/fibo/ontology/IND/EconomicIndicators/EconomicIndicators/Enterprise> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/IND/EconomicIndicators/EconomicIndicators/Enterprise> ;
+    rel:alignmentScore 7.296986e-01 ;
+    rel:mentionedIn <http://example.org/chunk_27> ;
+    skos:prefLabel "enterprise applications" .
+
+<http://example.org/entity/enterprise_customers> a <https://spec.edmcouncil.org/fibo/ontology/IND/EconomicIndicators/EconomicIndicators/Enterprise> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/IND/EconomicIndicators/EconomicIndicators/Enterprise> ;
+    rel:alignmentScore 8.04408e-01 ;
+    rel:mentionedIn <http://example.org/chunk_16> ;
+    skos:prefLabel "enterprise customers" .
+
+<http://example.org/entity/ethernet> a <https://www.omg.org/spec/LCC/Countries/Regions/ISO3166-2-SubdivisionCodes-GB/GB-LAN-RegionIdentifier> ;
+    rel:alignedWith <https://www.omg.org/spec/LCC/Countries/Regions/ISO3166-2-SubdivisionCodes-GB/GB-LAN-RegionIdentifier> ;
+    rel:alignmentScore 6.192051e-01 ;
+    rel:mentionedIn <http://example.org/chunk_59> ;
+    skos:prefLabel "Ethernet" .
+
+<http://example.org/entity/evolving_industry_standards> a <https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesClassification/GlobalIndustryClassificationStandardsScheme> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesClassification/GlobalIndustryClassificationStandardsScheme> ;
+    rel:alignmentScore 6.605647e-01 ;
+    rel:mentionedIn <http://example.org/chunk_53> ;
+    skos:prefLabel "evolving industry standards" .
+
+<http://example.org/entity/fibre_channel> rel:mentionedIn <http://example.org/chunk_59> ;
+    skos:prefLabel "Fibre Channel" .
+
+<http://example.org/entity/fraud_detection> rel:mentionedIn <http://example.org/chunk_6> ;
+    skos:prefLabel "fraud detection" .
+
+<http://example.org/entity/game_consoles> rel:mentionedIn <http://example.org/chunk_49> ;
+    skos:prefLabel "game consoles" .
+
+<http://example.org/entity/game_titles> a dcterms:title ;
+    rel:alignedWith dcterms:title ;
+    rel:alignmentScore 5.873893e-01 ;
+    rel:mentionedIn <http://example.org/chunk_46> ;
+    skos:prefLabel "game titles" .
+
+<http://example.org/entity/gaming_gpus> a <https://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/GP> ;
+    rel:alignedWith <https://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/GP> ;
+    rel:alignmentScore 5.477773e-01 ;
+    rel:mentionedIn <http://example.org/chunk_21> ;
+    skos:prefLabel "gaming GPUs" .
+
+<http://example.org/entity/geforce_experience> a <https://www.omg.org/spec/Commons/PartiesAndSituations/experiencesDirectly> ;
+    rel:alignedWith <https://www.omg.org/spec/Commons/PartiesAndSituations/experiencesDirectly> ;
+    rel:alignmentScore 5.126419e-01 ;
+    rel:mentionedIn <http://example.org/chunk_39> ;
+    skos:prefLabel "GeForce Experience" .
+
+<http://example.org/entity/generative_ai> a <https://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/AI> ;
+    rel:alignedWith <https://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/AI> ;
+    rel:alignmentScore 6.410594e-01 ;
+    rel:mentionedIn <http://example.org/chunk_1> ;
+    skos:prefLabel "generative AI" .
+
+<http://example.org/entity/global_technical_talent> rel:mentionedIn <http://example.org/chunk_72> ;
+    skos:prefLabel "global technical talent" .
+
+<http://example.org/entity/gpu_cloud> rel:mentionedIn <http://example.org/chunk_19> ;
+    skos:prefLabel "GPU Cloud" .
+
+<http://example.org/entity/gpu_powered_deep_learning> rel:mentionedIn <http://example.org/chunk_1> ;
+    skos:prefLabel "GPU-powered deep learning" .
+
+<http://example.org/entity/h100> a <https://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/HTI> ;
+    rel:alignedWith <https://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/HTI> ;
+    rel:alignmentScore 6.235363e-01 ;
+    rel:mentionedIn <http://example.org/chunk_15> ;
+    skos:prefLabel "H100" .
+
+<http://example.org/entity/historical_scenes> rel:mentionedIn <http://example.org/chunk_28> ;
+    skos:prefLabel "historical scenes" .
+
+<http://example.org/entity/human_capital_management> a <https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansSpecific/LoanProducts/WorkingCapitalPurpose> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansSpecific/LoanProducts/WorkingCapitalPurpose> ;
+    rel:alignmentScore 6.377129e-01 ;
+    rel:mentionedIn <http://example.org/chunk_69> ;
+    skos:prefLabel "Human Capital Management" .
+
+<http://example.org/entity/increased__flexibility> rel:mentionedIn <http://example.org/chunk_74> ;
+    skos:prefLabel "increased  flexibility" .
+
+<http://example.org/entity/independent_software_vendors> a <https://www.omg.org/spec/Commons/PartiesAndSituations/SoftwareAgent> ;
+    rel:alignedWith <https://www.omg.org/spec/Commons/PartiesAndSituations/SoftwareAgent> ;
+    rel:alignmentScore 5.113259e-01 ;
+    rel:mentionedIn <http://example.org/chunk_24> ;
+    skos:prefLabel "independent software vendors" .
+
+<http://example.org/entity/key_customers> a <https://spec.edmcouncil.org/fibo/ontology/FND/ProductsAndServices/ProductsAndServices/Customer> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/ProductsAndServices/ProductsAndServices/Customer> ;
+    rel:alignmentScore 7.122657e-01 ;
+    rel:mentionedIn <http://example.org/chunk_49> ;
+    skos:prefLabel "key customers" .
+
+<http://example.org/entity/key_suppliers> a <https://spec.edmcouncil.org/fibo/ontology/FND/ProductsAndServices/ProductsAndServices/Supplier> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/ProductsAndServices/ProductsAndServices/Supplier> ;
+    rel:alignmentScore 7.554323e-01 ;
+    rel:mentionedIn <http://example.org/chunk_51> ;
+    skos:prefLabel "key suppliers" .
+
+<http://example.org/entity/leading_design_applications> rel:mentionedIn <http://example.org/chunk_41> ;
+    skos:prefLabel "leading design applications" .
+
+<http://example.org/entity/legacy_hand_coded_approaches> a <https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/SpecialPurposeCode> ;
+    rel:alignedWith <https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/SpecialPurposeCode> ;
+    rel:alignmentScore 5.477989e-01 ;
+    rel:mentionedIn <http://example.org/chunk_35> ;
+    skos:prefLabel "legacy hand-coded approaches" .
+
+<http://example.org/entity/long_term_value> a <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/MarketsIndividuals/Facility-LTSE> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/MarketsIndividuals/Facility-LTSE> ;
+    rel:alignmentScore 5.716372e-01 ;
+    rel:mentionedIn <http://example.org/chunk_70> ;
+    skos:prefLabel "long-term value" .
+
+<http://example.org/entity/many_fields> a <https://spec.edmcouncil.org/fibo/ontology/FND/Places/NorthAmerica/USPostalServiceAddressesIndividuals/Fields> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/Places/NorthAmerica/USPostalServiceAddressesIndividuals/Fields> ;
+    rel:alignmentScore 8.904451e-01 ;
+    rel:mentionedIn <http://example.org/chunk_25> ;
+    skos:prefLabel "many fields" .
+
+<http://example.org/entity/many_leading_3d_design> rel:mentionedIn <http://example.org/chunk_26> ;
+    skos:prefLabel "Many leading 3D design" .
+
+<http://example.org/entity/mapping_companies> a <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/NorthAmericanEntities/USRegulatoryAgencies/CorporationServiceCompany> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/NorthAmericanEntities/USRegulatoryAgencies/CorporationServiceCompany> ;
+    rel:alignmentScore 5.617168e-01 ;
+    rel:mentionedIn <http://example.org/chunk_44> ;
+    skos:prefLabel "mapping companies" .
+
+<http://example.org/entity/marketing_strategy> a <https://spec.edmcouncil.org/fibo/ontology/FND/GoalsAndObjectives/Objectives/SalesStrategy> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/GoalsAndObjectives/Objectives/SalesStrategy> ;
+    rel:alignmentScore 7.948669e-01 ;
+    rel:mentionedIn <http://example.org/chunk_42> ;
+    skos:prefLabel "marketing strategy" .
+
+<http://example.org/entity/massive_datasets> rel:mentionedIn <http://example.org/chunk_1> ;
+    skos:prefLabel "massive datasets" .
+
+<http://example.org/entity/modern_computer_graphics> rel:mentionedIn <http://example.org/chunk_2> ;
+    skos:prefLabel "modern computer graphics" .
+
+<http://example.org/entity/multiple_trained_neural_networks> rel:mentionedIn <http://example.org/chunk_35> ;
+    skos:prefLabel "multiple trained neural networks" .
+
+<http://example.org/entity/new_capabilities> a <https://spec.edmcouncil.org/fibo/ontology/FND/Places/Facilities/Capability> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/Places/Facilities/Capability> ;
+    rel:alignmentScore 7.012043e-01 ;
+    rel:mentionedIn <http://example.org/chunk_25> ;
+    skos:prefLabel "new capabilities" .
+
+<http://example.org/entity/new_competitors> a <https://spec.edmcouncil.org/fibo/ontology/BP/SecuritiesIssuance/IssuanceProcess/CompetitiveSaleMethod> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/BP/SecuritiesIssuance/IssuanceProcess/CompetitiveSaleMethod> ;
+    rel:alignmentScore 5.147229e-01 ;
+    rel:mentionedIn <http://example.org/chunk_58> ;
+    skos:prefLabel "new competitors" .
+
+<http://example.org/entity/new_content> a <https://spec.edmcouncil.org/fibo/ontology/BP/SecuritiesIssuance/PrivateLabelMBSIssuance/hasContent> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/BP/SecuritiesIssuance/PrivateLabelMBSIssuance/hasContent> ;
+    rel:alignmentScore 5.967129e-01 ;
+    rel:mentionedIn <http://example.org/chunk_1> ;
+    skos:prefLabel "new content" .
+
+<http://example.org/entity/new_geographies> a <https://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/GEO> ;
+    rel:alignedWith <https://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/GEO> ;
+    rel:alignmentScore 5.683323e-01 ;
+    rel:mentionedIn <http://example.org/chunk_74> ;
+    skos:prefLabel "new geographies" .
+
+<http://example.org/entity/new_market_entrants> a <https://spec.edmcouncil.org/fibo/ontology/BP/Process/FinancialContextAndProcess/PrimaryMarket> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/BP/Process/FinancialContextAndProcess/PrimaryMarket> ;
+    rel:alignmentScore 6.72223e-01 ;
+    rel:mentionedIn <http://example.org/chunk_57> ;
+    skos:prefLabel "new market entrants" .
+
+<http://example.org/entity/not_only_our_industry_leading_geforce_and_nvidia_rtx_gpus> a <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/MarketsIndividuals/Facility-RTXF> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/MarketsIndividuals/Facility-RTXF> ;
+    rel:alignmentScore 5.318163e-01 ;
+    rel:mentionedIn <http://example.org/chunk_38> ;
+    skos:prefLabel "not only our industry-leading GeForce and NVIDIA RTX GPUs" .
+
+<http://example.org/entity/nvidia_ai_cloud_services> rel:mentionedIn <http://example.org/chunk_16> ;
+    skos:prefLabel "NVIDIA AI cloud services" .
+
+<http://example.org/entity/nvidia_certified_systems> rel:mentionedIn <http://example.org/chunk_20> ;
+    skos:prefLabel "NVIDIA-Certified systems" .
+
+<http://example.org/entity/nvidia_dgx_cloud> rel:mentionedIn <http://example.org/chunk_17> ;
+    skos:prefLabel "NVIDIA DGX Cloud" .
+
+<http://example.org/entity/nvidia_gpus> a <https://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/GP> ;
+    rel:alignedWith <https://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/GP> ;
+    rel:alignmentScore 5.117544e-01 ;
+    rel:mentionedIn <http://example.org/chunk_24> ;
+    skos:prefLabel "NVIDIA GPUs" .
+
+<http://example.org/entity/nvidia_omniverse_avatar_software> rel:mentionedIn <http://example.org/chunk_29> ;
+    skos:prefLabel "NVIDIA Omniverse Avatar software" .
+
+<http://example.org/entity/nvidia_s_cloud_partners> rel:mentionedIn <http://example.org/chunk_20> ;
+    skos:prefLabel "NVIDIA’s cloud partners" .
+
+<http://example.org/entity/omniverse_avatar> rel:mentionedIn <http://example.org/chunk_29> ;
+    skos:prefLabel "Omniverse Avatar" .
+
+<http://example.org/entity/online_training> rel:mentionedIn <http://example.org/chunk_47> ;
+    skos:prefLabel "online training" .
+
+<http://example.org/entity/original_device_manufacturers> a <https://spec.edmcouncil.org/fibo/ontology/LOAN/RealEstateLoans/HomeMortgageDisclosureActCoveredMortgages/ConstructionType_Manufactured> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/LOAN/RealEstateLoans/HomeMortgageDisclosureActCoveredMortgages/ConstructionType_Manufactured> ;
+    rel:alignmentScore 5.568079e-01 ;
+    rel:mentionedIn <http://example.org/chunk_44> ;
+    skos:prefLabel "original device manufacturers" .
+
+<http://example.org/entity/other_content> a <https://spec.edmcouncil.org/fibo/ontology/BP/SecuritiesIssuance/PrivateLabelMBSIssuance/hasContent> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/BP/SecuritiesIssuance/PrivateLabelMBSIssuance/hasContent> ;
+    rel:alignmentScore 7.017783e-01 ;
+    rel:mentionedIn <http://example.org/chunk_1> ;
+    skos:prefLabel "other content" .
+
+<http://example.org/entity/other_ecosystem_participants> a <https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/CommoditiesContracts/EnvironmentalResource> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/CommoditiesContracts/EnvironmentalResource> ;
+    rel:alignmentScore 5.431878e-01 ;
+    rel:mentionedIn <http://example.org/chunk_44> ;
+    skos:prefLabel "other ecosystem participants" .
+
+<http://example.org/entity/other_software> a <https://spec.edmcouncil.org/fibo/ontology/FND/GoalsAndObjectives/Objectives/Program> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/GoalsAndObjectives/Objectives/Program> ;
+    rel:alignmentScore 5.088355e-01 ;
+    rel:mentionedIn <http://example.org/chunk_32> ;
+    skos:prefLabel "other software" .
+
+<http://example.org/entity/our_ability> a <https://spec.edmcouncil.org/fibo/ontology/FND/Places/Facilities/Capability> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/Places/Facilities/Capability> ;
+    rel:alignmentScore 5.944936e-01 ;
+    rel:mentionedIn <http://example.org/chunk_56> ;
+    skos:prefLabel "our ability" .
+
+<http://example.org/entity/our_board> a <https://spec.edmcouncil.org/fibo/ontology/BE/OwnershipAndControl/Executives/BoardMember> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/BE/OwnershipAndControl/Executives/BoardMember> ;
+    rel:alignmentScore 6.708674e-01 ;
+    rel:mentionedIn <http://example.org/chunk_68> ;
+    skos:prefLabel "our Board" .
+
+<http://example.org/entity/our_computer_graphics_platforms> rel:mentionedIn <http://example.org/chunk_38> ;
+    skos:prefLabel "Our computer graphics platforms" .
+
+<http://example.org/entity/our_consumer_products> a <https://spec.edmcouncil.org/fibo/ontology/FND/ProductsAndServices/ProductsAndServices/Consumer> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/ProductsAndServices/ProductsAndServices/Consumer> ;
+    rel:alignmentScore 7.661054e-01 ;
+    rel:mentionedIn <http://example.org/chunk_48> ;
+    skos:prefLabel "Our consumer products" .
+
+<http://example.org/entity/our_cuda_programming_language> a <https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/CollectiveLanguageCode> ;
+    rel:alignedWith <https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/CollectiveLanguageCode> ;
+    rel:alignmentScore 5.411192e-01 ;
+    rel:mentionedIn <http://example.org/chunk_32> ;
+    skos:prefLabel "our CUDA programming language" .
+
+<http://example.org/entity/our_deep_learning_institute> rel:mentionedIn <http://example.org/chunk_47> ;
+    skos:prefLabel "Our Deep Learning Institute" .
+
+<http://example.org/entity/our_developer_program> a <https://spec.edmcouncil.org/fibo/ontology/FND/GoalsAndObjectives/Objectives/Program> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/GoalsAndObjectives/Objectives/Program> ;
+    rel:alignmentScore 6.158218e-01 ;
+    rel:mentionedIn <http://example.org/chunk_46> ;
+    skos:prefLabel "Our developer program" .
+
+<http://example.org/entity/our_differentiated_hiring_strategies> rel:mentionedIn <http://example.org/chunk_73> ;
+    skos:prefLabel "our differentiated hiring strategies" .
+
+<http://example.org/entity/our_ecosystem_partners> a <https://spec.edmcouncil.org/fibo/ontology/BE/Partnerships/Partnerships/Partnership> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/BE/Partnerships/Partnerships/Partnership> ;
+    rel:alignmentScore 5.446762e-01 ;
+    rel:mentionedIn <http://example.org/chunk_26> ;
+    skos:prefLabel "our ecosystem partners" .
+
+<http://example.org/entity/our_fiscal_year> a <https://spec.edmcouncil.org/fibo/ontology/SEC/Funds/CollectiveInvestmentVehicles/endOfFiscalYear> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/SEC/Funds/CollectiveInvestmentVehicles/endOfFiscalYear> ;
+    rel:alignmentScore 7.7642e-01 ;
+    rel:mentionedIn <http://example.org/chunk_48> ;
+    skos:prefLabel "our fiscal year" .
+
+<http://example.org/entity/our_geforce_platform> rel:mentionedIn <http://example.org/chunk_37> ;
+    skos:prefLabel "our GeForce platform" .
+
+<http://example.org/entity/our_global_electricity_usage> a <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/MarketsIndividuals/Facility-XEID> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/MarketsIndividuals/Facility-XEID> ;
+    rel:alignmentScore 5.289901e-01 ;
+    rel:mentionedIn <http://example.org/chunk_66> ;
+    skos:prefLabel "our global electricity usage" .
+
+<http://example.org/entity/our_global_markets> a <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/MarketsIndividuals/Facility-CGMI> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/MarketsIndividuals/Facility-CGMI> ;
+    rel:alignmentScore 6.89771e-01 ;
+    rel:mentionedIn <http://example.org/chunk_43> ;
+    skos:prefLabel "our global markets" .
+
+<http://example.org/entity/our_goal> a <https://spec.edmcouncil.org/fibo/ontology/FND/GoalsAndObjectives/Objectives/Goal> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/GoalsAndObjectives/Objectives/Goal> ;
+    rel:alignmentScore 8.241065e-01 ;
+    rel:mentionedIn <http://example.org/chunk_66> ;
+    skos:prefLabel "our goal" .
+
+<http://example.org/entity/our_gpu_computing_platform> rel:mentionedIn <http://example.org/chunk_25> ;
+    skos:prefLabel "Our GPU computing platform" .
+
+<http://example.org/entity/our_greatest_assets> a <https://spec.edmcouncil.org/fibo/ontology/FND/OwnershipAndControl/Ownership/Asset> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/OwnershipAndControl/Ownership/Asset> ;
+    rel:alignmentScore 6.199837e-01 ;
+    rel:mentionedIn <http://example.org/chunk_70> ;
+    skos:prefLabel "our greatest assets" .
+
+<http://example.org/entity/our_high_performance> a <https://spec.edmcouncil.org/fibo/ontology/MD/CIVTemporal/FundsTemporal/hasPerformance> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/MD/CIVTemporal/FundsTemporal/hasPerformance> ;
+    rel:alignmentScore 6.249853e-01 ;
+    rel:mentionedIn <http://example.org/chunk_42> ;
+    skos:prefLabel "our high-performance" .
+
+<http://example.org/entity/our_introduction> a <https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/FromStart> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/FromStart> ;
+    rel:alignmentScore 5.023316e-01 ;
+    rel:mentionedIn <http://example.org/chunk_4> ;
+    skos:prefLabel "our introduction" .
+
+<http://example.org/entity/our_invention> rel:mentionedIn <http://example.org/chunk_2> ;
+    skos:prefLabel "Our invention" .
+
+<http://example.org/entity/our_ip> a <https://spec.edmcouncil.org/fibo/ontology/FND/Places/Addresses/Address> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/Places/Addresses/Address> ;
+    rel:alignmentScore 5.48639e-01 ;
+    rel:mentionedIn <http://example.org/chunk_60> ;
+    skos:prefLabel "our IP" .
+
+<http://example.org/entity/our_libraries> rel:mentionedIn <http://example.org/chunk_37> ;
+    skos:prefLabel "our libraries" .
+
+<http://example.org/entity/our_network> a <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/USN> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/USN> ;
+    rel:alignmentScore 5.810111e-01 ;
+    rel:mentionedIn <http://example.org/chunk_16> ;
+    skos:prefLabel "our network" .
+
+<http://example.org/entity/our_objective> a <https://spec.edmcouncil.org/fibo/ontology/FND/GoalsAndObjectives/Objectives/Objective> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/GoalsAndObjectives/Objectives/Objective> ;
+    rel:alignmentScore 8.192444e-01 ;
+    rel:mentionedIn <http://example.org/chunk_42> ;
+    skos:prefLabel "our objective" .
+
+<http://example.org/entity/our_offices> a <https://spec.edmcouncil.org/fibo/ontology/FND/Places/Addresses/Office> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/Places/Addresses/Office> ;
+    rel:alignmentScore 7.188126e-01 ;
+    rel:mentionedIn <http://example.org/chunk_66> ;
+    skos:prefLabel "our offices" .
+
+<http://example.org/entity/our_original_focus> rel:mentionedIn <http://example.org/chunk_0> ;
+    skos:prefLabel "our original focus" .
+
+<http://example.org/entity/our_overall_turnover_rate> rel:mentionedIn <http://example.org/chunk_78> ;
+    skos:prefLabel "our overall turnover rate" .
+
+<http://example.org/entity/our_partnerships> a <https://spec.edmcouncil.org/fibo/ontology/BE/Partnerships/Partnerships/Partnership> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/BE/Partnerships/Partnerships/Partnership> ;
+    rel:alignmentScore 8.316504e-01 ;
+    rel:mentionedIn <http://example.org/chunk_36> ;
+    skos:prefLabel "our partnerships" .
+
+<http://example.org/entity/our_practices> a <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/MarketsIndividuals/Facility-TRDE> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/MarketsIndividuals/Facility-TRDE> ;
+    rel:alignmentScore 5.821354e-01 ;
+    rel:mentionedIn <http://example.org/chunk_68> ;
+    skos:prefLabel "our practices" .
+
+<http://example.org/entity/our_sales_and_marketing_teams> a <https://spec.edmcouncil.org/fibo/ontology/FND/GoalsAndObjectives/Objectives/SalesStrategy> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/GoalsAndObjectives/Objectives/SalesStrategy> ;
+    rel:alignmentScore 5.826985e-01 ;
+    rel:mentionedIn <http://example.org/chunk_43> ;
+    skos:prefLabel "Our sales and marketing teams" .
+
+<http://example.org/entity/our_semiconductor_wafers> rel:mentionedIn <http://example.org/chunk_52> ;
+    skos:prefLabel "our semiconductor wafers" .
+
+<http://example.org/entity/our_stakeholders> a <https://spec.edmcouncil.org/fibo/ontology/BE/OwnershipAndControl/CorporateOwnership/Shareholder> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/BE/OwnershipAndControl/CorporateOwnership/Shareholder> ;
+    rel:alignmentScore 5.761919e-01 ;
+    rel:mentionedIn <http://example.org/chunk_70> ;
+    skos:prefLabel "our stakeholders" .
+
+<http://example.org/entity/our_studio_drivers> rel:mentionedIn <http://example.org/chunk_40> ;
+    skos:prefLabel "Our Studio drivers" .
+
+<http://example.org/entity/our_target_markets> a <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/MarketsIndividuals/Facility-INFT> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/MarketsIndividuals/Facility-INFT> ;
+    rel:alignmentScore 6.359462e-01 ;
+    rel:mentionedIn <http://example.org/chunk_30> ;
+    skos:prefLabel "our target markets" .
+
+<http://example.org/entity/our_technical_workforce> a <https://spec.edmcouncil.org/fibo/ontology/IND/EconomicIndicators/EconomicIndicators/Productivity> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/IND/EconomicIndicators/EconomicIndicators/Productivity> ;
+    rel:alignmentScore 5.475394e-01 ;
+    rel:mentionedIn <http://example.org/chunk_72> ;
+    skos:prefLabel "our technical workforce" .
+
+<http://example.org/entity/our_technologies> a <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/MarketsIndividuals/Facility-EGMT> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/MarketsIndividuals/Facility-EGMT> ;
+    rel:alignmentScore 5.438814e-01 ;
+    rel:mentionedIn <http://example.org/chunk_37> ;
+    skos:prefLabel "Our technologies" .
+
+<http://example.org/entity/our_view> a <https://spec.edmcouncil.org/fibo/ontology/FND/Places/NorthAmerica/USPostalServiceAddressesIndividuals/View> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/Places/NorthAmerica/USPostalServiceAddressesIndividuals/View> ;
+    rel:alignmentScore 6.709086e-01 ;
+    rel:mentionedIn <http://example.org/chunk_35> ;
+    skos:prefLabel "our view" .
+
+<http://example.org/entity/our_workforce> a <https://spec.edmcouncil.org/fibo/ontology/FND/Organizations/FormalOrganizations/Employer> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/Organizations/FormalOrganizations/Employer> ;
+    rel:alignmentScore 6.341046e-01 ;
+    rel:mentionedIn <http://example.org/chunk_75> ;
+    skos:prefLabel "Our workforce" .
+
+<http://example.org/entity/our_worldwide_sales> a <https://spec.edmcouncil.org/fibo/ontology/FND/GoalsAndObjectives/Objectives/SalesStrategy> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/GoalsAndObjectives/Objectives/SalesStrategy> ;
+    rel:alignmentScore 6.050526e-01 ;
+    rel:mentionedIn <http://example.org/chunk_42> ;
+    skos:prefLabel "Our worldwide sales" .
+
+<http://example.org/entity/pc_graphics> rel:mentionedIn <http://example.org/chunk_0> ;
+    skos:prefLabel "PC graphics" .
+
+<http://example.org/entity/popular_creative_applications> rel:mentionedIn <http://example.org/chunk_40> ;
+    skos:prefLabel "popular creative applications" .
+
+<http://example.org/entity/previous_decisions> a <https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansGeneral/LoanApplications/UnderwritingDecision> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansGeneral/LoanApplications/UnderwritingDecision> ;
+    rel:alignmentScore 5.620295e-01 ;
+    rel:mentionedIn <http://example.org/chunk_1> ;
+    skos:prefLabel "previous decisions" .
+
+<http://example.org/entity/professional_designers> rel:mentionedIn <http://example.org/chunk_7> ;
+    skos:prefLabel "Professional designers" .
+
+<http://example.org/entity/professional_visualization> rel:mentionedIn <http://example.org/chunk_24> ;
+    skos:prefLabel "Professional Visualization" .
+
+<http://example.org/entity/proprietary_rights> a dcterms:rights ;
+    rel:alignedWith dcterms:rights ;
+    rel:alignmentScore 6.322242e-01 ;
+    rel:mentionedIn <http://example.org/chunk_60> ;
+    skos:prefLabel "Proprietary Rights" .
+
+<http://example.org/entity/proprietary_technologies> a <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/MarketsIndividuals/Facility-EGMT> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/MarketsIndividuals/Facility-EGMT> ;
+    rel:alignmentScore 6.343346e-01 ;
+    rel:mentionedIn <http://example.org/chunk_59> ;
+    skos:prefLabel "proprietary technologies" .
+
+<http://example.org/entity/rapid_technological_change> rel:mentionedIn <http://example.org/chunk_53> ;
+    skos:prefLabel "rapid technological change" .
+
+<http://example.org/entity/real_time_3d_design_collaboration> rel:mentionedIn <http://example.org/chunk_41> ;
+    skos:prefLabel "real-time 3D design collaboration" .
+
+<http://example.org/entity/real_time_conversational_ai_capability> a <https://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/AI> ;
+    rel:alignedWith <https://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/AI> ;
+    rel:alignmentScore 5.172157e-01 ;
+    rel:mentionedIn <http://example.org/chunk_29> ;
+    skos:prefLabel "real time conversational AI capability" .
+
+<http://example.org/entity/recommendation_systems> rel:mentionedIn <http://example.org/chunk_1> ;
+    skos:prefLabel "recommendation systems" .
+
+<http://example.org/entity/samsung_electronics_co__ltd> a <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/MarketsIndividuals/Facility-SGAS> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/MarketsIndividuals/Facility-SGAS> ;
+    rel:alignmentScore 6.02343e-01 ;
+    rel:mentionedIn <http://example.org/chunk_52> ;
+    skos:prefLabel "Samsung Electronics Co. Ltd" .
+
+<http://example.org/entity/semiconductor_based_high_performance_interconnect_products> rel:mentionedIn <http://example.org/chunk_59> ;
+    skos:prefLabel "semiconductor-based high-performance interconnect products" .
+
+<http://example.org/entity/several_multi_billion_dollar_end_markets> a <https://spec.edmcouncil.org/fibo/ontology/IND/Indicators/Indicators/MarketSpread> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/IND/Indicators/Indicators/MarketSpread> ;
+    rel:alignmentScore 5.741465e-01 ;
+    rel:mentionedIn <http://example.org/chunk_29> ;
+    skos:prefLabel "several multi-billion-dollar end markets" .
+
+<http://example.org/entity/several_other_large_and_important_computationally_intensive_fields> rel:mentionedIn <http://example.org/chunk_0> ;
+    skos:prefLabel "several other large and important computationally intensive fields" .
+
+<http://example.org/entity/shared_underlying_technology> a <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/MarketsIndividuals/Facility-EGMT> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/MarketsIndividuals/Facility-EGMT> ;
+    rel:alignmentScore 5.277219e-01 ;
+    rel:mentionedIn <http://example.org/chunk_29> ;
+    skos:prefLabel "shared underlying technology" .
+
+<http://example.org/entity/significant_market_share> a <https://spec.edmcouncil.org/fibo/ontology/BE/OwnershipAndControl/CorporateControl/SignificantShareholder> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/BE/OwnershipAndControl/CorporateControl/SignificantShareholder> ;
+    rel:alignmentScore 6.446277e-01 ;
+    rel:mentionedIn <http://example.org/chunk_58> ;
+    skos:prefLabel "significant market share" .
+
+<http://example.org/entity/socs> a <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/ILS> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/ILS> ;
+    rel:alignmentScore 5.98156e-01 ;
+    rel:mentionedIn <http://example.org/chunk_59> ;
+    skos:prefLabel "SoCs" .
+
+<http://example.org/entity/softbank> a <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/MarketsIndividuals/Facility-SWBI> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/MarketsIndividuals/Facility-SWBI> ;
+    rel:alignmentScore 6.391582e-01 ;
+    rel:mentionedIn <http://example.org/chunk_8> ;
+    skos:prefLabel "SoftBank" .
+
+<http://example.org/entity/softbank_group_corp_> a <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/FinancialServicesEntities/FinanceCompany> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/FinancialServicesEntities/FinanceCompany> ;
+    rel:alignmentScore 6.741585e-01 ;
+    rel:mentionedIn <http://example.org/chunk_8> ;
+    skos:prefLabel "SoftBank Group Corp." .
+
+<http://example.org/entity/software_applications> a <https://spec.edmcouncil.org/fibo/ontology/FND/GoalsAndObjectives/Objectives/Program> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/GoalsAndObjectives/Objectives/Program> ;
+    rel:alignmentScore 5.53482e-01 ;
+    rel:mentionedIn <http://example.org/chunk_46> ;
+    skos:prefLabel "software applications" .
+
+<http://example.org/entity/software_defined__hardware_accelerated_networking__security__storage_and_management_applications> rel:mentionedIn <http://example.org/chunk_18> ;
+    skos:prefLabel "software-defined, hardware-accelerated networking, security, storage and management applications" .
+
+<http://example.org/entity/strong_relationships> a <https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LEIEntities/RelationshipStatus> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LEIEntities/RelationshipStatus> ;
+    rel:alignmentScore 6.198271e-01 ;
+    rel:mentionedIn <http://example.org/chunk_45> ;
+    skos:prefLabel "strong relationships" .
+
+<http://example.org/entity/strong_talent> rel:mentionedIn <http://example.org/chunk_73> ;
+    skos:prefLabel "strong talent" .
+
+<http://example.org/entity/surgical_training> rel:mentionedIn <http://example.org/chunk_28> ;
+    skos:prefLabel "surgical training" .
+
+<http://example.org/entity/system_builders> a <https://spec.edmcouncil.org/fibo/ontology/FND/AgentsAndPeople/Agents/AutomatedSystem> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/AgentsAndPeople/Agents/AutomatedSystem> ;
+    rel:alignmentScore 5.509594e-01 ;
+    rel:mentionedIn <http://example.org/chunk_44> ;
+    skos:prefLabel "system builders" .
+
+<http://example.org/entity/system_designs> a <https://www.omg.org/spec/Commons/Documents/Specification> ;
+    rel:alignedWith <https://www.omg.org/spec/Commons/Documents/Specification> ;
+    rel:alignmentScore 5.02239e-01 ;
+    rel:mentionedIn <http://example.org/chunk_44> ;
+    skos:prefLabel "system designs" .
+
+<http://example.org/entity/taiwan_semiconductor_manufacturing_company_limited> a <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/MarketsIndividuals/Facility-XTAI> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/MarketsIndividuals/Facility-XTAI> ;
+    rel:alignmentScore 6.312567e-01 ;
+    rel:mentionedIn <http://example.org/chunk_52> ;
+    skos:prefLabel "Taiwan Semiconductor Manufacturing Company Limited" .
+
+<http://example.org/entity/the_ada_lovelace_architecture> rel:mentionedIn <http://example.org/chunk_21> ;
+    skos:prefLabel "the Ada Lovelace architecture" .
+
+<http://example.org/entity/the_advent> rel:mentionedIn <http://example.org/chunk_34> ;
+    skos:prefLabel "the advent" .
+
+<http://example.org/entity/the_algorithms> a <https://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/AI> ;
+    rel:alignedWith <https://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/AI> ;
+    rel:alignmentScore 5.187618e-01 ;
+    rel:mentionedIn <http://example.org/chunk_35> ;
+    skos:prefLabel "the algorithms" .
+
+<http://example.org/entity/the_arm_share_purchase_agreement> a <https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/RightsAndWarrants/CommonSharePurchaseRight> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/RightsAndWarrants/CommonSharePurchaseRight> ;
+    rel:alignmentScore 6.898448e-01 ;
+    rel:mentionedIn <http://example.org/chunk_8> ;
+    skos:prefLabel "the Arm Share Purchase Agreement" .
+
+<http://example.org/entity/the_av_market> a <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/MarketsIndividuals/Facility-MESQ> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/MarketsIndividuals/Facility-MESQ> ;
+    rel:alignmentScore 6.185244e-01 ;
+    rel:mentionedIn <http://example.org/chunk_36> ;
+    skos:prefLabel "the AV market" .
+
+<http://example.org/entity/the_covid_19_pandemic_created_expanded_hiring_opportunities> rel:mentionedIn <http://example.org/chunk_74> ;
+    skos:prefLabel "The COVID-19 pandemic created expanded hiring opportunities" .
+
+<http://example.org/entity/the_cuda_programming_model> rel:mentionedIn <http://example.org/chunk_4> ;
+    skos:prefLabel "the CUDA programming model" .
+
+<http://example.org/entity/the_data> a <https://www.omg.org/spec/Commons/Documents/hasDataSource> ;
+    rel:alignedWith <https://www.omg.org/spec/Commons/Documents/hasDataSource> ;
+    rel:alignmentScore 5.451775e-01 ;
+    rel:mentionedIn <http://example.org/chunk_1> ;
+    skos:prefLabel "the data" .
+
+<http://example.org/entity/the_demand> a <https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/mandates> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/mandates> ;
+    rel:alignmentScore 5.842176e-01 ;
+    rel:mentionedIn <http://example.org/chunk_72> ;
+    skos:prefLabel "the demand" .
+
+<http://example.org/entity/the_drive_brand> a <https://spec.edmcouncil.org/fibo/ontology/FND/Places/NorthAmerica/USPostalServiceAddressesIndividuals/Drives> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/Places/NorthAmerica/USPostalServiceAddressesIndividuals/Drives> ;
+    rel:alignmentScore 6.553024e-01 ;
+    rel:mentionedIn <http://example.org/chunk_36> ;
+    skos:prefLabel "the DRIVE brand" .
+
+<http://example.org/entity/the_drive_software_platform> a <https://spec.edmcouncil.org/fibo/ontology/FND/Places/NorthAmerica/USPostalServiceAddressesIndividuals/Drives> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/Places/NorthAmerica/USPostalServiceAddressesIndividuals/Drives> ;
+    rel:alignmentScore 5.889237e-01 ;
+    rel:mentionedIn <http://example.org/chunk_29> ;
+    skos:prefLabel "The DRIVE Software platform" .
+
+<http://example.org/entity/the_end_of_fiscal_year_2025> a <https://spec.edmcouncil.org/fibo/ontology/SEC/Funds/CollectiveInvestmentVehicles/endOfFiscalYear> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/SEC/Funds/CollectiveInvestmentVehicles/endOfFiscalYear> ;
+    rel:alignmentScore 7.831604e-01 ;
+    rel:mentionedIn <http://example.org/chunk_66> ;
+    skos:prefLabel "the end of fiscal year 2025" .
+
+<http://example.org/entity/the_features> rel:mentionedIn <http://example.org/chunk_56> ;
+    skos:prefLabel "the features" .
+
+<http://example.org/entity/the_financial_services_industry> a <https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/FinancialService> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/FinancialService> ;
+    rel:alignmentScore 8.56967e-01 ;
+    rel:mentionedIn <http://example.org/chunk_6> ;
+    skos:prefLabel "the financial services industry" .
+
+<http://example.org/entity/the_fourth_and_first_quarters> a <https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/CalendarQuarter> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/CalendarQuarter> ;
+    rel:alignmentScore 6.530999e-01 ;
+    rel:mentionedIn <http://example.org/chunk_49> ;
+    skos:prefLabel "the fourth and first quarters" .
+
+<http://example.org/entity/the_geforce_rtx_40_series> rel:mentionedIn <http://example.org/chunk_21> ;
+    skos:prefLabel "the GeForce RTX 40 Series" .
+
+<http://example.org/entity/the_gpu> a <https://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/GP> ;
+    rel:alignedWith <https://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/GP> ;
+    rel:alignmentScore 6.161301e-01 ;
+    rel:mentionedIn <http://example.org/chunk_2> ;
+    skos:prefLabel "the GPU" .
+
+<http://example.org/entity/the_healthcare_industry> a <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/FinancialServicesEntities/InsuranceCompany> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/FinancialServicesEntities/InsuranceCompany> ;
+    rel:alignmentScore 5.234393e-01 ;
+    rel:mentionedIn <http://example.org/chunk_6> ;
+    skos:prefLabel "the healthcare industry" .
+
+<http://example.org/entity/the_key_technology_enabler> a <https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Analytics/KeyPerformanceIndicator> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Analytics/KeyPerformanceIndicator> ;
+    rel:alignmentScore 5.022358e-01 ;
+    rel:mentionedIn <http://example.org/chunk_35> ;
+    skos:prefLabel "the key technology enabler" .
+
+<http://example.org/entity/the_leader> a <https://www.omg.org/spec/Commons/RolesAndCompositions/Role> ;
+    rel:alignedWith <https://www.omg.org/spec/Commons/RolesAndCompositions/Role> ;
+    rel:alignmentScore 5.932727e-01 ;
+    rel:mentionedIn <http://example.org/chunk_2> ;
+    skos:prefLabel "the leader" .
+
+<http://example.org/entity/the_leading_autonomous_vehicle_platform> rel:mentionedIn <http://example.org/chunk_33> ;
+    skos:prefLabel "the leading autonomous vehicle platform" .
+
+<http://example.org/entity/the_manufacturing_process> a <https://spec.edmcouncil.org/fibo/ontology/LOAN/RealEstateLoans/HomeMortgageDisclosureActCoveredMortgages/ConstructionType_Manufactured> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/LOAN/RealEstateLoans/HomeMortgageDisclosureActCoveredMortgages/ConstructionType_Manufactured> ;
+    rel:alignmentScore 5.775968e-01 ;
+    rel:mentionedIn <http://example.org/chunk_51> ;
+    skos:prefLabel "the manufacturing process" .
+
+<http://example.org/entity/the_markets> a <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/MarketsIndividuals/Facility-INFT> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/MarketsIndividuals/Facility-INFT> ;
+    rel:alignmentScore 7.052111e-01 ;
+    rel:mentionedIn <http://example.org/chunk_3> ;
+    skos:prefLabel "the markets" .
+
+<http://example.org/entity/the_most_recent_applications> a <https://spec.edmcouncil.org/fibo/ontology/BP/SecuritiesIssuance/EquitiesIPOIssuance/ReceiveApplications> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/BP/SecuritiesIssuance/EquitiesIPOIssuance/ReceiveApplications> ;
+    rel:alignmentScore 5.315797e-01 ;
+    rel:mentionedIn <http://example.org/chunk_1> ;
+    skos:prefLabel "the most recent applications" .
+
+<http://example.org/entity/the_nominating_and_corporate_governance_committee> a <https://spec.edmcouncil.org/fibo/ontology/BE/OwnershipAndControl/Executives/BoardOfDirectors> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/BE/OwnershipAndControl/Executives/BoardOfDirectors> ;
+    rel:alignmentScore 6.392978e-01 ;
+    rel:mentionedIn <http://example.org/chunk_68> ;
+    skos:prefLabel "The Nominating and Corporate Governance Committee" .
+
+<http://example.org/entity/the_nvidia_bluefield_dpu> rel:mentionedIn <http://example.org/chunk_18> ;
+    skos:prefLabel "The NVIDIA Bluefield DPU" .
+
+<http://example.org/entity/the_nvidia_gpu_cloud_registry> rel:mentionedIn <http://example.org/chunk_19> ;
+    skos:prefLabel "the NVIDIA GPU Cloud registry" .
+
+<http://example.org/entity/the_parallel_processing_capabilities> rel:mentionedIn <http://example.org/chunk_4> ;
+    skos:prefLabel "the parallel processing capabilities" .
+
+<http://example.org/entity/the_parties> a <https://www.omg.org/spec/Commons/PartiesAndSituations/Party> ;
+    rel:alignedWith <https://www.omg.org/spec/Commons/PartiesAndSituations/Party> ;
+    rel:alignmentScore 8.166213e-01 ;
+    rel:mentionedIn <http://example.org/chunk_9> ;
+    skos:prefLabel "The parties" .
+
+<http://example.org/entity/the_preferences> a <https://spec.edmcouncil.org/fibo/ontology/MD/TemporalCore/SecurityCreditStatuses/InDefault> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/MD/TemporalCore/SecurityCreditStatuses/InDefault> ;
+    rel:alignmentScore 5.666459e-01 ;
+    rel:mentionedIn <http://example.org/chunk_1> ;
+    skos:prefLabel "the preferences" .
+
+<http://example.org/entity/the_production_schedules> a <https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/Schedule> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/Schedule> ;
+    rel:alignmentScore 6.823203e-01 ;
+    rel:mentionedIn <http://example.org/chunk_49> ;
+    skos:prefLabel "the production schedules" .
+
+<http://example.org/entity/the_products> a <https://spec.edmcouncil.org/fibo/ontology/FND/ProductsAndServices/ProductsAndServices/Product> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/ProductsAndServices/ProductsAndServices/Product> ;
+    rel:alignmentScore 7.951298e-01 ;
+    rel:mentionedIn <http://example.org/chunk_5> ;
+    skos:prefLabel "the products" .
+
+<http://example.org/entity/the_professional_visualization_market> rel:mentionedIn <http://example.org/chunk_24> ;
+    skos:prefLabel "the Professional Visualization market" .
+
+<http://example.org/entity/the_recording> a <https://www.omg.org/spec/Commons/Documents/Record> ;
+    rel:alignedWith <https://www.omg.org/spec/Commons/Documents/Record> ;
+    rel:alignmentScore 7.414075e-01 ;
+    rel:mentionedIn <http://example.org/chunk_39> ;
+    skos:prefLabel "the recording" .
+
+<http://example.org/entity/the_second_and_third_quarters> a <https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/CalendarQuarter> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/CalendarQuarter> ;
+    rel:alignmentScore 6.757582e-01 ;
+    rel:mentionedIn <http://example.org/chunk_49> ;
+    skos:prefLabel "the second and third quarters" .
+
+<http://example.org/entity/the_second_half> rel:mentionedIn <http://example.org/chunk_48> ;
+    skos:prefLabel "the second half" .
+
+<http://example.org/entity/the_second_half_of_our_fiscal_year> a <https://spec.edmcouncil.org/fibo/ontology/SEC/Funds/CollectiveInvestmentVehicles/endOfFiscalYear> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/SEC/Funds/CollectiveInvestmentVehicles/endOfFiscalYear> ;
+    rel:alignmentScore 6.656745e-01 ;
+    rel:mentionedIn <http://example.org/chunk_48> ;
+    skos:prefLabel "the second half of our fiscal year" .
+
+<http://example.org/entity/the_software_development_community> rel:mentionedIn <http://example.org/chunk_45> ;
+    skos:prefLabel "the software development community" .
+
+<http://example.org/entity/the_united_states> a <https://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/USA> ;
+    rel:alignedWith <https://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/USA> ;
+    rel:alignmentScore 8.47898e-01 ;
+    rel:mentionedIn <http://example.org/chunk_60> ;
+    skos:prefLabel "the United States" .
+
+<http://example.org/entity/the_world> a <https://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/Country> ;
+    rel:alignedWith <https://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/Country> ;
+    rel:alignmentScore 5.75366e-01 ;
+    rel:mentionedIn <http://example.org/chunk_47> ;
+    skos:prefLabel "the world" .
+
+<http://example.org/entity/their_careers> rel:mentionedIn <http://example.org/chunk_76> ;
+    skos:prefLabel "their careers" .
+
+<http://example.org/entity/their_choice> rel:mentionedIn <http://example.org/chunk_74> ;
+    skos:prefLabel "their choice" .
+
+<http://example.org/entity/their_interactions> rel:mentionedIn <http://example.org/chunk_1> ;
+    skos:prefLabel "their interactions" .
+
+<http://example.org/entity/their_lifetime> a <https://spec.edmcouncil.org/fibo/ontology/IND/InterestRates/InterestRates/TwentyYears> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/IND/InterestRates/InterestRates/TwentyYears> ;
+    rel:alignmentScore 5.223376e-01 ;
+    rel:mentionedIn <http://example.org/chunk_76> ;
+    skos:prefLabel "their lifetime" .
+
+<http://example.org/entity/their_offerings> a <https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/isOfferingOf> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/isOfferingOf> ;
+    rel:alignmentScore 5.347497e-01 ;
+    rel:mentionedIn <http://example.org/chunk_24> ;
+    skos:prefLabel "their offerings" .
+
+<http://example.org/entity/their_pc_s_settings> rel:mentionedIn <http://example.org/chunk_39> ;
+    skos:prefLabel "their PC’s settings" .
+
+<http://example.org/entity/their_workflows> rel:mentionedIn <http://example.org/chunk_26> ;
+    skos:prefLabel "their workflows" .
+
+<http://example.org/entity/these_services> a <https://spec.edmcouncil.org/fibo/ontology/BP/SecuritiesIssuance/MuniIssuance/services> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/BP/SecuritiesIssuance/MuniIssuance/services> ;
+    rel:alignmentScore 8.397587e-01 ;
+    rel:mentionedIn <http://example.org/chunk_17> ;
+    skos:prefLabel "these services" .
+
+<http://example.org/entity/these_technologies> a <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/MarketsIndividuals/Facility-EGMT> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/MarketsIndividuals/Facility-EGMT> ;
+    rel:alignmentScore 5.983489e-01 ;
+    rel:mentionedIn <http://example.org/chunk_28> ;
+    skos:prefLabel "these technologies" .
+
+<http://example.org/entity/third_party_developers> a <https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/ThirdPartyAgent> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/ThirdPartyAgent> ;
+    rel:alignmentScore 6.148526e-01 ;
+    rel:mentionedIn <http://example.org/chunk_29> ;
+    skos:prefLabel "third-party developers" .
+
+<http://example.org/entity/third_party_nondisclosure_agreements> a <https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/ContractThirdParty> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/ContractThirdParty> ;
+    rel:alignmentScore 6.559268e-01 ;
+    rel:mentionedIn <http://example.org/chunk_60> ;
+    skos:prefLabel "third-party nondisclosure agreements" .
+
+<http://example.org/entity/this_opportunity> a <https://www.omg.org/spec/Commons/PartiesAndSituations/Situation> ;
+    rel:alignedWith <https://www.omg.org/spec/Commons/PartiesAndSituations/Situation> ;
+    rel:alignmentScore 5.083446e-01 ;
+    rel:mentionedIn <http://example.org/chunk_35> ;
+    skos:prefLabel "this opportunity" .
+
+<http://example.org/entity/this_platform_approach> rel:mentionedIn <http://example.org/chunk_30> ;
+    skos:prefLabel "this platform approach" .
+
+<http://example.org/entity/tier_1_automotive_suppliers> a <https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/EuropeanSecurities/EUSecuritiesRestrictions/CommonEquityTier1> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/EuropeanSecurities/EUSecuritiesRestrictions/CommonEquityTier1> ;
+    rel:alignmentScore 6.330386e-01 ;
+    rel:mentionedIn <http://example.org/chunk_44> ;
+    skos:prefLabel "tier-1 automotive suppliers" .
+
+<http://example.org/entity/tier_1_suppliers> a <https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/EuropeanSecurities/EUSecuritiesRestrictions/Tier1Capital> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/EuropeanSecurities/EUSecuritiesRestrictions/Tier1Capital> ;
+    rel:alignmentScore 6.499587e-01 ;
+    rel:mentionedIn <http://example.org/chunk_36> ;
+    skos:prefLabel "tier-1 suppliers" .
+
+<http://example.org/entity/top_talent> a <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/TOP> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/TOP> ;
+    rel:alignmentScore 5.681991e-01 ;
+    rel:mentionedIn <http://example.org/chunk_72> ;
+    skos:prefLabel "top talent" .
+
+<http://example.org/entity/trade_secrets> a <https://spec.edmcouncil.org/fibo/ontology/BP/Process/FinancialContextAndProcess/SecuritiesTrade> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/BP/Process/FinancialContextAndProcess/SecuritiesTrade> ;
+    rel:alignmentScore 6.040837e-01 ;
+    rel:mentionedIn <http://example.org/chunk_60> ;
+    skos:prefLabel "trade secrets" .
+
+<http://example.org/entity/unique_value> a <https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Assessments/Value> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Assessments/Value> ;
+    rel:alignmentScore 6.044824e-01 ;
+    rel:mentionedIn <http://example.org/chunk_3> ;
+    skos:prefLabel "unique value" .
+
+<http://example.org/entity/university__professional__executive_and_diverse_recruits> rel:mentionedIn <http://example.org/chunk_73> ;
+    skos:prefLabel "university, professional, executive and diverse recruits" .
+
+<http://example.org/entity/various_industry_ecosystems> a <https://spec.edmcouncil.org/fibo/ontology/IND/EconomicIndicators/NorthAmericanIndicators/CAEconomicIndicators/IndustrialProductsSector> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/IND/EconomicIndicators/NorthAmericanIndicators/CAEconomicIndicators/IndustrialProductsSector> ;
+    rel:alignmentScore 5.769448e-01 ;
+    rel:mentionedIn <http://example.org/chunk_43> ;
+    skos:prefLabel "various industry ecosystems" .
+
+<http://example.org/entity/virtual_car_showrooms> a <https://spec.edmcouncil.org/fibo/ontology/FND/Places/VirtualPlaces/VirtualLocation> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/Places/VirtualPlaces/VirtualLocation> ;
+    rel:alignmentScore 5.843841e-01 ;
+    rel:mentionedIn <http://example.org/chunk_28> ;
+    skos:prefLabel "Virtual car showrooms" .
+
+<http://example.org/entity/virtual_reality> a <https://spec.edmcouncil.org/fibo/ontology/FND/Places/VirtualPlaces/VirtualLocation> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/Places/VirtualPlaces/VirtualLocation> ;
+    rel:alignmentScore 5.651607e-01 ;
+    rel:mentionedIn <http://example.org/chunk_27> ;
+    skos:prefLabel "virtual reality" .
+
+<http://example.org/entity/virtual_world_simulation_software> a <https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/SyntheticCDOs/simulates> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/SyntheticCDOs/simulates> ;
+    rel:alignmentScore 5.243467e-01 ;
+    rel:mentionedIn <http://example.org/chunk_41> ;
+    skos:prefLabel "virtual world simulation software" .
+
+<http://example.org/entity/visual_effects> a <https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/Exposure> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/Exposure> ;
+    rel:alignmentScore 5.036169e-01 ;
+    rel:mentionedIn <http://example.org/chunk_7> ;
+    skos:prefLabel "visual effects" .
+
+<http://example.org/entity/wafer_fabrication> rel:mentionedIn <http://example.org/chunk_51> ;
+    skos:prefLabel "wafer fabrication" .
+
+<http://example.org/entity/weaker_revenue> rel:mentionedIn <http://example.org/chunk_49> ;
+    skos:prefLabel "weaker revenue" .
+
+<http://example.org/chunk_30> a <http://example.org/Chunk> ;
+    rel:id 30 ;
+    rel:mentions <http://example.org/entity/our_target_markets>,
+        <http://example.org/entity/this_platform_approach> ;
+    skos:prefLabel """We utilize this platform approach in each of our target markets.
+
+""" .
+
+<http://example.org/chunk_34> a <http://example.org/Chunk> ;
+    rel:id 34 ;
+    rel:mentions <http://example.org/entity/the_advent>,
+        <http://example.org/entity/the_transportation_industry> ;
+    skos:prefLabel "We believe the advent of AV will soon revolutionize the transportation industry." .
+
+<http://example.org/chunk_58> a <http://example.org/Chunk> ;
+    rel:id 58 ;
+    rel:mentions <http://example.org/entity/new_competitors>,
+        <http://example.org/entity/significant_market_share> ;
+    skos:prefLabel """In addition, it is possible that new competitors or alliances among competitors could emerge and acquire significant market share.
+
+""" .
+
+<http://example.org/entity/a_growing_body> rel:mentionedIn <http://example.org/chunk_12>,
+        <http://example.org/chunk_14> ;
+    skos:prefLabel "a growing body" .
+
+<http://example.org/entity/application_frameworks> a <https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LEIEntities/OtherAccountingFramework> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LEIEntities/OtherAccountingFramework> ;
+    rel:alignmentScore 5.16284e-01 ;
+    rel:mentionedIn <http://example.org/chunk_12>,
+        <http://example.org/chunk_14> ;
+    skos:prefLabel "application frameworks" .
+
+<http://example.org/entity/certain_exports> a <https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/CommoditiesContracts/FreightResource> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/CommoditiesContracts/FreightResource> ;
+    rel:alignmentScore 5.310318e-01 ;
+    rel:mentionedIn <http://example.org/chunk_61>,
+        <http://example.org/chunk_67> ;
+    skos:prefLabel "certain exports" .
+
+<http://example.org/entity/china> a <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/BusinessCentersIndividuals/Shanghai> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/BusinessCentersIndividuals/Shanghai> ;
+    rel:alignmentScore 7.693135e-01 ;
+    rel:mentionedIn <http://example.org/chunk_61>,
+        <http://example.org/chunk_67> ;
+    skos:prefLabel "China" .
+
+<http://example.org/entity/computer_graphics> a <https://spec.edmcouncil.org/fibo/ontology/CAE/CorporateEvents/SecurityRelatedCorporateActions/Drawing> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/CAE/CorporateEvents/SecurityRelatedCorporateActions/Drawing> ;
+    rel:alignmentScore 5.683443e-01 ;
+    rel:mentionedIn <http://example.org/chunk_2>,
+        <http://example.org/chunk_38> ;
+    skos:prefLabel "computer graphics" .
+
+<http://example.org/entity/data_analytics> a <https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Analytics/StatisticalProgram> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Analytics/StatisticalProgram> ;
+    rel:alignmentScore 5.539611e-01 ;
+    rel:mentionedIn <http://example.org/chunk_11>,
+        <http://example.org/chunk_13> ;
+    skos:prefLabel "data analytics" .
+
+<http://example.org/entity/data_processing_units> a <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/FinancialServicesEntities/DataProcessingService> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/FinancialServicesEntities/DataProcessingService> ;
+    rel:alignmentScore 7.139835e-01 ;
+    rel:mentionedIn <http://example.org/chunk_12>,
+        <http://example.org/chunk_14> ;
+    skos:prefLabel "data processing units" .
+
+<http://example.org/entity/distribution_channels> a <https://spec.edmcouncil.org/fibo/ontology/FND/GoalsAndObjectives/Objectives/DistributionStrategy> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/GoalsAndObjectives/Objectives/DistributionStrategy> ;
+    rel:alignmentScore 5.484739e-01 ;
+    rel:mentionedIn <http://example.org/chunk_54>,
+        <http://example.org/chunk_55> ;
+    skos:prefLabel "distribution channels" .
+
+<http://example.org/entity/edge_data_centers> a <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/NorthAmericanEntities/USFinancialServicesEntities/EdgeCorporation> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/NorthAmericanEntities/USFinancialServicesEntities/EdgeCorporation> ;
+    rel:alignmentScore 6.395853e-01 ;
+    rel:mentionedIn <http://example.org/chunk_11>,
+        <http://example.org/chunk_13> ;
+    skos:prefLabel "edge data centers" .
+
+<http://example.org/entity/fourth_generation_tensor_cores> rel:mentionedIn <http://example.org/chunk_22>,
+        <http://example.org/chunk_23> ;
+    skos:prefLabel "fourth generation Tensor Cores" .
+
+<http://example.org/entity/hong_kong> a <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/BusinessCentersIndividuals/Hong_Kong> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/BusinessCentersIndividuals/Hong_Kong> ;
+    rel:alignmentScore 1e+00 ;
+    rel:mentionedIn <http://example.org/chunk_61>,
+        <http://example.org/chunk_67> ;
+    skos:prefLabel "Hong Kong" .
+
+<http://example.org/entity/large_language_models> a <https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/IndividualLanguage> ;
+    rel:alignedWith <https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/IndividualLanguage> ;
+    rel:alignmentScore 5.692967e-01 ;
+    rel:mentionedIn <http://example.org/chunk_1>,
+        <http://example.org/chunk_15> ;
+    skos:prefLabel "large language models" .
+
+<http://example.org/entity/macau> a <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/BusinessCentersIndividuals/Macau> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/BusinessCentersIndividuals/Macau> ;
+    rel:alignmentScore 1e+00 ;
+    rel:mentionedIn <http://example.org/chunk_61>,
+        <http://example.org/chunk_67> ;
+    skos:prefLabel "Macau" .
+
+<http://example.org/entity/machine_learning> a <https://www.omg.org/spec/Commons/Classifiers/Classifier> ;
+    rel:alignedWith <https://www.omg.org/spec/Commons/Classifiers/Classifier> ;
+    rel:alignmentScore 6.906911e-01 ;
+    rel:mentionedIn <http://example.org/chunk_19>,
+        <http://example.org/chunk_31> ;
+    skos:prefLabel "machine learning" .
+
+<http://example.org/entity/manufacturing_capabilities> a <https://spec.edmcouncil.org/fibo/ontology/FND/Places/Facilities/Capability> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/Places/Facilities/Capability> ;
+    rel:alignmentScore 6.250976e-01 ;
+    rel:mentionedIn <http://example.org/chunk_54>,
+        <http://example.org/chunk_55> ;
+    skos:prefLabel "manufacturing capabilities" .
+
+<http://example.org/entity/new_license_requirements> a dcterms:license ;
+    rel:alignedWith dcterms:license ;
+    rel:alignmentScore 6.803956e-01 ;
+    rel:mentionedIn <http://example.org/chunk_61>,
+        <http://example.org/chunk_67> ;
+    skos:prefLabel "new license requirements" .
+
+<http://example.org/entity/nvidia_rtx_gpus> rel:mentionedIn <http://example.org/chunk_26>,
+        <http://example.org/chunk_38> ;
+    skos:prefLabel "NVIDIA RTX GPUs" .
+
+<http://example.org/entity/our_cuda_programming_model> rel:mentionedIn <http://example.org/chunk_12>,
+        <http://example.org/chunk_14> ;
+    skos:prefLabel "our CUDA programming model" .
+
+<http://example.org/entity/our_data_center_products> a <https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/Publishers/MarketDataProvider> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/Publishers/MarketDataProvider> ;
+    rel:alignmentScore 5.982228e-01 ;
+    rel:mentionedIn <http://example.org/chunk_61>,
+        <http://example.org/chunk_67> ;
+    skos:prefLabel "our data center products" .
+
+<http://example.org/entity/our_employees> a <https://spec.edmcouncil.org/fibo/ontology/FND/Organizations/FormalOrganizations/Employee> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/Organizations/FormalOrganizations/Employee> ;
+    rel:alignmentScore 6.917136e-01 ;
+    rel:mentionedIn <http://example.org/chunk_70>,
+        <http://example.org/chunk_77> ;
+    skos:prefLabel "our employees" .
+
+<http://example.org/entity/our_energy_efficient_gpus> a <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/MarketsIndividuals/Facility-GFIN> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/MarketsIndividuals/Facility-GFIN> ;
+    rel:alignmentScore 5.173175e-01 ;
+    rel:mentionedIn <http://example.org/chunk_12>,
+        <http://example.org/chunk_14> ;
+    skos:prefLabel "our energy efficient GPUs" .
+
+<http://example.org/entity/our_partner_network> a <https://spec.edmcouncil.org/fibo/ontology/BE/Partnerships/Partnerships/Partner> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/BE/Partnerships/Partnerships/Partner> ;
+    rel:alignmentScore 6.704869e-01 ;
+    rel:mentionedIn <http://example.org/chunk_43>,
+        <http://example.org/chunk_44> ;
+    skos:prefLabel "our partner network" .
+
+<http://example.org/entity/our_partners> a <https://spec.edmcouncil.org/fibo/ontology/BE/Partnerships/Partnerships/Partner> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/BE/Partnerships/Partnerships/Partner> ;
+    rel:alignmentScore 7.918501e-01 ;
+    rel:mentionedIn <http://example.org/chunk_20>,
+        <http://example.org/chunk_36> ;
+    skos:prefLabel "our partners" .
+
+<http://example.org/entity/our_third_generation_rtx_technology> a <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/MarketsIndividuals/Facility-RTXF> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/MarketsIndividuals/Facility-RTXF> ;
+    rel:alignmentScore 6.472261e-01 ;
+    rel:mentionedIn <http://example.org/chunk_22>,
+        <http://example.org/chunk_23> ;
+    skos:prefLabel "our third generation RTX technology" .
+
+<http://example.org/entity/partner_network> a <https://spec.edmcouncil.org/fibo/ontology/BE/Partnerships/Partnerships/Partner> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/BE/Partnerships/Partnerships/Partner> ;
+    rel:alignmentScore 6.791197e-01 ;
+    rel:mentionedIn <http://example.org/chunk_43>,
+        <http://example.org/chunk_44> ;
+    skos:prefLabel "partner network" .
+
+<http://example.org/entity/processor_pricing> a <https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/InstrumentPricing/PricingModel> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/InstrumentPricing/PricingModel> ;
+    rel:alignmentScore 5.787793e-01 ;
+    rel:mentionedIn <http://example.org/chunk_54>,
+        <http://example.org/chunk_55> ;
+    skos:prefLabel "processor pricing" .
+
+<http://example.org/entity/product_offerings> a <https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesIssuance/SecuritiesOffering> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesIssuance/SecuritiesOffering> ;
+    rel:alignmentScore 6.202365e-01 ;
+    rel:mentionedIn <http://example.org/chunk_54>,
+        <http://example.org/chunk_55> ;
+    skos:prefLabel "product offerings" .
+
+<http://example.org/entity/public_sector> a <https://spec.edmcouncil.org/fibo/ontology/BE/GovernmentEntities/GovernmentEntities/MunicipalGovernment> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/BE/GovernmentEntities/GovernmentEntities/MunicipalGovernment> ;
+    rel:alignmentScore 6.549996e-01 ;
+    rel:mentionedIn <http://example.org/chunk_11>,
+        <http://example.org/chunk_13> ;
+    skos:prefLabel "public sector" .
+
+<http://example.org/entity/russia> a <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/BusinessCentersIndividuals/Moscow> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/BusinessCentersIndividuals/Moscow> ;
+    rel:alignmentScore 8.342865e-01 ;
+    rel:mentionedIn <http://example.org/chunk_61>,
+        <http://example.org/chunk_67> ;
+    skos:prefLabel "Russia" .
+
+<http://example.org/entity/software_development_kits> rel:mentionedIn <http://example.org/chunk_12>,
+        <http://example.org/chunk_14> ;
+    skos:prefLabel "software development kits" .
+
+<http://example.org/entity/software_libraries> rel:mentionedIn <http://example.org/chunk_12>,
+        <http://example.org/chunk_14> ;
+    skos:prefLabel "software libraries" .
+
+<http://example.org/entity/software_support> a <https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/CollateralizedDebtObligations/supportedBy> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/CollateralizedDebtObligations/supportedBy> ;
+    rel:alignmentScore 6.075661e-01 ;
+    rel:mentionedIn <http://example.org/chunk_54>,
+        <http://example.org/chunk_55> ;
+    skos:prefLabel "software support" .
+
+<http://example.org/entity/standard_apis> rel:mentionedIn <http://example.org/chunk_54>,
+        <http://example.org/chunk_55> ;
+    skos:prefLabel "standard APIs" .
+
+<http://example.org/entity/stronger_revenue> a <https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/ProfitObjective> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/ProfitObjective> ;
+    rel:alignmentScore 5.723139e-01 ;
+    rel:mentionedIn <http://example.org/chunk_48>,
+        <http://example.org/chunk_49> ;
+    skos:prefLabel "stronger revenue" .
+
+<http://example.org/entity/tensor_cores> rel:mentionedIn <http://example.org/chunk_22>,
+        <http://example.org/chunk_23> ;
+    skos:prefLabel "Tensor Cores" .
+
+<http://example.org/entity/the_40_series> a <https://spec.edmcouncil.org/fibo/ontology/BP/SecuritiesIssuance/IssuanceProcess/offerIssueSeries> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/BP/SecuritiesIssuance/IssuanceProcess/offerIssueSeries> ;
+    rel:alignmentScore 5.555706e-01 ;
+    rel:mentionedIn <http://example.org/chunk_22>,
+        <http://example.org/chunk_23> ;
+    skos:prefLabel "The 40 Series" .
+
+<http://example.org/entity/the_end> a <https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/FromEnd> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/FromEnd> ;
+    rel:alignmentScore 8.377205e-01 ;
+    rel:mentionedIn <http://example.org/chunk_66>,
+        <http://example.org/chunk_71> ;
+    skos:prefLabel "the end" .
+
+<http://example.org/entity/the_end_of_fiscal_year> a <https://spec.edmcouncil.org/fibo/ontology/SEC/Funds/CollectiveInvestmentVehicles/endOfFiscalYear> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/SEC/Funds/CollectiveInvestmentVehicles/endOfFiscalYear> ;
+    rel:alignmentScore 9.74953e-01 ;
+    rel:mentionedIn <http://example.org/chunk_66>,
+        <http://example.org/chunk_71> ;
+    skos:prefLabel "the end of fiscal year" .
+
+<http://example.org/entity/the_market> a <https://spec.edmcouncil.org/fibo/ontology/BP/SecuritiesIssuance/AgencyMBSIssuance/MarketIssue> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/BP/SecuritiesIssuance/AgencyMBSIssuance/MarketIssue> ;
+    rel:alignmentScore 7.582164e-01 ;
+    rel:mentionedIn <http://example.org/chunk_3>,
+        <http://example.org/chunk_53> ;
+    skos:prefLabel "The market" .
+
+<http://example.org/entity/the_most_compute_intensive_workloads> rel:mentionedIn <http://example.org/chunk_11>,
+        <http://example.org/chunk_13> ;
+    skos:prefLabel "the most compute-intensive workloads" .
+
+<http://example.org/entity/the_nvidia_computing_platform> rel:mentionedIn <http://example.org/chunk_11>,
+        <http://example.org/chunk_13> ;
+    skos:prefLabel "The NVIDIA computing platform" .
+
+<http://example.org/entity/the_performance> a <https://spec.edmcouncil.org/fibo/ontology/MD/CIVTemporal/FundsTemporal/hasPerformance> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/MD/CIVTemporal/FundsTemporal/hasPerformance> ;
+    rel:alignmentScore 7.647456e-01 ;
+    rel:mentionedIn <http://example.org/chunk_22>,
+        <http://example.org/chunk_23> ;
+    skos:prefLabel "the performance" .
+
+<http://example.org/entity/the_platform> rel:mentionedIn <http://example.org/chunk_12>,
+        <http://example.org/chunk_14> ;
+    skos:prefLabel "The platform" .
+
+<http://example.org/entity/the_previous_generation> rel:mentionedIn <http://example.org/chunk_22>,
+        <http://example.org/chunk_23> ;
+    skos:prefLabel "the previous generation" .
+
+<http://example.org/entity/the_principal_competitive_factors> a <https://spec.edmcouncil.org/fibo/ontology/BP/SecuritiesIssuance/IssuanceProcess/CompetitiveSaleMethod> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/BP/SecuritiesIssuance/IssuanceProcess/CompetitiveSaleMethod> ;
+    rel:alignmentScore 5.220783e-01 ;
+    rel:mentionedIn <http://example.org/chunk_54>,
+        <http://example.org/chunk_55> ;
+    skos:prefLabel "the principal competitive factors" .
+
+<http://example.org/entity/the_third_quarter> a <https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/CalendarQuarter> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/CalendarQuarter> ;
+    rel:alignmentScore 6.708147e-01 ;
+    rel:mentionedIn <http://example.org/chunk_61>,
+        <http://example.org/chunk_67> ;
+    skos:prefLabel "the third quarter" .
+
+<http://example.org/entity/the_third_quarter_of_fiscal_year> a <https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/CalendarQuarter> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/CalendarQuarter> ;
+    rel:alignmentScore 6.999177e-01 ;
+    rel:mentionedIn <http://example.org/chunk_61>,
+        <http://example.org/chunk_67> ;
+    skos:prefLabel "the third quarter of fiscal year" .
+
+<http://example.org/entity/the_transportation_industry> a <https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/CommoditiesContracts/FreightResource> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/CommoditiesContracts/FreightResource> ;
+    rel:alignmentScore 5.034691e-01 ;
+    rel:mentionedIn <http://example.org/chunk_34>,
+        <http://example.org/chunk_6> ;
+    skos:prefLabel "The transportation industry" .
+
+<http://example.org/entity/the_u_s__government> a <https://spec.edmcouncil.org/fibo/ontology/BE/GovernmentEntities/GovernmentEntities/Government> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/BE/GovernmentEntities/GovernmentEntities/Government> ;
+    rel:alignmentScore 8.170303e-01 ;
+    rel:mentionedIn <http://example.org/chunk_61>,
+        <http://example.org/chunk_67> ;
+    skos:prefLabel "the U.S. government" .
+
+<http://example.org/entity/third_generation_nvidia_dlss> rel:mentionedIn <http://example.org/chunk_22>,
+        <http://example.org/chunk_23> ;
+    skos:prefLabel "third generation NVIDIA DLSS" .
+
+<http://example.org/entity/this_market> a <https://spec.edmcouncil.org/fibo/ontology/BP/SecuritiesIssuance/AgencyMBSIssuance/MarketIssue> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/BP/SecuritiesIssuance/AgencyMBSIssuance/MarketIssue> ;
+    rel:alignmentScore 7.557366e-01 ;
+    rel:mentionedIn <http://example.org/chunk_54>,
+        <http://example.org/chunk_55> ;
+    skos:prefLabel "this market" .
+
+<http://example.org/entity/total_system_costs> a <https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansGeneral/Loans/hasTotalClosingCosts> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansGeneral/Loans/hasTotalClosingCosts> ;
+    rel:alignmentScore 5.199263e-01 ;
+    rel:mentionedIn <http://example.org/chunk_54>,
+        <http://example.org/chunk_55> ;
+    skos:prefLabel "total system costs" .
+
+<http://example.org/entity/u_s_> a <https://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/USA> ;
+    rel:alignedWith <https://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/USA> ;
+    rel:alignmentScore 8.335996e-01 ;
+    rel:mentionedIn <http://example.org/chunk_61>,
+        <http://example.org/chunk_67> ;
+    skos:prefLabel "U.S." .
+
+<http://example.org/chunk_0> a <http://example.org/Chunk> ;
+    rel:id 0 ;
+    rel:mentions <http://example.org/entity/our_original_focus>,
+        <http://example.org/entity/pc_graphics>,
+        <http://example.org/entity/several_other_large_and_important_computationally_intensive_fields> ;
+    skos:prefLabel """Since our original focus on PC graphics, we have expanded to several other large and important computationally intensive fields.
+
+""" .
+
+<http://example.org/chunk_31> a <http://example.org/Chunk> ;
+    rel:id 31 ;
+    rel:mentions <http://example.org/entity/both_training>,
+        <http://example.org/entity/deep_learning>,
+        <http://example.org/entity/machine_learning> ;
+    skos:prefLabel "We provide a complete, end-to-end accelerated computing platform for deep learning and machine learning, addressing both training and inferencing." .
+
+<http://example.org/chunk_32> a <http://example.org/Chunk> ;
+    rel:id 32 ;
+    rel:mentions <http://example.org/entity/cuda>,
+        <http://example.org/entity/other_software>,
+        <http://example.org/entity/our_cuda_programming_language> ;
+    skos:prefLabel """This includes GPUs, interconnects, systems, our CUDA programming language, algorithms, libraries, and other software.
+
+""" .
+
+<http://example.org/chunk_52> a <http://example.org/Chunk> ;
+    rel:id 52 ;
+    rel:mentions <http://example.org/entity/our_semiconductor_wafers>,
+        <http://example.org/entity/samsung_electronics_co__ltd>,
+        <http://example.org/entity/taiwan_semiconductor_manufacturing_company_limited> ;
+    skos:prefLabel """We utilize suppliers, such as Taiwan Semiconductor Manufacturing Company Limited and Samsung Electronics Co. Ltd, to produce our semiconductor wafers.
+
+""" .
+
+<http://example.org/chunk_73> a <http://example.org/Chunk> ;
+    rel:id 73 ;
+    rel:mentions <http://example.org/entity/our_differentiated_hiring_strategies>,
+        <http://example.org/entity/strong_talent>,
+        <http://example.org/entity/university__professional__executive_and_diverse_recruits> ;
+    skos:prefLabel "We have attracted strong talent globally with our differentiated hiring strategies for university, professional, executive and diverse recruits." .
+
+<http://example.org/entity/_1_35_billion> a <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/AmountOfMoney> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/AmountOfMoney> ;
+    rel:alignmentScore 5.352376e-01 ;
+    rel:mentionedIn <http://example.org/chunk_10>,
+        <http://example.org/chunk_63>,
+        <http://example.org/chunk_65> ;
+    skos:prefLabel "$1.35 billion" .
+
+<http://example.org/entity/an_acquisition_termination_cost> a <https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecurityAssets/hasAcquisitionPrice> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecurityAssets/hasAcquisitionPrice> ;
+    rel:alignmentScore 6.934619e-01 ;
+    rel:mentionedIn <http://example.org/chunk_10>,
+        <http://example.org/chunk_63>,
+        <http://example.org/chunk_65> ;
+    skos:prefLabel "an acquisition termination cost" .
+
+<http://example.org/entity/autonomous_driving> a <https://spec.edmcouncil.org/fibo/ontology/FND/Places/NorthAmerica/USPostalServiceAddressesIndividuals/Road> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/Places/NorthAmerica/USPostalServiceAddressesIndividuals/Road> ;
+    rel:alignmentScore 5.553544e-01 ;
+    rel:mentionedIn <http://example.org/chunk_29>,
+        <http://example.org/chunk_35>,
+        <http://example.org/chunk_6> ;
+    skos:prefLabel "autonomous driving" .
+
+<http://example.org/entity/data_centers> a <https://spec.edmcouncil.org/fibo/ontology/FND/Places/Locations/BusinessCenter> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/Places/Locations/BusinessCenter> ;
+    rel:alignmentScore 5.99426e-01 ;
+    rel:mentionedIn <http://example.org/chunk_11>,
+        <http://example.org/chunk_13>,
+        <http://example.org/chunk_66> ;
+    skos:prefLabel "data centers" .
+
+<http://example.org/entity/drive> a <https://spec.edmcouncil.org/fibo/ontology/FND/Places/NorthAmerica/USPostalServiceAddressesIndividuals/Drive> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/Places/NorthAmerica/USPostalServiceAddressesIndividuals/Drive> ;
+    rel:alignmentScore 1e+00 ;
+    rel:mentionedIn <http://example.org/chunk_29>,
+        <http://example.org/chunk_36>,
+        <http://example.org/chunk_40> ;
+    skos:prefLabel "Drive" .
+
+<http://example.org/entity/february_2022> a <https://spec.edmcouncil.org/fibo/ontology/BP/SecuritiesIssuance/IssuanceProcess/announcementDate> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/BP/SecuritiesIssuance/IssuanceProcess/announcementDate> ;
+    rel:alignmentScore 5.362145e-01 ;
+    rel:mentionedIn <http://example.org/chunk_62>,
+        <http://example.org/chunk_64>,
+        <http://example.org/chunk_8> ;
+    skos:prefLabel "February 2022" .
+
+<http://example.org/entity/fourth> rel:mentionedIn <http://example.org/chunk_22>,
+        <http://example.org/chunk_23>,
+        <http://example.org/chunk_49> ;
+    skos:prefLabel "fourth" .
+
+<http://example.org/entity/omniverse> a <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/BusinessCentersIndividuals/OMMU> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/BusinessCentersIndividuals/OMMU> ;
+    rel:alignmentScore 5.369676e-01 ;
+    rel:mentionedIn <http://example.org/chunk_27>,
+        <http://example.org/chunk_29>,
+        <http://example.org/chunk_41> ;
+    skos:prefLabel "Omniverse" .
+
+<http://example.org/entity/our_gpus> a <https://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/GP> ;
+    rel:alignedWith <https://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/GP> ;
+    rel:alignmentScore 6.140095e-01 ;
+    rel:mentionedIn <http://example.org/chunk_28>,
+        <http://example.org/chunk_5>,
+        <http://example.org/chunk_7> ;
+    skos:prefLabel "our GPUs" .
+
+<http://example.org/entity/scientific_computing> rel:mentionedIn <http://example.org/chunk_11>,
+        <http://example.org/chunk_13>,
+        <http://example.org/chunk_19> ;
+    skos:prefLabel "scientific computing" .
+
+<http://example.org/entity/significant_regulatory_challenges> a <https://spec.edmcouncil.org/fibo/ontology/CAE/CorporateEvents/CorporateActions/RegulatoryAction> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/CAE/CorporateEvents/CorporateActions/RegulatoryAction> ;
+    rel:alignmentScore 6.908415e-01 ;
+    rel:mentionedIn <http://example.org/chunk_62>,
+        <http://example.org/chunk_64>,
+        <http://example.org/chunk_9> ;
+    skos:prefLabel "significant regulatory challenges" .
+
+<http://example.org/entity/software_stacks> rel:mentionedIn <http://example.org/chunk_19>,
+        <http://example.org/chunk_29>,
+        <http://example.org/chunk_38> ;
+    skos:prefLabel "software stacks" .
+
+<http://example.org/entity/the_completion> a <https://spec.edmcouncil.org/fibo/ontology/BP/SecuritiesIssuance/AgencyMBSIssuance/finalizes> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/BP/SecuritiesIssuance/AgencyMBSIssuance/finalizes> ;
+    rel:alignmentScore 5.735012e-01 ;
+    rel:mentionedIn <http://example.org/chunk_62>,
+        <http://example.org/chunk_64>,
+        <http://example.org/chunk_9> ;
+    skos:prefLabel "the completion" .
+
+<http://example.org/entity/the_development> a <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/FinancialServicesEntities/DevelopmentBank> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/FinancialServicesEntities/DevelopmentBank> ;
+    rel:alignmentScore 6.039151e-01 ;
+    rel:mentionedIn <http://example.org/chunk_20>,
+        <http://example.org/chunk_45>,
+        <http://example.org/chunk_46> ;
+    skos:prefLabel "the development" .
+
+<http://example.org/entity/the_prepayment> a <https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansGeneral/LoanEvents/Prepayment> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansGeneral/LoanEvents/Prepayment> ;
+    rel:alignmentScore 9.450231e-01 ;
+    rel:mentionedIn <http://example.org/chunk_10>,
+        <http://example.org/chunk_63>,
+        <http://example.org/chunk_65> ;
+    skos:prefLabel "the prepayment" .
+
+<http://example.org/entity/the_share_purchase_agreement> a <https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/RightsAndWarrants/CommonSharePurchaseRight> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/RightsAndWarrants/CommonSharePurchaseRight> ;
+    rel:alignmentScore 8.159683e-01 ;
+    rel:mentionedIn <http://example.org/chunk_62>,
+        <http://example.org/chunk_64>,
+        <http://example.org/chunk_8> ;
+    skos:prefLabel "the Share Purchase Agreement" .
+
+<http://example.org/entity/the_termination> a <https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/TerminationProvision> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/TerminationProvision> ;
+    rel:alignmentScore 7.82039e-01 ;
+    rel:mentionedIn <http://example.org/chunk_62>,
+        <http://example.org/chunk_64>,
+        <http://example.org/chunk_8> ;
+    skos:prefLabel "the termination" .
+
+<http://example.org/entity/the_transaction> a <https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/ClientsAndAccounts/IndividualTransaction> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/ClientsAndAccounts/IndividualTransaction> ;
+    rel:alignmentScore 7.073648e-01 ;
+    rel:mentionedIn <http://example.org/chunk_62>,
+        <http://example.org/chunk_64>,
+        <http://example.org/chunk_9> ;
+    skos:prefLabel "the transaction" .
+
+<http://example.org/entity/the_write_off> a <https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/CreditEvents/WriteDown> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/CreditEvents/WriteDown> ;
+    rel:alignmentScore 6.780374e-01 ;
+    rel:mentionedIn <http://example.org/chunk_10>,
+        <http://example.org/chunk_63>,
+        <http://example.org/chunk_65> ;
+    skos:prefLabel "the write-off" .
+
+<http://example.org/chunk_15> a <http://example.org/Chunk> ;
+    rel:id 15 ;
+    rel:mentions <http://example.org/entity/complex_digital_twins>,
+        <http://example.org/entity/deep_recommender_systems>,
+        <http://example.org/entity/h100>,
+        <http://example.org/entity/large_language_models> ;
+    skos:prefLabel """H100 is ideal for accelerating applications such as large language models, deep recommender systems, genomics and complex digital twins.
+
+""" .
+
+<http://example.org/chunk_16> a <http://example.org/Chunk> ;
+    rel:id 16 ;
+    rel:mentions <http://example.org/entity/enterprise_customers>,
+        <http://example.org/entity/nvidia>,
+        <http://example.org/entity/nvidia_ai_cloud_services>,
+        <http://example.org/entity/our_network> ;
+    skos:prefLabel "NVIDIA will offer enterprise customers NVIDIA AI cloud services directly and through our network of partners." .
+
+<http://example.org/chunk_27> a <http://example.org/Chunk> ;
+    rel:id 27 ;
+    rel:mentions <http://example.org/entity/a_growing_number>,
+        <http://example.org/entity/enterprise_applications>,
+        <http://example.org/entity/omniverse>,
+        <http://example.org/entity/virtual_reality> ;
+    skos:prefLabel "Omniverse, virtual reality, or VR, and augmented reality, or AR, are being incorporated in a growing number of enterprise applications." .
+
+<http://example.org/chunk_40> a <http://example.org/Chunk> ;
+    rel:id 40 ;
+    rel:mentions <http://example.org/entity/a_number>,
+        <http://example.org/entity/drive>,
+        <http://example.org/entity/our_studio_drivers>,
+        <http://example.org/entity/popular_creative_applications> ;
+    skos:prefLabel "Our Studio drivers enhance and accelerate a number of popular creative applications." .
+
+<http://example.org/chunk_41> a <http://example.org/Chunk> ;
+    rel:id 41 ;
+    rel:mentions <http://example.org/entity/leading_design_applications>,
+        <http://example.org/entity/omniverse>,
+        <http://example.org/entity/real_time_3d_design_collaboration>,
+        <http://example.org/entity/virtual_world_simulation_software> ;
+    skos:prefLabel """Omniverse is real-time 3D design collaboration and virtual world simulation software that empowers artists, designers and creators to connect and collaborate in leading design applications.
+
+""" .
+
+<http://example.org/chunk_45> a <http://example.org/Chunk> ;
+    rel:id 45 ;
+    rel:mentions <http://example.org/entity/our_platforms>,
+        <http://example.org/entity/strong_relationships>,
+        <http://example.org/entity/the_development>,
+        <http://example.org/entity/the_software_development_community> ;
+    skos:prefLabel "To encourage the development of applications optimized for our platforms and software, we seek to establish and maintain strong relationships in the software development community." .
+
+<http://example.org/chunk_53> a <http://example.org/Chunk> ;
+    rel:id 53 ;
+    rel:mentions <http://example.org/entity/evolving_industry_standards>,
+        <http://example.org/entity/our_products>,
+        <http://example.org/entity/rapid_technological_change>,
+        <http://example.org/entity/the_market> ;
+    skos:prefLabel "Competition  The market for our products is intensely competitive and is characterized by rapid technological change and evolving industry standards." .
+
+<http://example.org/chunk_68> a <http://example.org/Chunk> ;
+    rel:id 68 ;
+    rel:mentions <http://example.org/entity/board_of_directors>,
+        <http://example.org/entity/our_board>,
+        <http://example.org/entity/our_practices>,
+        <http://example.org/entity/the_nominating_and_corporate_governance_committee> ;
+    skos:prefLabel """The Nominating and Corporate Governance Committee of our Board of Directors is responsible for reviewing and discussing with management our practices related to ESG.
+
+""" .
+
+<http://example.org/chunk_74> a <http://example.org/Chunk> ;
+    rel:id 74 ;
+    rel:mentions <http://example.org/entity/increased__flexibility>,
+        <http://example.org/entity/new_geographies>,
+        <http://example.org/entity/the_covid_19_pandemic_created_expanded_hiring_opportunities>,
+        <http://example.org/entity/their_choice> ;
+    skos:prefLabel "The COVID-19 pandemic created expanded hiring opportunities in new geographies and provided increased  flexibility for employees to work from locations of their choice." .
+
+<http://example.org/chunk_75> a <http://example.org/Chunk> ;
+    rel:id 75 ;
+    rel:mentions <http://example.org/entity/about_50_>,
+        <http://example.org/entity/about_80_>,
+        <http://example.org/entity/advanced_degrees>,
+        <http://example.org/entity/our_workforce> ;
+    skos:prefLabel """Our workforce is about 80% technical and about 50% hold advanced degrees.
+
+""" .
+
+<http://example.org/chunk_76> a <http://example.org/Chunk> ;
+    rel:id 76 ;
+    rel:mentions <http://example.org/entity/a_place>,
+        <http://example.org/entity/nvidia>,
+        <http://example.org/entity/their_careers>,
+        <http://example.org/entity/their_lifetime> ;
+    skos:prefLabel "We want NVIDIA to be a place where people can build their careers over their lifetime." .
+
+<http://example.org/chunk_78> a <http://example.org/Chunk> ;
+    rel:id 78 ;
+    rel:mentions <http://example.org/entity/2023>,
+        <http://example.org/entity/5_3_>,
+        <http://example.org/entity/fiscal_year>,
+        <http://example.org/entity/our_overall_turnover_rate> ;
+    skos:prefLabel """In fiscal year 2023, our overall turnover rate was 5.3%.
+
+""" .
+
+<http://example.org/chunk_9> a <http://example.org/Chunk> ;
+    rel:id 9 ;
+    rel:mentions <http://example.org/entity/significant_regulatory_challenges>,
+        <http://example.org/entity/the_completion>,
+        <http://example.org/entity/the_parties>,
+        <http://example.org/entity/the_transaction> ;
+    skos:prefLabel """The parties agreed to terminate because of significant regulatory challenges preventing the completion of the transaction.
+
+""" .
+
+<http://example.org/entity/cuda> a <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/CUC> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/ISO4217-CurrencyCodes/CUC> ;
+    rel:alignmentScore 6.956705e-01 ;
+    rel:mentionedIn <http://example.org/chunk_12>,
+        <http://example.org/chunk_14>,
+        <http://example.org/chunk_32>,
+        <http://example.org/chunk_4> ;
+    skos:prefLabel "CUDA" .
+
+<http://example.org/entity/deep_learning> rel:mentionedIn <http://example.org/chunk_1>,
+        <http://example.org/chunk_19>,
+        <http://example.org/chunk_31>,
+        <http://example.org/chunk_47> ;
+    skos:prefLabel "deep learning" .
+
+<http://example.org/entity/geforce> a <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/MarketsIndividuals/Facility-GTSX> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/MarketsIndividuals/Facility-GTSX> ;
+    rel:alignmentScore 5.136619e-01 ;
+    rel:mentionedIn <http://example.org/chunk_21>,
+        <http://example.org/chunk_37>,
+        <http://example.org/chunk_38>,
+        <http://example.org/chunk_39> ;
+    skos:prefLabel "GeForce" .
+
+<http://example.org/chunk_17> a <http://example.org/Chunk> ;
+    rel:id 17 ;
+    rel:mentions <http://example.org/entity/ai_models>,
+        <http://example.org/entity/cloud_based_infrastructure>,
+        <http://example.org/entity/nvidia>,
+        <http://example.org/entity/nvidia_dgx_cloud>,
+        <http://example.org/entity/these_services> ;
+    skos:prefLabel """Examples of these services include NVIDIA DGX Cloud, which is cloud-based infrastructure and software for training AI models, and customizable pretrained AI models.
+
+""" .
+
+<http://example.org/chunk_3> a <http://example.org/Chunk> ;
+    rel:id 3 ;
+    rel:mentions <http://example.org/entity/a_platform_strategy>,
+        <http://example.org/entity/nvidia>,
+        <http://example.org/entity/the_market>,
+        <http://example.org/entity/the_markets>,
+        <http://example.org/entity/unique_value> ;
+    skos:prefLabel """NVIDIA has a platform strategy, bringing together hardware, systems, software, algorithms, libraries, and services to create unique value for the markets we serve.
+
+""" .
+
+<http://example.org/chunk_37> a <http://example.org/Chunk> ;
+    rel:id 37 ;
+    rel:mentions <http://example.org/entity/an_optimized_gaming_experience>,
+        <http://example.org/entity/geforce>,
+        <http://example.org/entity/our_geforce_platform>,
+        <http://example.org/entity/our_libraries>,
+        <http://example.org/entity/our_technologies> ;
+    skos:prefLabel "Our technologies are instrumental in driving gaming forward, as developers leverage our libraries and algorithms to deliver an optimized gaming experience on our GeForce platform." .
+
+<http://example.org/chunk_39> a <http://example.org/Chunk> ;
+    rel:id 39 ;
+    rel:mentions <http://example.org/entity/each_gamer_s_experience>,
+        <http://example.org/entity/geforce>,
+        <http://example.org/entity/geforce_experience>,
+        <http://example.org/entity/the_recording>,
+        <http://example.org/entity/their_pc_s_settings> ;
+    skos:prefLabel "For example, GeForce Experience enhances each gamer’s experience by optimizing their PC’s settings, as well as enabling the recording and sharing of gameplay." .
+
+<http://example.org/chunk_42> a <http://example.org/Chunk> ;
+    rel:id 42 ;
+    rel:mentions <http://example.org/entity/efficient_computing_platforms>,
+        <http://example.org/entity/marketing_strategy>,
+        <http://example.org/entity/our_high_performance>,
+        <http://example.org/entity/our_objective>,
+        <http://example.org/entity/our_worldwide_sales> ;
+    skos:prefLabel "Sales and Marketing Our worldwide sales and marketing strategy is key to achieving our objective of providing markets with our high-performance and efficient computing platforms and software." .
+
+<http://example.org/chunk_5> a <http://example.org/Chunk> ;
+    rel:id 5 ;
+    rel:mentions <http://example.org/entity/a_broad_range>,
+        <http://example.org/entity/a_rapidly_growing_number>,
+        <http://example.org/entity/our_gpu>,
+        <http://example.org/entity/our_gpus>,
+        <http://example.org/entity/the_products> ;
+    skos:prefLabel "A rapidly growing number of enterprises and startups across a broad range of industries use our GPUs and software to bring automation to the products and services they build." .
+
+<http://example.org/chunk_51> a <http://example.org/Chunk> ;
+    rel:id 51 ;
+    rel:mentions <http://example.org/entity/a_fabless_manufacturing_strategy>,
+        <http://example.org/entity/all_phases>,
+        <http://example.org/entity/key_suppliers>,
+        <http://example.org/entity/the_manufacturing_process>,
+        <http://example.org/entity/wafer_fabrication> ;
+    skos:prefLabel """Instead, we utilize a fabless manufacturing strategy, whereby we employ key suppliers for all phases of the manufacturing process, including wafer fabrication, assembly, testing, and packaging.
+
+""" .
+
+<http://example.org/chunk_57> a <http://example.org/Chunk> ;
+    rel:id 57 ;
+    rel:mentions <http://example.org/entity/additional_features>,
+        <http://example.org/entity/better_performance>,
+        <http://example.org/entity/both_existing_competitors>,
+        <http://example.org/entity/new_market_entrants>,
+        <http://example.org/entity/our_products> ;
+    skos:prefLabel "We expect competition to increase from both existing competitors and new market entrants with products that may be lower priced than ours or may provide better performance or additional features not provided by our products." .
+
+<http://example.org/chunk_70> a <http://example.org/Chunk> ;
+    rel:id 70 ;
+    rel:mentions <http://example.org/entity/a_key_role>,
+        <http://example.org/entity/long_term_value>,
+        <http://example.org/entity/our_employees>,
+        <http://example.org/entity/our_greatest_assets>,
+        <http://example.org/entity/our_stakeholders> ;
+    skos:prefLabel "We believe that our employees are our greatest assets, and they play a key role in creating long-term value for our stakeholders." .
+
+<http://example.org/chunk_72> a <http://example.org/Chunk> ;
+    rel:id 72 ;
+    rel:mentions <http://example.org/entity/global_technical_talent>,
+        <http://example.org/entity/nvidia>,
+        <http://example.org/entity/our_technical_workforce>,
+        <http://example.org/entity/the_demand>,
+        <http://example.org/entity/top_talent> ;
+    skos:prefLabel "Recruitment As the demand for global technical talent continues to be competitive, we have grown our technical workforce and have been successful in attracting top talent to NVIDIA." .
+
+<http://example.org/entity/data_center> a <https://spec.edmcouncil.org/fibo/ontology/SEC/Funds/CollectiveInvestmentVehicles/hasDataProvider> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/SEC/Funds/CollectiveInvestmentVehicles/hasDataProvider> ;
+    rel:alignmentScore 6.062663e-01 ;
+    rel:mentionedIn <http://example.org/chunk_11>,
+        <http://example.org/chunk_13>,
+        <http://example.org/chunk_61>,
+        <http://example.org/chunk_66>,
+        <http://example.org/chunk_67> ;
+    skos:prefLabel "Data Center" .
+
+<http://example.org/entity/our_gpu> a <https://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/GP> ;
+    rel:alignedWith <https://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/GP> ;
+    rel:alignmentScore 5.935859e-01 ;
+    rel:mentionedIn <http://example.org/chunk_25>,
+        <http://example.org/chunk_28>,
+        <http://example.org/chunk_4>,
+        <http://example.org/chunk_5>,
+        <http://example.org/chunk_7> ;
+    skos:prefLabel "our GPU" .
+
+<http://example.org/entity/our_platforms> rel:mentionedIn <http://example.org/chunk_44>,
+        <http://example.org/chunk_45>,
+        <http://example.org/chunk_46>,
+        <http://example.org/chunk_47>,
+        <http://example.org/chunk_6> ;
+    skos:prefLabel "our platforms" .
+
+<http://example.org/chunk_10> a <http://example.org/Chunk> ;
+    rel:id 10 ;
+    rel:mentions <http://example.org/entity/2023>,
+        <http://example.org/entity/_1_35_billion>,
+        <http://example.org/entity/an_acquisition_termination_cost>,
+        <http://example.org/entity/fiscal_year>,
+        <http://example.org/entity/the_prepayment>,
+        <http://example.org/entity/the_write_off> ;
+    skos:prefLabel """We recorded an acquisition termination cost of $1.35 billion in fiscal year 2023 reflecting the write-off of the prepayment provided at signing.
+
+""" .
+
+<http://example.org/chunk_24> a <http://example.org/Chunk> ;
+    rel:id 24 ;
+    rel:mentions <http://example.org/entity/independent_software_vendors>,
+        <http://example.org/entity/nvidia>,
+        <http://example.org/entity/nvidia_gpus>,
+        <http://example.org/entity/professional_visualization>,
+        <http://example.org/entity/the_professional_visualization_market>,
+        <http://example.org/entity/their_offerings> ;
+    skos:prefLabel "Professional Visualization We serve the Professional Visualization market by working closely with independent software vendors, or ISVs, to optimize their offerings for NVIDIA GPUs." .
+
+<http://example.org/chunk_25> a <http://example.org/Chunk> ;
+    rel:id 25 ;
+    rel:mentions <http://example.org/entity/critical_workflows>,
+        <http://example.org/entity/digital_content_creation>,
+        <http://example.org/entity/many_fields>,
+        <http://example.org/entity/new_capabilities>,
+        <http://example.org/entity/our_gpu>,
+        <http://example.org/entity/our_gpu_computing_platform> ;
+    skos:prefLabel """Our GPU computing platform enhances productivity and introduces new capabilities for critical workflows in many fields, such as design and manufacturing and digital content creation.
+
+""" .
+
+<http://example.org/chunk_26> a <http://example.org/Chunk> ;
+    rel:id 26 ;
+    rel:mentions <http://example.org/entity/content_creation_applications>,
+        <http://example.org/entity/many_leading_3d_design>,
+        <http://example.org/entity/nvidia>,
+        <http://example.org/entity/nvidia_rtx_gpus>,
+        <http://example.org/entity/our_ecosystem_partners>,
+        <http://example.org/entity/their_workflows> ;
+    skos:prefLabel """Many leading 3D design and content creation applications developed by our ecosystem partners now support RTX, allowing professionals to accelerate and transform their workflows with NVIDIA RTX GPUs and software.
+
+""" .
+
+<http://example.org/chunk_4> a <http://example.org/Chunk> ;
+    rel:id 4 ;
+    rel:mentions <http://example.org/entity/2006>,
+        <http://example.org/entity/cuda>,
+        <http://example.org/entity/our_gpu>,
+        <http://example.org/entity/our_introduction>,
+        <http://example.org/entity/the_cuda_programming_model>,
+        <http://example.org/entity/the_parallel_processing_capabilities> ;
+    skos:prefLabel """With our introduction of the CUDA programming model in 2006, we opened the parallel processing capabilities of our GPU for general purpose computing.
+
+""" .
+
+<http://example.org/chunk_43> a <http://example.org/Chunk> ;
+    rel:id 43 ;
+    rel:mentions <http://example.org/entity/end_customers>,
+        <http://example.org/entity/our_global_markets>,
+        <http://example.org/entity/our_partner_network>,
+        <http://example.org/entity/our_sales_and_marketing_teams>,
+        <http://example.org/entity/partner_network>,
+        <http://example.org/entity/various_industry_ecosystems> ;
+    skos:prefLabel "Our sales and marketing teams, located across our global markets, work closely with end customers and various industry ecosystems through our partner network." .
+
+<http://example.org/chunk_48> a <http://example.org/Chunk> ;
+    rel:id 48 ;
+    rel:mentions <http://example.org/entity/fiscal_year>,
+        <http://example.org/entity/our_consumer_products>,
+        <http://example.org/entity/our_fiscal_year>,
+        <http://example.org/entity/stronger_revenue>,
+        <http://example.org/entity/the_second_half>,
+        <http://example.org/entity/the_second_half_of_our_fiscal_year> ;
+    skos:prefLabel "Our consumer products typically see stronger revenue in the second half of our fiscal year." .
+
+<http://example.org/chunk_56> a <http://example.org/Chunk> ;
+    rel:id 56 ;
+    rel:mentions <http://example.org/entity/acceptable_levels>,
+        <http://example.org/entity/competitive_prices>,
+        <http://example.org/entity/consistent_volumes>,
+        <http://example.org/entity/our_ability>,
+        <http://example.org/entity/our_products>,
+        <http://example.org/entity/the_features> ;
+    skos:prefLabel "We believe that our ability to remain competitive will depend on how well we are able to anticipate the features and functions that customers and partners will demand and whether we are able to deliver consistent volumes of our products at acceptable levels of quality and at competitive prices." .
+
+<http://example.org/chunk_62> a <http://example.org/Chunk> ;
+    rel:id 62 ;
+    rel:mentions <http://example.org/entity/february_2022>,
+        <http://example.org/entity/significant_regulatory_challenges>,
+        <http://example.org/entity/the_completion>,
+        <http://example.org/entity/the_share_purchase_agreement>,
+        <http://example.org/entity/the_termination>,
+        <http://example.org/entity/the_transaction> ;
+    skos:prefLabel "In February 2022, we announced the termination of the Share Purchase Agreement by which we would have acquired Arm due to significant regulatory challenges preventing the completion of the transaction." .
+
+<http://example.org/chunk_63> a <http://example.org/Chunk> ;
+    rel:id 63 ;
+    rel:mentions <http://example.org/entity/2023>,
+        <http://example.org/entity/_1_35_billion>,
+        <http://example.org/entity/an_acquisition_termination_cost>,
+        <http://example.org/entity/fiscal_year>,
+        <http://example.org/entity/the_prepayment>,
+        <http://example.org/entity/the_write_off> ;
+    skos:prefLabel """We recorded an acquisition termination cost of $1.35 billion in fiscal year 2023 reflecting the write-off of the prepayment provided at signing.
+
+""" .
+
+<http://example.org/chunk_64> a <http://example.org/Chunk> ;
+    rel:id 64 ;
+    rel:mentions <http://example.org/entity/february_2022>,
+        <http://example.org/entity/significant_regulatory_challenges>,
+        <http://example.org/entity/the_completion>,
+        <http://example.org/entity/the_share_purchase_agreement>,
+        <http://example.org/entity/the_termination>,
+        <http://example.org/entity/the_transaction> ;
+    skos:prefLabel "In February 2022, we announced the termination of the Share Purchase Agreement by which we would have acquired Arm due to significant regulatory challenges preventing the completion of the transaction." .
+
+<http://example.org/chunk_65> a <http://example.org/Chunk> ;
+    rel:id 65 ;
+    rel:mentions <http://example.org/entity/2023>,
+        <http://example.org/entity/_1_35_billion>,
+        <http://example.org/entity/an_acquisition_termination_cost>,
+        <http://example.org/entity/fiscal_year>,
+        <http://example.org/entity/the_prepayment>,
+        <http://example.org/entity/the_write_off> ;
+    skos:prefLabel """We recorded an acquisition termination cost of $1.35 billion in fiscal year 2023 reflecting the write-off of the prepayment provided at signing.
+
+""" .
+
+<http://example.org/chunk_7> a <http://example.org/Chunk> ;
+    rel:id 7 ;
+    rel:mentions <http://example.org/entity/cell_phones>,
+        <http://example.org/entity/commercial_aircraft>,
+        <http://example.org/entity/our_gpu>,
+        <http://example.org/entity/our_gpus>,
+        <http://example.org/entity/professional_designers>,
+        <http://example.org/entity/visual_effects> ;
+    skos:prefLabel """Professional designers use our GPUs and software to create visual effects in movies and to design buildings and products ranging from cell phones to commercial aircraft.
+
+""" .
+
+<http://example.org/entity/our_products> a <https://spec.edmcouncil.org/fibo/ontology/FND/ProductsAndServices/ProductsAndServices/Product> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FND/ProductsAndServices/ProductsAndServices/Product> ;
+    rel:alignmentScore 6.975672e-01 ;
+    rel:mentionedIn <http://example.org/chunk_46>,
+        <http://example.org/chunk_49>,
+        <http://example.org/chunk_50>,
+        <http://example.org/chunk_53>,
+        <http://example.org/chunk_56>,
+        <http://example.org/chunk_57> ;
+    skos:prefLabel "our products" .
+
+<http://example.org/chunk_18> a <http://example.org/Chunk> ;
+    rel:id 18 ;
+    rel:mentions <http://example.org/entity/bluefield>,
+        <http://example.org/entity/bluefield_dpu>,
+        <http://example.org/entity/bluefield_dpus>,
+        <http://example.org/entity/doca>,
+        <http://example.org/entity/nvidia>,
+        <http://example.org/entity/software_defined__hardware_accelerated_networking__security__storage_and_management_applications>,
+        <http://example.org/entity/the_nvidia_bluefield_dpu> ;
+    skos:prefLabel """The NVIDIA Bluefield DPU is supported by foundational data-center-infrastructure-on-a-chip software, or DOCA, that lets developers build software-defined, hardware-accelerated networking, security, storage and management applications for BlueField DPUs.
+
+""" .
+
+<http://example.org/chunk_2> a <http://example.org/Chunk> ;
+    rel:id 2 ;
+    rel:mentions <http://example.org/entity/1999>,
+        <http://example.org/entity/computer_graphics>,
+        <http://example.org/entity/modern_computer_graphics>,
+        <http://example.org/entity/nvidia>,
+        <http://example.org/entity/our_invention>,
+        <http://example.org/entity/the_gpu>,
+        <http://example.org/entity/the_leader> ;
+    skos:prefLabel """Our invention of the GPU in 1999 defined modern computer graphics and established NVIDIA as the leader in computer graphics.
+
+""" .
+
+<http://example.org/chunk_21> a <http://example.org/Chunk> ;
+    rel:id 21 ;
+    rel:mentions <http://example.org/entity/2023>,
+        <http://example.org/entity/ada_lovelace>,
+        <http://example.org/entity/fiscal_year>,
+        <http://example.org/entity/gaming_gpus>,
+        <http://example.org/entity/geforce>,
+        <http://example.org/entity/the_ada_lovelace_architecture>,
+        <http://example.org/entity/the_geforce_rtx_40_series> ;
+    skos:prefLabel "In fiscal year 2023, we introduced the GeForce RTX 40 Series of gaming GPUs, based on the Ada Lovelace architecture." .
+
+<http://example.org/chunk_28> a <http://example.org/Chunk> ;
+    rel:id 28 ;
+    rel:mentions <http://example.org/entity/architectural_walkthroughs>,
+        <http://example.org/entity/historical_scenes>,
+        <http://example.org/entity/our_gpu>,
+        <http://example.org/entity/our_gpus>,
+        <http://example.org/entity/surgical_training>,
+        <http://example.org/entity/these_technologies>,
+        <http://example.org/entity/virtual_car_showrooms> ;
+    skos:prefLabel """Virtual car showrooms, surgical training, architectural walkthroughs, and bringing historical scenes to life all deploy these technologies, powered by our GPUs.
+
+""" .
+
+<http://example.org/chunk_35> a <http://example.org/Chunk> ;
+    rel:id 35 ;
+    rel:mentions <http://example.org/entity/autonomous_driving>,
+        <http://example.org/entity/legacy_hand_coded_approaches>,
+        <http://example.org/entity/multiple_trained_neural_networks>,
+        <http://example.org/entity/our_view>,
+        <http://example.org/entity/the_algorithms>,
+        <http://example.org/entity/the_key_technology_enabler>,
+        <http://example.org/entity/this_opportunity> ;
+    skos:prefLabel "In our view, AI is the key technology enabler of this opportunity, as the algorithms required for autonomous driving - such as perception, localization, and planning - are too complex for legacy hand-coded approaches and will use multiple trained neural networks instead." .
+
+<http://example.org/chunk_46> a <http://example.org/Chunk> ;
+    rel:id 46 ;
+    rel:mentions <http://example.org/entity/ai_frameworks>,
+        <http://example.org/entity/game_titles>,
+        <http://example.org/entity/our_developer_program>,
+        <http://example.org/entity/our_platforms>,
+        <http://example.org/entity/our_products>,
+        <http://example.org/entity/software_applications>,
+        <http://example.org/entity/the_development> ;
+    skos:prefLabel "Our developer program makes our products available to developers prior to launch in order to encourage the development of AI frameworks, SDKs, and APIs for software applications and game titles that are optimized for our platforms." .
+
+<http://example.org/chunk_47> a <http://example.org/Chunk> ;
+    rel:id 47 ;
+    rel:mentions <http://example.org/entity/computing_applications>,
+        <http://example.org/entity/deep_learning>,
+        <http://example.org/entity/deep_learning_institute>,
+        <http://example.org/entity/online_training>,
+        <http://example.org/entity/our_deep_learning_institute>,
+        <http://example.org/entity/our_platforms>,
+        <http://example.org/entity/the_world> ;
+    skos:prefLabel """Our Deep Learning Institute provides in-person and online training for developers in industries and organizations around the world to build AI and accelerated computing applications that leverage our platforms.
+
+""" .
+
+<http://example.org/chunk_60> a <http://example.org/Chunk> ;
+    rel:id 60 ;
+    rel:mentions <http://example.org/entity/a_combination>,
+        <http://example.org/entity/our_ip>,
+        <http://example.org/entity/proprietary_rights>,
+        <http://example.org/entity/the_united_states>,
+        <http://example.org/entity/third>,
+        <http://example.org/entity/third_party_nondisclosure_agreements>,
+        <http://example.org/entity/trade_secrets> ;
+    skos:prefLabel """Patents and Proprietary Rights We rely primarily on a combination of patents, trademarks, trade secrets, employee and third-party nondisclosure agreements, and licensing arrangements to protect our IP in the United States and internationally.
+
+""" .
+
+<http://example.org/entity/third> rel:mentionedIn <http://example.org/chunk_22>,
+        <http://example.org/chunk_23>,
+        <http://example.org/chunk_29>,
+        <http://example.org/chunk_49>,
+        <http://example.org/chunk_60>,
+        <http://example.org/chunk_61>,
+        <http://example.org/chunk_67> ;
+    skos:prefLabel "third" .
+
+<http://example.org/chunk_36> a <http://example.org/Chunk> ;
+    rel:id 36 ;
+    rel:mentions <http://example.org/entity/a_full_functionally_safe_ai_based_hardware_and_software_solution>,
+        <http://example.org/entity/automotive_original_equipment_manufacturers>,
+        <http://example.org/entity/drive>,
+        <http://example.org/entity/our_partners>,
+        <http://example.org/entity/our_partnerships>,
+        <http://example.org/entity/the_av_market>,
+        <http://example.org/entity/the_drive_brand>,
+        <http://example.org/entity/tier_1_suppliers> ;
+    skos:prefLabel """Therefore, we provide a full functionally safe AI-based hardware and software solution for the AV market under the DRIVE brand, which we are bringing to market through our partnerships with automotive original equipment manufacturers, or OEMs, tier-1 suppliers, and start-ups.
+
+""" .
+
+<http://example.org/chunk_38> a <http://example.org/Chunk> ;
+    rel:id 38 ;
+    rel:mentions <http://example.org/entity/also_optimized_software_stacks>,
+        <http://example.org/entity/computer_graphics>,
+        <http://example.org/entity/geforce>,
+        <http://example.org/entity/not_only_our_industry_leading_geforce_and_nvidia_rtx_gpus>,
+        <http://example.org/entity/nvidia>,
+        <http://example.org/entity/nvidia_rtx_gpus>,
+        <http://example.org/entity/our_computer_graphics_platforms>,
+        <http://example.org/entity/software_stacks> ;
+    skos:prefLabel "Our computer graphics platforms leverage not only our industry-leading GeForce and NVIDIA RTX GPUs, but also optimized software stacks." .
+
+<http://example.org/chunk_59> a <http://example.org/Chunk> ;
+    rel:id 59 ;
+    rel:mentions <http://example.org/entity/a_significant_source>,
+        <http://example.org/entity/ai_computing_processor_produits>,
+        <http://example.org/entity/embedded_socs>,
+        <http://example.org/entity/ethernet>,
+        <http://example.org/entity/fibre_channel>,
+        <http://example.org/entity/proprietary_technologies>,
+        <http://example.org/entity/semiconductor_based_high_performance_interconnect_products>,
+        <http://example.org/entity/socs> ;
+    skos:prefLabel """A significant source of competition comes from companies that provide or intend to provide GPUs, CPUs, DPUs, embedded SoCs, and other accelerated, AI computing processor produits, and providers of semiconductor-based high-performance interconnect products based on InfiniBand, Ethernet, Fibre Channel and proprietary technologies.
+
+""" .
+
+<http://example.org/chunk_8> a <http://example.org/Chunk> ;
+    rel:id 8 ;
+    rel:mentions <http://example.org/entity/arm_limited>,
+        <http://example.org/entity/february_2022>,
+        <http://example.org/entity/nvidia>,
+        <http://example.org/entity/softbank>,
+        <http://example.org/entity/softbank_group_corp_>,
+        <http://example.org/entity/the_arm_share_purchase_agreement>,
+        <http://example.org/entity/the_share_purchase_agreement>,
+        <http://example.org/entity/the_termination> ;
+    skos:prefLabel "Termination of the Arm Share Purchase Agreement In February 2022, NVIDIA and SoftBank Group Corp., or SoftBank, announced the termination of the Share Purchase Agreement whereby NVIDIA would have acquired Arm Limited, or Arm, from SoftBank." .
+
+<http://example.org/entity/2023> a <https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/Future> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/Future> ;
+    rel:alignmentScore 5.647196e-01 ;
+    rel:mentionedIn <http://example.org/chunk_10>,
+        <http://example.org/chunk_21>,
+        <http://example.org/chunk_61>,
+        <http://example.org/chunk_63>,
+        <http://example.org/chunk_65>,
+        <http://example.org/chunk_67>,
+        <http://example.org/chunk_71>,
+        <http://example.org/chunk_78> ;
+    skos:prefLabel "2023" .
+
+<http://example.org/chunk_11> a <http://example.org/Chunk> ;
+    rel:id 11 ;
+    rel:mentions <http://example.org/entity/data_analytics>,
+        <http://example.org/entity/data_center>,
+        <http://example.org/entity/data_centers>,
+        <http://example.org/entity/edge_data_centers>,
+        <http://example.org/entity/nvidia>,
+        <http://example.org/entity/public_sector>,
+        <http://example.org/entity/scientific_computing>,
+        <http://example.org/entity/the_most_compute_intensive_workloads>,
+        <http://example.org/entity/the_nvidia_computing_platform> ;
+    skos:prefLabel "Data Center The NVIDIA computing platform is focused on accelerating the most compute-intensive workloads, such as AI, data analytics, graphics and scientific computing, across hyperscale, cloud, enterprise, public sector, and edge data centers." .
+
+<http://example.org/chunk_12> a <http://example.org/Chunk> ;
+    rel:id 12 ;
+    rel:mentions <http://example.org/entity/a_growing_body>,
+        <http://example.org/entity/application_frameworks>,
+        <http://example.org/entity/cuda>,
+        <http://example.org/entity/data_processing_units>,
+        <http://example.org/entity/our_cuda_programming_model>,
+        <http://example.org/entity/our_energy_efficient_gpus>,
+        <http://example.org/entity/software_development_kits>,
+        <http://example.org/entity/software_libraries>,
+        <http://example.org/entity/the_platform> ;
+    skos:prefLabel """The platform consists of our energy efficient GPUs, data processing units, or DPUs, interconnects and systems, our CUDA programming model, and a growing body of software libraries, software development kits, or SDKs, application frameworks and services, which are either available as part of the platform or packaged and sold separately.
+
+""" .
+
+<http://example.org/chunk_13> a <http://example.org/Chunk> ;
+    rel:id 13 ;
+    rel:mentions <http://example.org/entity/data_analytics>,
+        <http://example.org/entity/data_center>,
+        <http://example.org/entity/data_centers>,
+        <http://example.org/entity/edge_data_centers>,
+        <http://example.org/entity/nvidia>,
+        <http://example.org/entity/public_sector>,
+        <http://example.org/entity/scientific_computing>,
+        <http://example.org/entity/the_most_compute_intensive_workloads>,
+        <http://example.org/entity/the_nvidia_computing_platform> ;
+    skos:prefLabel "Data Center The NVIDIA computing platform is focused on accelerating the most compute-intensive workloads, such as AI, data analytics, graphics and scientific computing, across hyperscale, cloud, enterprise, public sector, and edge data centers." .
+
+<http://example.org/chunk_14> a <http://example.org/Chunk> ;
+    rel:id 14 ;
+    rel:mentions <http://example.org/entity/a_growing_body>,
+        <http://example.org/entity/application_frameworks>,
+        <http://example.org/entity/cuda>,
+        <http://example.org/entity/data_processing_units>,
+        <http://example.org/entity/our_cuda_programming_model>,
+        <http://example.org/entity/our_energy_efficient_gpus>,
+        <http://example.org/entity/software_development_kits>,
+        <http://example.org/entity/software_libraries>,
+        <http://example.org/entity/the_platform> ;
+    skos:prefLabel """The platform consists of our energy efficient GPUs, data processing units, or DPUs, interconnects and systems, our CUDA programming model, and a growing body of software libraries, software development kits, or SDKs, application frameworks and services, which are either available as part of the platform or packaged and sold separately.
+
+""" .
+
+<http://example.org/chunk_20> a <http://example.org/Chunk> ;
+    rel:id 20 ;
+    rel:mentions <http://example.org/entity/__ai_developers>,
+        <http://example.org/entity/ai_and_hpc_applications>,
+        <http://example.org/entity/data_scientists>,
+        <http://example.org/entity/dgx_systems>,
+        <http://example.org/entity/nvidia>,
+        <http://example.org/entity/nvidia_certified_systems>,
+        <http://example.org/entity/nvidia_s_cloud_partners>,
+        <http://example.org/entity/our_partners>,
+        <http://example.org/entity/the_development> ;
+    skos:prefLabel """With NGC, AI developers, researchers and data scientists can get started with the development of AI and HPC applications and deploy them on DGX systems, NVIDIA-Certified systems from our partners, or with NVIDIA’s cloud partners.
+
+""" .
+
+<http://example.org/chunk_54> a <http://example.org/Chunk> ;
+    rel:id 54 ;
+    rel:mentions <http://example.org/entity/distribution_channels>,
+        <http://example.org/entity/manufacturing_capabilities>,
+        <http://example.org/entity/processor_pricing>,
+        <http://example.org/entity/product_offerings>,
+        <http://example.org/entity/software_support>,
+        <http://example.org/entity/standard_apis>,
+        <http://example.org/entity/the_principal_competitive_factors>,
+        <http://example.org/entity/this_market>,
+        <http://example.org/entity/total_system_costs> ;
+    skos:prefLabel """We believe that the principal competitive factors in this market are performance, breadth of product offerings, access to customers and partners and distribution channels, software support, conformity to industry standard APIs, manufacturing capabilities, processor pricing, and total system costs.
+
+""" .
+
+<http://example.org/chunk_55> a <http://example.org/Chunk> ;
+    rel:id 55 ;
+    rel:mentions <http://example.org/entity/distribution_channels>,
+        <http://example.org/entity/manufacturing_capabilities>,
+        <http://example.org/entity/processor_pricing>,
+        <http://example.org/entity/product_offerings>,
+        <http://example.org/entity/software_support>,
+        <http://example.org/entity/standard_apis>,
+        <http://example.org/entity/the_principal_competitive_factors>,
+        <http://example.org/entity/this_market>,
+        <http://example.org/entity/total_system_costs> ;
+    skos:prefLabel "We believe that the principal competitive factors in this market are performance, breadth of product offerings, access to customers and partners and distribution channels, software support, conformity to industry standard APIs, manufacturing capabilities, processor pricing, and total system costs." .
+
+<http://example.org/chunk_6> a <http://example.org/Chunk> ;
+    rel:id 6 ;
+    rel:mentions <http://example.org/entity/autonomous_driving>,
+        <http://example.org/entity/discovery>,
+        <http://example.org/entity/drug_discovery>,
+        <http://example.org/entity/enhanced_medical_imaging>,
+        <http://example.org/entity/fraud_detection>,
+        <http://example.org/entity/our_platforms>,
+        <http://example.org/entity/the_financial_services_industry>,
+        <http://example.org/entity/the_healthcare_industry>,
+        <http://example.org/entity/the_transportation_industry> ;
+    skos:prefLabel "The transportation industry is turning to our platforms for autonomous driving; the healthcare industry is leveraging them for enhanced medical imaging and acceleration of drug discovery; and the financial services industry is using them for fraud detection." .
+
+<http://example.org/chunk_19> a <http://example.org/Chunk> ;
+    rel:id 19 ;
+    rel:mentions <http://example.org/entity/a_comprehensive_catalog>,
+        <http://example.org/entity/a_range>,
+        <http://example.org/entity/deep_learning>,
+        <http://example.org/entity/easy_to_use__optimized_software_stacks>,
+        <http://example.org/entity/gpu_cloud>,
+        <http://example.org/entity/machine_learning>,
+        <http://example.org/entity/nvidia>,
+        <http://example.org/entity/scientific_computing>,
+        <http://example.org/entity/software_stacks>,
+        <http://example.org/entity/the_nvidia_gpu_cloud_registry> ;
+    skos:prefLabel "We also offer the NVIDIA GPU Cloud registry, or NGC, a comprehensive catalog of easy-to-use, optimized software stacks across a range of domains including scientific computing, deep learning, and machine learning." .
+
+<http://example.org/chunk_22> a <http://example.org/Chunk> ;
+    rel:id 22 ;
+    rel:mentions <http://example.org/entity/fourth>,
+        <http://example.org/entity/fourth_generation_tensor_cores>,
+        <http://example.org/entity/nvidia>,
+        <http://example.org/entity/our_third_generation_rtx_technology>,
+        <http://example.org/entity/tensor_cores>,
+        <http://example.org/entity/the_40_series>,
+        <http://example.org/entity/the_performance>,
+        <http://example.org/entity/the_previous_generation>,
+        <http://example.org/entity/third>,
+        <http://example.org/entity/third_generation_nvidia_dlss> ;
+    skos:prefLabel """The 40 Series features our third generation RTX technology, third generation NVIDIA DLSS, and fourth generation Tensor Cores to deliver up to 4X the performance of the previous generation.
+
+""" .
+
+<http://example.org/chunk_23> a <http://example.org/Chunk> ;
+    rel:id 23 ;
+    rel:mentions <http://example.org/entity/fourth>,
+        <http://example.org/entity/fourth_generation_tensor_cores>,
+        <http://example.org/entity/nvidia>,
+        <http://example.org/entity/our_third_generation_rtx_technology>,
+        <http://example.org/entity/tensor_cores>,
+        <http://example.org/entity/the_40_series>,
+        <http://example.org/entity/the_performance>,
+        <http://example.org/entity/the_previous_generation>,
+        <http://example.org/entity/third>,
+        <http://example.org/entity/third_generation_nvidia_dlss> ;
+    skos:prefLabel """The 40 Series features our third generation RTX technology, third generation NVIDIA DLSS, and fourth generation Tensor Cores to deliver up to 4X the performance of the previous generation.
+
+""" .
+
+<http://example.org/chunk_49> a <http://example.org/Chunk> ;
+    rel:id 49 ;
+    rel:mentions <http://example.org/entity/fourth>,
+        <http://example.org/entity/game_consoles>,
+        <http://example.org/entity/key_customers>,
+        <http://example.org/entity/our_products>,
+        <http://example.org/entity/stronger_revenue>,
+        <http://example.org/entity/the_fourth_and_first_quarters>,
+        <http://example.org/entity/the_production_schedules>,
+        <http://example.org/entity/the_second_and_third_quarters>,
+        <http://example.org/entity/third>,
+        <http://example.org/entity/weaker_revenue> ;
+    skos:prefLabel """In addition, based on the production schedules of key customers, some of our products for notebooks and game consoles typically generate stronger revenue in the second and third quarters, and weaker revenue in the fourth and first quarters.
+
+""" .
+
+<http://example.org/chunk_71> a <http://example.org/Chunk> ;
+    rel:id 71 ;
+    rel:mentions <http://example.org/entity/19_532>,
+        <http://example.org/entity/2023>,
+        <http://example.org/entity/26_196>,
+        <http://example.org/entity/26_196_employees>,
+        <http://example.org/entity/35_countries>,
+        <http://example.org/entity/6_664>,
+        <http://example.org/entity/administrative_positions>,
+        <http://example.org/entity/fiscal_year>,
+        <http://example.org/entity/the_end>,
+        <http://example.org/entity/the_end_of_fiscal_year> ;
+    skos:prefLabel """As of the end of fiscal year 2023, we had 26,196 employees in 35 countries, 19,532 were engaged in research and development and 6,664 were engaged in sales, marketing, operations, and administrative positions.
+
+""" .
+
+<http://example.org/entity/fiscal_year> a <https://spec.edmcouncil.org/fibo/ontology/SEC/Funds/CollectiveInvestmentVehicles/endOfFiscalYear> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/SEC/Funds/CollectiveInvestmentVehicles/endOfFiscalYear> ;
+    rel:alignmentScore 8.313854e-01 ;
+    rel:mentionedIn <http://example.org/chunk_10>,
+        <http://example.org/chunk_21>,
+        <http://example.org/chunk_48>,
+        <http://example.org/chunk_61>,
+        <http://example.org/chunk_63>,
+        <http://example.org/chunk_65>,
+        <http://example.org/chunk_66>,
+        <http://example.org/chunk_67>,
+        <http://example.org/chunk_71>,
+        <http://example.org/chunk_78> ;
+    skos:prefLabel "fiscal year" .
+
+<http://example.org/chunk_66> a <http://example.org/Chunk> ;
+    rel:id 66 ;
+    rel:mentions <http://example.org/entity/100_>,
+        <http://example.org/entity/data_center>,
+        <http://example.org/entity/data_centers>,
+        <http://example.org/entity/enough_renewable_energy>,
+        <http://example.org/entity/fiscal_year>,
+        <http://example.org/entity/our_global_electricity_usage>,
+        <http://example.org/entity/our_goal>,
+        <http://example.org/entity/our_offices>,
+        <http://example.org/entity/the_end>,
+        <http://example.org/entity/the_end_of_fiscal_year>,
+        <http://example.org/entity/the_end_of_fiscal_year_2025> ;
+    skos:prefLabel """By the end of fiscal year 2025, our goal is to purchase or generate enough renewable energy to match 100% of our global electricity usage for our offices and data centers.
+
+""" .
+
+<http://example.org/chunk_44> a <http://example.org/Chunk> ;
+    rel:id 44 ;
+    rel:mentions <http://example.org/entity/add_in_board_manufacturers>,
+        <http://example.org/entity/automotive_manufacturers>,
+        <http://example.org/entity/each_industry_s_respective_oems>,
+        <http://example.org/entity/mapping_companies>,
+        <http://example.org/entity/original_device_manufacturers>,
+        <http://example.org/entity/other_ecosystem_participants>,
+        <http://example.org/entity/our_partner_network>,
+        <http://example.org/entity/our_platforms>,
+        <http://example.org/entity/partner_network>,
+        <http://example.org/entity/system_builders>,
+        <http://example.org/entity/system_designs>,
+        <http://example.org/entity/tier_1_automotive_suppliers> ;
+    skos:prefLabel """Our partner network incorporates each industry's respective OEMs, original device manufacturers, or ODMs, system builders, add-in board manufacturers, or AIBs, retailers/distributors, ISVs, internet and CSPs, automotive manufacturers and tier-1 automotive suppliers, mapping companies, start-ups, and other ecosystem participants.
+
+partner network in designing, testing, and qualifying system designs that incorporate our platforms.
+
+""" .
+
+<http://example.org/chunk_1> a <http://example.org/Chunk> ;
+    rel:id 1 ;
+    rel:mentions <http://example.org/entity/ai_algorithms>,
+        <http://example.org/entity/deep_learning>,
+        <http://example.org/entity/generative_ai>,
+        <http://example.org/entity/gpu_powered_deep_learning>,
+        <http://example.org/entity/large_language_models>,
+        <http://example.org/entity/massive_datasets>,
+        <http://example.org/entity/new_content>,
+        <http://example.org/entity/other_content>,
+        <http://example.org/entity/previous_decisions>,
+        <http://example.org/entity/recommendation_systems>,
+        <http://example.org/entity/the_data>,
+        <http://example.org/entity/the_most_recent_applications>,
+        <http://example.org/entity/the_preferences>,
+        <http://example.org/entity/their_interactions> ;
+    skos:prefLabel """Some of the most recent applications of GPU-powered deep learning include recommendation systems, which are AI algorithms trained to understand the preferences, previous decisions, and characteristics of people and products using data gathered about their interactions, large language models, which can recognize, summarize, translate, predict and generate text and other content based on knowledge gained from massive datasets, and generative AI, which uses algorithms that create new content, including audio, code, images, text, simulations, and videos, based on the data they have been trained on.
+
+""" .
+
+<http://example.org/chunk_61> a <http://example.org/Chunk> ;
+    rel:id 61 ;
+    rel:mentions <http://example.org/entity/2023>,
+        <http://example.org/entity/certain_exports>,
+        <http://example.org/entity/china>,
+        <http://example.org/entity/data_center>,
+        <http://example.org/entity/fiscal_year>,
+        <http://example.org/entity/hong_kong>,
+        <http://example.org/entity/macau>,
+        <http://example.org/entity/new_license_requirements>,
+        <http://example.org/entity/our_data_center_products>,
+        <http://example.org/entity/russia>,
+        <http://example.org/entity/the_third_quarter>,
+        <http://example.org/entity/the_third_quarter_of_fiscal_year>,
+        <http://example.org/entity/the_u_s__government>,
+        <http://example.org/entity/third>,
+        <http://example.org/entity/u_s_> ;
+    skos:prefLabel """During the third quarter of fiscal year 2023, the U.S. government announced new license requirements that impact certain exports to China (including Hong Kong and Macau) and Russia of some of our data center products.
+
+""" .
+
+<http://example.org/chunk_67> a <http://example.org/Chunk> ;
+    rel:id 67 ;
+    rel:mentions <http://example.org/entity/2023>,
+        <http://example.org/entity/certain_exports>,
+        <http://example.org/entity/china>,
+        <http://example.org/entity/data_center>,
+        <http://example.org/entity/fiscal_year>,
+        <http://example.org/entity/hong_kong>,
+        <http://example.org/entity/macau>,
+        <http://example.org/entity/new_license_requirements>,
+        <http://example.org/entity/our_data_center_products>,
+        <http://example.org/entity/russia>,
+        <http://example.org/entity/the_third_quarter>,
+        <http://example.org/entity/the_third_quarter_of_fiscal_year>,
+        <http://example.org/entity/the_u_s__government>,
+        <http://example.org/entity/third>,
+        <http://example.org/entity/u_s_> ;
+    skos:prefLabel """During the third quarter of fiscal year 2023, the U.S. government announced new license requirements that impact certain exports to China (including Hong Kong and Macau) and Russia of some of our data center products.
+
+""" .
+
+<http://example.org/chunk_29> a <http://example.org/Chunk> ;
+    rel:id 29 ;
+    rel:mentions <http://example.org/entity/a_variety>,
+        <http://example.org/entity/autonomous_driving>,
+        <http://example.org/entity/chauffeur>,
+        <http://example.org/entity/drive>,
+        <http://example.org/entity/drive_concierge>,
+        <http://example.org/entity/drive_software>,
+        <http://example.org/entity/nvidia>,
+        <http://example.org/entity/nvidia_omniverse_avatar_software>,
+        <http://example.org/entity/omniverse>,
+        <http://example.org/entity/omniverse_avatar>,
+        <http://example.org/entity/real_time_conversational_ai_capability>,
+        <http://example.org/entity/several_multi_billion_dollar_end_markets>,
+        <http://example.org/entity/shared_underlying_technology>,
+        <http://example.org/entity/software_stacks>,
+        <http://example.org/entity/the_drive_software_platform>,
+        <http://example.org/entity/third>,
+        <http://example.org/entity/third_party_developers> ;
+    skos:prefLabel """The DRIVE Software platform includes DRIVE Chauffeur for autonomous driving, mapping and parking services, Drive Concierge for intelligent in-vehicle experiences, and real time conversational AI capability based on NVIDIA Omniverse Avatar software.
+
+investments in research and development: we can support several multi-billion-dollar end markets with shared underlying technology by using a variety of software stacks developed either internally or by third-party developers and partners.""" .
+
+<http://example.org/entity/nvidia> a <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/MarketsIndividuals/Facility-GTSX> ;
+    rel:alignedWith <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/MarketsIndividuals/Facility-GTSX> ;
+    rel:alignmentScore 5.251892e-01 ;
+    rel:mentionedIn <http://example.org/chunk_11>,
+        <http://example.org/chunk_13>,
+        <http://example.org/chunk_16>,
+        <http://example.org/chunk_17>,
+        <http://example.org/chunk_18>,
+        <http://example.org/chunk_19>,
+        <http://example.org/chunk_2>,
+        <http://example.org/chunk_20>,
+        <http://example.org/chunk_22>,
+        <http://example.org/chunk_23>,
+        <http://example.org/chunk_24>,
+        <http://example.org/chunk_26>,
+        <http://example.org/chunk_29>,
+        <http://example.org/chunk_3>,
+        <http://example.org/chunk_38>,
+        <http://example.org/chunk_72>,
+        <http://example.org/chunk_76>,
+        <http://example.org/chunk_8> ;
+    skos:prefLabel "NVIDIA" .
+
