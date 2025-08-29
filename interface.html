@@ -586,14 +586,14 @@
                 // Make Classic RAG request if comparison is enabled
                 let classicRAGPromise = null;
                 if (compareRAG) {
-                    classicRAGPromise = fetch('http://localhost:5000/ask', {
+                    classicRAGPromise = fetch('http://localhost:5000/askClassic', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                         },
                         body: JSON.stringify({ 
                             prompt: userInput, 
-                            domain: selectedDomain + "Classic",
+                            domain: selectedDomain,
                             nChunks: parseInt(nChunks)
                         })
                     });

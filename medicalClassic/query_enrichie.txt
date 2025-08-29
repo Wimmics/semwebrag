@@ -2,7 +2,7 @@ question :
 
 
 
-Pénalités & indemnité de recouvrement
+NVIDIA
 
 
 
@@ -10,87 +10,7 @@ context :
 
 
 
-OBJECTIVES:
-
-Limited data are available in China to describe the epidemiology of viral respiratory infections, especially in small–medium cities and rural areas.
-
-To determine the viral etiology and seasonality of acute respiratory infections in hospitalized children, a 3-year study was conducted in Shenzhen, China.
-
-The epidemiology of local viral etiologies is essential for the management of viral respiratory tract infections.
-
-METHODS:
-
-He, Ying; Lin, Guang-Yu; Wang, Qiong; Cai, Xiao-Ying; Zhang, Yin-Hui; Lin, Chuang-Xing; Lu, Chang-Dong; Lu, Xue-Dong
-Date: 2014-05-14
-DOI: 10.1111/irv.12257
-License: cc-by
-
-Abstract: BACKGROUND:
-
-Nasopharyngeal aspirates from eligible children were collected.
-
-Terms of Use| Privacy Policy| Accessibility Statement
-
-Silverchair Logo
-
-
-A 3-year prospective study of the epidemiology of acute respiratory viral infections in hospitalized children in Shenzhen, China
-
-https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4181804/
-
-SHA: ef5fe7296ec8baf90d974cf5737af0da3ed403ea
-
-Authors:
-
-Influenza and other respiratory viruses were tested by molecular assays simultaneously.
-
-All Rights Reserved.
-
-
-Data were analyzed to describe the frequency and seasonality.
-
-© 2020 American Medical Association.
-
-RESULTS:
-
-| Terms of Use
-Jama Network Logo
-
-
-Of the 2025 children enrolled in the study, 971 (48·0%) were positive for at least one viral pathogen, in which 890 (91·7%) were <4 years of age.
-
-Home CME Quizzes State CME Audio / Podcast Courses Clinical Challenge CME Atrial Fibrillation Course Marijuana Course Penicillin Allergy Course Cervical Cancer Screening Course CME / MOC Reporting Preferences About CME & MOC
-Help
-Subscriptions & Renewals Email Subscriptions Update Your Address Contact Us Frequently Asked Questions
-JAMA CAREER CENTER
-Physician Job Listings
-
-Get the latest from JAMA
-Email address
-Sign Up
-Privacy Policy
-
-The three most prevalent viruses were influenza A (IAV; 35·8%), respiratory syncytial virus (RSV; 30·5%) and human rhinovirus (HRV; 21·5%).
-
-RSS Contact Us
-JN Learning / CME Store Apps Jobs Institutions Reprints & Permissions
-Journal Cover
-Subscribe
-Go
-JAMA Network
-PUBLICATIONS
-JAMA JAMA Network Open JAMA Cardiology JAMA Dermatology JAMA Facial Plastic Surgery JAMA Health Forum JAMA Internal Medicine JAMA Neurology JAMA Oncology JAMA Ophthalmology JAMA Otolaryngology–Head & Neck Surgery JAMA Pediatrics JAMA Psychiatry JAMA Surgery Archives of Neurology & Psychiatry (1919-1959)
-SITES
-AMA Manual of Style Art and Images in Psychiatry Breast Cancer Screening Guidelines Colorectal Screening Guidelines Declaration of Helsinki Depression Screening Guidelines Evidence-Based Medicine: An Oral History Fishbein Fellowship Genomics and Precision Health Health Disparities Hypertension Guidelines JAMA Network Audio JAMA Network Conferences Machine Learning Med Men Medical Education Opioid Management Guidelines Peer Review Congress Research Ethics Sepsis and Septic Shock Statins and Dyslipidemia Topics and Collections
-FEATURED ARTICLES
-ACS Breast Cancer Screening Guideline CDC Guideline for Prescribing Opioids CDC Guideline for Prevention of Surgical Site Infections Consensus Definitions for Sepsis and Septic Shock Global Burden of Cancer, 1990-2016 Global Burden of Disease in Children, 1990-2013 Global Burden of Hypertension, 1990-2015 Global Firearm Mortality, 1990-2016 Health Care Spending in the US and Other High-Income Countries Income and Life Expectancy in the US JNC 8 Guideline for Management of High Blood Pressure President Obama on US Health Care Reform Screening for Colorectal Cancer Screening for Depression in Adults Screening for Prostate Cancer Statins for Primary Prevention of Cardiovascular Disease The State of US Health, 1990-2016 US Burden of Cardiovascular Disease, 1990-2016 WMA Declaration of Helsinki, 7th Revision
-BLOGS
-JAMA Health Forum AMA Style Insider
-INFORMATION FOR
-Authors Institutions & Librarians Advertisers Subscription Agents Employers & Job Seekers Media
-JAMA NETWORK PRODUCTS
-AMA Manual of Style JAMAevidence JN Listen Peer Review Congress
-JN LEARNING
-
-
-Co-infections were found in 302 cases (31·1%), and dual viral infection was dominant.
+doi:10.1001/jama.2020.1960
+COVID-19 Resource Center
+related articles icon Related
+Articles

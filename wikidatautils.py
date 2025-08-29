@@ -356,12 +356,365 @@ def add_labels_to_entities(graph, entity_uris):
 # }
 # LIMIT 500
 
+# def add_wikidata_neighbors_to_graph(graph_path, output_path="enriched_graph.ttl", limit_per_entity=100):
+
+#     import rdflib
+#     from rdflib import URIRef, Literal, Graph
+#     from rdflib.namespace import RDF, RDFS, OWL, SKOS
+#     import time
+    
+#     WD = rdflib.Namespace("http://www.wikidata.org/wiki/")
+#     WDT = rdflib.Namespace("http://www.wikidata.org/prop/direct/")
+#     SCHEMA = rdflib.Namespace("http://schema.org/")
+#     EX = rdflib.Namespace("http://example.org/")
+    
+#     graph = Graph()
+#     graph.parse(graph_path, format='turtle')
+    
+#     graph.bind("ex", EX)
+#     graph.bind("skos", SKOS)
+#     graph.bind("wd", WD)
+#     graph.bind("wdt", WDT)
+#     graph.bind("schema", SCHEMA)
+#     graph.bind("owl", OWL)
+#     graph.bind("rdfs", RDFS)
+
+#     labelList = []
+    
+#     #take wikidata entities in the graph
+#     query = """
+#     PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+#     SELECT ?entity ?type
+#     WHERE {
+#         ?entity a ?type .
+#         FILTER(STRSTARTS(STR(?type), "https://www.wikidata.org/wiki/"))
+#     }
+#     """
+#     results = graph.query(query)
+    
+#     print(f"{len(results)} entités Wikidata")
+    
+#     wikidata_endpoint = "https://query.wikidata.org/sparql"
+    
+#     #For each entity seach neighbors with label and add them to the graph
+#     for row in results:
+#         entity_uri = row.entity
+#         wikidata_uri = row.type
+#         wikidata_id = str(wikidata_uri).split("/")[-1]
+        
+#         print(f"entité: {entity_uri} (Wikidata: {wikidata_id})")
+        
+#         # outgoing relations
+#         sparql_query_out = f"""
+#         PREFIX wd: <http://www.wikidata.org/entity/>
+#             SELECT ?predicate ?predicateLabel ?object ?objectLabel
+#                 WHERE {{
+#                 SERVICE <https://query.wikidata.org/sparql> {{
+#                     wd:{wikidata_id} ?predicate ?object .
+#                     FILTER(STRSTARTS(STR(?predicate), "http://www.wikidata.org/prop/"))
+#                     ?object rdfs:label ?objectLabel .
+#                     FILTER(LANG(?objectLabel) = "fr" || LANG(?objectLabel) = "en")
+#                     ?predicate rdfs:label ?predicateLabel .
+#                     FILTER(LANG(?objectLabel) = "fr" || LANG(?objectLabel) = "en")
+#                 }}
+#                 }}
+#                 LIMIT 500
+#         """
+        
+#         # incoming relations
+#         sparql_query_in = f"""
+#         PREFIX wd: <http://www.wikidata.org/entity/>
+#         SELECT ?predicate ?subject ?subjectLabel
+#         WHERE {{
+#           SERVICE <https://query.wikidata.org/sparql> {{
+#             ?subject ?predicate wd:{wikidata_id} .
+#             FILTER(STRSTARTS(STR(?predicate), "http://www.wikidata.org/prop/"))
+#             ?subject rdfs:label ?subjectLabel .
+#             FILTER(LANG(?subjectLabel) = "fr" || LANG(?subjectLabel) = "en")
+#           }}
+#         }}
+#         LIMIT 500
+#         """
+        
+#         try:
+#             results_out = graph.query(sparql_query_out)
+#             print(f"RESULTS OUT: {results_out}, TAILLE : {len(results_out)}")
+#             results_in = graph.query(sparql_query_in)
+#             print(f"RESULTS IN: {results_in}, TAILLE : {len(results_in)}")
+            
+#             total_results = len(results_out) + len(results_in)
+#             print(f"{total_results} relations trouvées")
+            
+#             entity_count = 0
+            
+#             for result in results_out:
+
+               
+#                 predicate_uri = str(result.predicate)
+               
+               
+#                 object_value = str(result.object)
+                
+             
+
+#                 clean_predicate = predicate_uri.replace("http://www.wikidata.org/prop/", "")
+#                 clean_predicate = clean_predicate.replace("direct/", "")
+#                 clean_predicate_uri = WDT[clean_predicate]
+                
+#                 if isinstance(result.object, URIRef):
+#                     obj = URIRef(object_value)
+                     
+#                     graph.add((URIRef(f"http://www.wikidata.org/wiki/{wikidata_id}"), clean_predicate_uri, obj))
+                    
+#                     graph.add((obj, RDF.type, OWL.Thing))
+                    
+#                     #add isWikidataNeighborOf relation used when we want to get chunks linked to the entity
+#                     graph.add((obj, EX.isWikidataNeighborOf, URIRef(f"http://www.wikidata.org/wiki/{wikidata_id}")))
+#                     graph.add((obj, EX.relationDirection, Literal("outgoing")))
+                    
+#                     #add label
+#                     label = str(result.objectLabel)
+#                     graph.add((obj, SKOS.prefLabel, Literal(label)))
+#                     if(label not in labelList):
+#                         labelList.append(label)
+#                     print(f"Ajouté le label '{label}' pour l'entité {obj}")
+#                     entity_count += 1
+#                 else:
+#                     print("!!!===================ALERT LITTERAL VALUE =========================================")
+#                     print(Literal(object_value))
+#                     #if it is a litteral value, add it directly
+#                     graph.add((URIRef(f"http://www.wikidata.org/wiki/{wikidata_id}"), clean_predicate_uri, Literal(object_value)))
+            
+#             for result in results_in:
+#                 subject_uri = str(result.subject)
+#                 predicate_uri = str(result.predicate)
+#                 subject_label = str(result.subjectLabel)
+#                 if(label not in labelList):
+#                     labelList.append(subject_label)
+#                 print(f"Ajouté le label '{subject_label}' pour l'entité {subject_uri}")
+                
+#                 clean_predicate = predicate_uri.replace("http://www.wikidata.org/prop/", "")
+#                 clean_predicate = clean_predicate.replace("direct/", "")
+#                 clean_predicate_uri = WDT[clean_predicate]
+                
+#                 subj = URIRef(subject_uri)
+#                 graph.add((subj, clean_predicate_uri, URIRef(f"http://www.wikidata.org/wiki/{wikidata_id}")))
+                
+#                 graph.add((subj, RDF.type, OWL.Thing))
+                
+#                 graph.add((subj, EX.isWikidataNeighborOf, URIRef(f"http://www.wikidata.org/wiki/{wikidata_id}")))
+#                 graph.add((subj, EX.relationDirection, Literal("incoming")))
+                
+#                 graph.add((subj, SKOS.prefLabel, Literal(subject_label)))
+#                 entity_count += 1
+            
+#             print(f"{entity_count} entités ajoutées")
+            
+            
+#             time.sleep(1)  #to avoid error 429 
+#         except Exception as e:
+#             print(f"Erreur lors de la requête SPARQL pour {wikidata_id}: {e} \n")
+           
+    
+#     graph.serialize(output_path, format="turtle")
+#     print(f"Graphe enrichi enregistré dans {output_path}")
+    
+#     return graph, labelList
+
+# def add_wikidata_neighbors_to_graph(graph_path, output_path="enriched_graph.ttl", limit_per_entity=100):
+
+#     import rdflib
+#     from rdflib import URIRef, Literal, Graph
+#     from rdflib.namespace import RDF, RDFS, OWL, SKOS
+#     import time
+    
+#     WD = rdflib.Namespace("http://www.wikidata.org/wiki/")
+#     WDT = rdflib.Namespace("http://www.wikidata.org/prop/direct/")
+#     SCHEMA = rdflib.Namespace("http://schema.org/")
+#     EX = rdflib.Namespace("http://example.org/")
+    
+#     graph = Graph()
+#     graph.parse(graph_path, format='turtle')
+    
+#     graph.bind("ex", EX)
+#     graph.bind("skos", SKOS)
+#     graph.bind("wd", WD)
+#     graph.bind("wdt", WDT)
+#     graph.bind("schema", SCHEMA)
+#     graph.bind("owl", OWL)
+#     graph.bind("rdfs", RDFS)
+
+#     labelList = []
+    
+#     #take wikidata entities in the graph
+#     query = """
+#     PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+#     SELECT ?entity ?type
+#     WHERE {
+#         ?entity a ?type .
+#         FILTER(STRSTARTS(STR(?type), "https://www.wikidata.org/wiki/"))
+#     }
+#     """
+#     results = graph.query(query)
+    
+#     print(f"{len(results)} entités Wikidata")
+    
+#     wikidata_endpoint = "https://query.wikidata.org/sparql"
+    
+#     #For each entity search neighbors with label and add them to the graph
+#     for row in results:
+#         entity_uri = row.entity
+#         wikidata_uri = row.type
+#         wikidata_id = str(wikidata_uri).split("/")[-1]
+        
+#         print(f"entité: {entity_uri} (Wikidata: {wikidata_id})")
+        
+#         # outgoing relations with property labels
+#         sparql_query_out = f"""
+#         PREFIX wd: <http://www.wikidata.org/entity/>
+#         PREFIX bd: <http://www.bigdata.com/rdf#>
+#         PREFIX wikibase: <http://wikiba.se/ontology#>
+#         SELECT ?predicate ?proplabel ?object ?objectLabel
+#         WHERE {{
+#         SERVICE <https://query.wikidata.org/sparql> {{
+#             SELECT ?predicate ?proplabel ?object ?objectLabel {{
+#                 wd:{wikidata_id} ?predicate ?object .
+#                 FILTER(STRSTARTS(STR(?predicate), "http://www.wikidata.org/prop/"))
+#                 ?object rdfs:label ?objectLabel .
+#                 FILTER(LANG(?objectLabel) = "en" || LANG(?objectLabel) = "fr")
+#                 SERVICE wikibase:label {{ bd:serviceParam wikibase:language "en". bd:serviceParam wikibase:language "fr". }}
+#                 ?prop wikibase:directClaim ?predicate .
+#                 ?prop rdfs:label ?proplabel .
+#                 FILTER(LANG(?proplabel) = "en" || LANG(?proplabel) = "fr" )
+#             }}
+#         }}
+#         }}
+#         LIMIT 500
+#         """
+        
+#         # incoming relations with property labels
+#         sparql_query_in = f"""
+#         PREFIX wd: <http://www.wikidata.org/entity/>
+#         PREFIX bd: <http://www.bigdata.com/rdf#>
+#         PREFIX wikibase: <http://wikiba.se/ontology#>
+#         SELECT ?predicate ?proplabel ?subject ?subjectLabel
+#         WHERE {{
+#           SERVICE <https://query.wikidata.org/sparql> {{
+#             SELECT ?predicate ?proplabel ?subject ?subjectLabel {{
+#                 ?subject ?predicate wd:{wikidata_id} .
+#                 FILTER(STRSTARTS(STR(?predicate), "http://www.wikidata.org/prop/"))
+#                 ?subject rdfs:label ?subjectLabel .
+#                 FILTER(LANG(?subjectLabel) = "fr" || LANG(?subjectLabel) = "en")
+#                 SERVICE wikibase:label {{ bd:serviceParam wikibase:language "en". bd:serviceParam wikibase:language "fr". }}
+#                 ?prop wikibase:directClaim ?predicate .
+#                 ?prop rdfs:label ?proplabel .
+#                 FILTER(LANG(?proplabel) = "en" || LANG(?proplabel) = "fr" )
+#             }}
+#           }}
+#         }}
+#         LIMIT 500
+#         """
+        
+#         try:
+#             results_out = graph.query(sparql_query_out)
+#             print(f"RESULTS OUT: {results_out}, TAILLE : {len(results_out)}")
+#             results_in = graph.query(sparql_query_in)
+#             print(f"RESULTS IN: {results_in}, TAILLE : {len(results_in)}")
+            
+#             total_results = len(results_out) + len(results_in)
+#             print(f"{total_results} relations trouvées")
+            
+#             entity_count = 0
+            
+#             for result in results_out:
+#                 predicate_uri = str(result.predicate)
+#                 object_value = str(result.object)
+#                 prop_label = str(result.proplabel)
+
+#                 clean_predicate = predicate_uri.replace("http://www.wikidata.org/prop/", "")
+#                 clean_predicate = clean_predicate.replace("direct/", "")
+#                 clean_predicate_uri = WDT[clean_predicate]
+                
+#                 # Add property label to the graph
+#                 graph.add((clean_predicate_uri, RDFS.label, Literal(prop_label)))
+                
+#                 if isinstance(result.object, URIRef):
+#                     obj = URIRef(object_value)
+                     
+#                     graph.add((URIRef(f"http://www.wikidata.org/wiki/{wikidata_id}"), clean_predicate_uri, obj))
+                    
+#                     graph.add((obj, RDF.type, OWL.Thing))
+                    
+#                     #add isWikidataNeighborOf relation used when we want to get chunks linked to the entity
+#                     graph.add((obj, EX.isWikidataNeighborOf, URIRef(f"http://www.wikidata.org/wiki/{wikidata_id}")))
+#                     graph.add((obj, EX.relationDirection, Literal("outgoing")))
+                    
+#                     #add label
+#                     label = str(result.objectLabel)
+#                     graph.add((obj, SKOS.prefLabel, Literal(label)))
+#                     if(label not in labelList):
+#                         labelList.append(label)
+#                     print(f"Ajouté le label '{label}' pour l'entité {obj}")
+#                     print(f"Ajouté le label de propriété '{prop_label}' pour {clean_predicate_uri}")
+#                     entity_count += 1
+#                 else:
+#                     print("!!!===================ALERT LITTERAL VALUE =========================================")
+#                     print(Literal(object_value))
+#                     #if it is a literal value, add it directly
+#                     graph.add((URIRef(f"http://www.wikidata.org/wiki/{wikidata_id}"), clean_predicate_uri, Literal(object_value)))
+            
+#             for result in results_in:
+#                 subject_uri = str(result.subject)
+#                 predicate_uri = str(result.predicate)
+#                 subject_label = str(result.subjectLabel)
+#                 prop_label = str(result.proplabel)
+                
+#                 if(subject_label not in labelList):
+#                     labelList.append(subject_label)
+#                 print(f"Ajouté le label '{subject_label}' pour l'entité {subject_uri}")
+                
+#                 clean_predicate = predicate_uri.replace("http://www.wikidata.org/prop/", "")
+#                 clean_predicate = clean_predicate.replace("direct/", "")
+#                 clean_predicate_uri = WDT[clean_predicate]
+                
+#                 # Add property label to the graph
+#                 graph.add((clean_predicate_uri, RDFS.label, Literal(prop_label)))
+                
+#                 subj = URIRef(subject_uri)
+#                 graph.add((subj, clean_predicate_uri, URIRef(f"http://www.wikidata.org/wiki/{wikidata_id}")))
+                
+#                 graph.add((subj, RDF.type, OWL.Thing))
+                
+#                 graph.add((subj, EX.isWikidataNeighborOf, URIRef(f"http://www.wikidata.org/wiki/{wikidata_id}")))
+#                 graph.add((subj, EX.relationDirection, Literal("incoming")))
+                
+#                 graph.add((subj, SKOS.prefLabel, Literal(subject_label)))
+#                 print(f"Ajouté le label de propriété '{prop_label}' pour {clean_predicate_uri}")
+#                 entity_count += 1
+            
+#             print(f"{entity_count} entités ajoutées")
+            
+#             time.sleep(1)  #to avoid error 429 
+#         except Exception as e:
+#             print(f"Erreur lors de la requête SPARQL pour {wikidata_id}: {e} \n")
+           
+    
+#     graph.serialize(output_path, format="turtle")
+#     print(f"Graphe enrichi enregistré dans {output_path}")
+    
+#     return graph, labelList
+
+
+
+    #============================================================================================================
+
 def add_wikidata_neighbors_to_graph(graph_path, output_path="enriched_graph.ttl", limit_per_entity=100):
 
     import rdflib
     from rdflib import URIRef, Literal, Graph
     from rdflib.namespace import RDF, RDFS, OWL, SKOS
     import time
+    import requests
     
     WD = rdflib.Namespace("http://www.wikidata.org/wiki/")
     WDT = rdflib.Namespace("http://www.wikidata.org/prop/direct/")
@@ -396,7 +749,23 @@ def add_wikidata_neighbors_to_graph(graph_path, output_path="enriched_graph.ttl"
     
     wikidata_endpoint = "https://query.wikidata.org/sparql"
     
-    #For each entity seach neighbors with label and add them to the graph
+    def execute_sparql_query(query, endpoint):
+        """Exécute une requête SPARQL via HTTP"""
+        headers = {
+            'User-Agent': 'Python SPARQL Client',
+            'Accept': 'application/sparql-results+json'
+        }
+        
+        params = {
+            'query': query,
+            'format': 'json'
+        }
+        
+        response = requests.get(endpoint, params=params, headers=headers)
+        response.raise_for_status()
+        return response.json()
+    
+    #For each entity search neighbors with label and add them to the graph
     for row in results:
         entity_uri = row.entity
         wikidata_uri = row.type
@@ -404,43 +773,62 @@ def add_wikidata_neighbors_to_graph(graph_path, output_path="enriched_graph.ttl"
         
         print(f"entité: {entity_uri} (Wikidata: {wikidata_id})")
         
-        # outgoing relations
+        # outgoing relations with property labels
         sparql_query_out = f"""
         PREFIX wd: <http://www.wikidata.org/entity/>
-            SELECT ?predicate ?predicateLabel ?object ?objectLabel
-                WHERE {{
-                SERVICE <https://query.wikidata.org/sparql> {{
-                    wd:{wikidata_id} ?predicate ?object .
-                    FILTER(STRSTARTS(STR(?predicate), "http://www.wikidata.org/prop/"))
-                    ?object rdfs:label ?objectLabel .
-                    FILTER(LANG(?objectLabel) = "fr" || LANG(?objectLabel) = "en")
-                    ?predicate rdfs:label ?predicateLabel .
-                    FILTER(LANG(?objectLabel) = "fr" || LANG(?objectLabel) = "en")
-                }}
-                }}
-                LIMIT 500
+        PREFIX bd: <http://www.bigdata.com/rdf#>
+        PREFIX wikibase: <http://wikiba.se/ontology#>
+        SELECT ?predicate ?proplabel ?object ?objectLabel
+        WHERE {{
+        SERVICE <https://query.wikidata.org/sparql> {{
+            SELECT ?predicate ?proplabel ?object ?objectLabel {{
+                wd:{wikidata_id} ?predicate ?object .
+                FILTER(STRSTARTS(STR(?predicate), "http://www.wikidata.org/prop/"))
+                ?object rdfs:label ?objectLabel .
+                FILTER(LANG(?objectLabel) = "en" || LANG(?objectLabel) = "fr")
+                SERVICE wikibase:label {{ bd:serviceParam wikibase:language "en". bd:serviceParam wikibase:language "fr". }}
+                ?prop wikibase:directClaim ?predicate .
+                ?prop rdfs:label ?proplabel .
+                FILTER(LANG(?proplabel) = "en" || LANG(?proplabel) = "fr" )
+            }}
+        }}
+        }}
+        LIMIT 500
         """
         
-        # incoming relations
+        # incoming relations with property labels
         sparql_query_in = f"""
         PREFIX wd: <http://www.wikidata.org/entity/>
-        SELECT ?predicate ?subject ?subjectLabel
+        PREFIX bd: <http://www.bigdata.com/rdf#>
+        PREFIX wikibase: <http://wikiba.se/ontology#>
+        SELECT ?predicate ?proplabel ?subject ?subjectLabel
         WHERE {{
           SERVICE <https://query.wikidata.org/sparql> {{
-            ?subject ?predicate wd:{wikidata_id} .
-            FILTER(STRSTARTS(STR(?predicate), "http://www.wikidata.org/prop/"))
-            ?subject rdfs:label ?subjectLabel .
-            FILTER(LANG(?subjectLabel) = "fr" || LANG(?subjectLabel) = "en")
+            SELECT ?predicate ?proplabel ?subject ?subjectLabel {{
+                ?subject ?predicate wd:{wikidata_id} .
+                FILTER(STRSTARTS(STR(?predicate), "http://www.wikidata.org/prop/"))
+                ?subject rdfs:label ?subjectLabel .
+                FILTER(LANG(?subjectLabel) = "fr" || LANG(?subjectLabel) = "en")
+                SERVICE wikibase:label {{ bd:serviceParam wikibase:language "en". bd:serviceParam wikibase:language "fr". }}
+                ?prop wikibase:directClaim ?predicate .
+                ?prop rdfs:label ?proplabel .
+                FILTER(LANG(?proplabel) = "en" || LANG(?proplabel) = "fr" )
+            }}
           }}
         }}
         LIMIT 500
         """
         
         try:
-            results_out = graph.query(sparql_query_out)
-            print(f"RESULTS OUT: {results_out}, TAILLE : {len(results_out)}")
-            results_in = graph.query(sparql_query_in)
-            print(f"RESULTS IN: {results_in}, TAILLE : {len(results_in)}")
+            # Exécuter les requêtes via HTTP
+            results_out_data = execute_sparql_query(sparql_query_out, wikidata_endpoint)
+            results_in_data = execute_sparql_query(sparql_query_in, wikidata_endpoint)
+            
+            results_out = results_out_data['results']['bindings']
+            results_in = results_in_data['results']['bindings']
+            
+            print(f"RESULTS OUT: {len(results_out)} résultats")
+            print(f"RESULTS IN: {len(results_in)} résultats")
             
             total_results = len(results_out) + len(results_in)
             print(f"{total_results} relations trouvées")
@@ -448,20 +836,18 @@ def add_wikidata_neighbors_to_graph(graph_path, output_path="enriched_graph.ttl"
             entity_count = 0
             
             for result in results_out:
-
-               
-                predicate_uri = str(result.predicate)
-               
-               
-                object_value = str(result.object)
-                
-             
+                predicate_uri = result['predicate']['value']
+                object_value = result['object']['value']
+                prop_label = result['proplabel']['value']
 
                 clean_predicate = predicate_uri.replace("http://www.wikidata.org/prop/", "")
                 clean_predicate = clean_predicate.replace("direct/", "")
                 clean_predicate_uri = WDT[clean_predicate]
                 
-                if isinstance(result.object, URIRef):
+                # Add property label to the graph
+                graph.add((clean_predicate_uri, RDFS.label, Literal(prop_label)))
+                
+                if result['object']['type'] == 'uri':
                     obj = URIRef(object_value)
                      
                     graph.add((URIRef(f"http://www.wikidata.org/wiki/{wikidata_id}"), clean_predicate_uri, obj))
@@ -473,29 +859,35 @@ def add_wikidata_neighbors_to_graph(graph_path, output_path="enriched_graph.ttl"
                     graph.add((obj, EX.relationDirection, Literal("outgoing")))
                     
                     #add label
-                    label = str(result.objectLabel)
+                    label = result['objectLabel']['value']
                     graph.add((obj, SKOS.prefLabel, Literal(label)))
                     if(label not in labelList):
                         labelList.append(label)
                     print(f"Ajouté le label '{label}' pour l'entité {obj}")
+                    print(f"Ajouté le label de propriété '{prop_label}' pour {clean_predicate_uri}")
                     entity_count += 1
                 else:
                     print("!!!===================ALERT LITTERAL VALUE =========================================")
                     print(Literal(object_value))
-                    #if it is a litteral value, add it directly
+                    #if it is a literal value, add it directly
                     graph.add((URIRef(f"http://www.wikidata.org/wiki/{wikidata_id}"), clean_predicate_uri, Literal(object_value)))
             
             for result in results_in:
-                subject_uri = str(result.subject)
-                predicate_uri = str(result.predicate)
-                subject_label = str(result.subjectLabel)
-                if(label not in labelList):
+                subject_uri = result['subject']['value']
+                predicate_uri = result['predicate']['value']
+                subject_label = result['subjectLabel']['value']
+                prop_label = result['proplabel']['value']
+                
+                if(subject_label not in labelList):
                     labelList.append(subject_label)
                 print(f"Ajouté le label '{subject_label}' pour l'entité {subject_uri}")
                 
                 clean_predicate = predicate_uri.replace("http://www.wikidata.org/prop/", "")
                 clean_predicate = clean_predicate.replace("direct/", "")
                 clean_predicate_uri = WDT[clean_predicate]
+                
+                # Add property label to the graph
+                graph.add((clean_predicate_uri, RDFS.label, Literal(prop_label)))
                 
                 subj = URIRef(subject_uri)
                 graph.add((subj, clean_predicate_uri, URIRef(f"http://www.wikidata.org/wiki/{wikidata_id}")))
@@ -506,10 +898,10 @@ def add_wikidata_neighbors_to_graph(graph_path, output_path="enriched_graph.ttl"
                 graph.add((subj, EX.relationDirection, Literal("incoming")))
                 
                 graph.add((subj, SKOS.prefLabel, Literal(subject_label)))
+                print(f"Ajouté le label de propriété '{prop_label}' pour {clean_predicate_uri}")
                 entity_count += 1
             
             print(f"{entity_count} entités ajoutées")
-            
             
             time.sleep(1)  #to avoid error 429 
         except Exception as e:
@@ -520,6 +912,7 @@ def add_wikidata_neighbors_to_graph(graph_path, output_path="enriched_graph.ttl"
     print(f"Graphe enrichi enregistré dans {output_path}")
     
     return graph, labelList
+
 
 
 def enrich_entity(graph, entity_id, limit=100):

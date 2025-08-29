@@ -2,63 +2,22 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import os
 import subprocess
-#import finance.pipelineLinkerF
 import os
 from sys import argv
-# from langchain.embeddings import HuggingFaceEmbeddings
 import datetime
 import re
 import time
-# from langchain_mistralai import ChatMistralAI
 from langchain_core.prompts import ChatPromptTemplate
 import spacy
 import importlib
 import random
 import requests
 
-
-
-venv_path = 'venv'
-domain = 'finance'
-# key = ''
-# with open("key.txt", "r", encoding="utf-8") as file:
-#     key = file.read()
-
-
-# def chat_completion(question: str):
-#     with open("key.txt", "r", encoding="utf-8") as file:
-#         key = file.read().strip()
-
-#     headers = {
-#         "Authorization": f"Bearer {key}",
-#         "Content-Type": "application/json"
-#     }
- 
-#     url = "https://api.groq.com/openai/v1/chat/completions"
-    
-#     payload = {
-#         "model": "llama3-70b-8192",  
-#         "messages": [
-#             {"role": "system", "content": "You are Nestor, a virtual assistant. Answer to the question by using the context given bellow."},
-#             {"role": "user", "content": question}
-#         ],
-#         "max_tokens": 1500
-#     }
-    
+import mainPipeline 
 
 
 
-#     response = requests.post(url, headers=headers, json=payload)
 
-#     if response.status_code == 200:
-#         result = response.json()
-#         content = result["choices"][0]["message"]["content"]
-#         print(f" {content}")
-#         return content
-#     else:
-#         error_message = f"Erreur: {response.status_code} - {response.text}"
-#         print(error_message)
-#         return error_message
 
 
 def chat_completion(question: str):
@@ -110,28 +69,18 @@ def readLog(text_path) :
 
     return res
 
-def run_in_venv_query(query, domain, nChunks=0) :
-         # Chemin vers le Python de l'environnement virtuel sous Windows
-    venv_python = os.path.join(venv_path, 'Scripts', 'python.exe')
-    print ("run_in_venv_query domain : ", domain)
-    
-    try:
-        result = subprocess.run([venv_python, '-m', f'{domain}.userPrompt', query, str(nChunks)], 
-                                 capture_output=True, 
-                                 text=True, 
-                                 check=True)  
-    except subprocess.CalledProcessError as e:
-        print("Erreur lors de l'exécution:")
-        print(e.stderr)
-        print(f"Code de retour : {e.returncode}")
-        return 'Erreur lors de l\'exécution prompt'
-
 
 
 
 app = Flask(__name__)
 
 CORS(app)
+
+config = mainPipeline.load_config()
+embeddings, _ = mainPipeline.initialize_components(config)
+embedding_dimensions = config.getint('EMBEDDINGS', 'dimensions')
+nlp_model = config['NLP']['spacy_model']
+
 
 @app.route('/ask', methods=['POST'])
 def ask():
@@ -144,10 +93,10 @@ def ask():
     print("domain : ",domain)
     print ("prompt : ", user_prompt)
 
-    finance_directory = os.path.join(os.path.dirname(os.path.abspath(__file__)), domain)
     
     t=time.time()
-    run_in_venv_query(user_prompt, domain, nChunks)
+    # run_in_venv_query(user_prompt, domain, nChunks)
+    mainPipeline.process_query(user_prompt, nlp_model, f'{domain}/outputLinkerLinked.ttl', domain, embeddings,embedding_dimensions, neighborChunks=nChunks)
     print ("temps d'execution de la requete : ", time.time()-t)
 
     # Appeler le script Python avec le prompt
@@ -167,6 +116,44 @@ def ask():
         return jsonify({'response': 'Erreur dans l\'exécution du script Python.'}), 500
 
     
+
+@app.route('/askClassic', methods=['POST'])
+def askClassic():
+    # retrieve the query
+    data = request.get_json()
+    user_prompt = data.get('prompt')
+    domain = data.get('domain')
+    nChunks = data.get('nChunks')
+
+    print("domain : ",domain)
+    print ("prompt : ", user_prompt)
+
+    
+    t=time.time()
+    # run_in_venv_query(user_prompt, domain, nChunks)
+    mainPipeline.process_query_classic_RAG(user_prompt, nlp_model, f'{domain}/outputLinkerLinked.ttl', domain, embeddings,384, neighborChunks=nChunks)
+    print ("temps d'execution de la requete : ", time.time()-t)
+    time.sleep(2)
+
+    
+    try:
+
+        t = time.time()
+        
+        prompt = ""
+        with open (f'{domain}Classic/query_enrichie.txt', "r", encoding="utf-8") as file:
+            prompt = file.read()
+
+        response = chat_completion(prompt)
+        print ("temps d'execution du script 2 : ", time.time()-t)
+        
+        return jsonify({'response': response})
+    except subprocess.CalledProcessError as e:
+        return jsonify({'response': 'Erreur dans l\'exécution du script Python.'}), 500
+
+
+
+
 
 @app.route('/log', methods=['POST'])  
 def log():

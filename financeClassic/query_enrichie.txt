@@ -2,7 +2,7 @@ question :
 
 
 
-What are the main domains of NVIDIA ?
+what are the main domains of NVIDIA ? 
 
 
 
